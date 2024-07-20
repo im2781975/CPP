@@ -1,2 +1,1 @@
-Here Attached Solved Problems From Other
-Website For Practise Purpose.
+Here Attached Solved Problems From Other Websites For Practise Purpose.
