@@ -1,3 +1,54 @@
+
+const int MAX_SIZE = 100;
+void fillMatrix(int matrix[MAX_SIZE][MAX_SIZE], int size)
+{
+    int counter = 0, groupSize = 0, column = 0;
+    for (int i = size - 1; i >= 0; i--, counter = 0, column++)
+    {
+        while (counter < pow(3, size))
+        {
+            for (groupSize = 0; groupSize < pow(3, column) && counter < pow(3, size); groupSize++)
+                matrix[counter++][i] = 1;
+            for (groupSize = 0; groupSize < pow(3, column) && counter < pow(3, size); groupSize++)
+                matrix[counter++][i] = 2;
+            for (groupSize = 0; groupSize < pow(3, column) && counter < pow(3, size); groupSize++)
+                matrix[counter++][i] = 3;
+        }
+    }
+}
+
+main()
+{
+    int x, y;
+    cin >> x >> y;
+
+    int matrix[MAX_SIZE][MAX_SIZE];
+    fillMatrix(matrix, y);
+
+    int n = 0;
+    while (cin >> n)
+    {
+        int dimension = pow(3, n);
+        int **dynamicMatrix = new int *[dimension];
+        for (int row = 0; row < dimension; ++row)
+        {
+            dynamicMatrix[row] = new int[n];
+            fillMatrix(dynamicMatrix, n);
+            for (int r = 0; r < pow(3, n); r++)
+            {
+                for (int c = 0; c < n; c++)
+                    cout << dynamicMatrix[r][c];
+                cout << "\n";
+            }
+        }
+        for (int q = 0; q < dimension; ++q)
+            delete[] dynamicMatrix[q];
+        delete[] dynamicMatrix;
+        cout << endl;
+    }
+    return 0;
+}
+
 //calculates the sum of the integers a for which the corresponding string r starts with the character ch and prints this sum.
 struct X{
     char r[100], int a;
