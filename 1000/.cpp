@@ -39,3 +39,5 @@
 #define printLn(n) cout << n << '\n'
 #define printNL() cout <<'\n'
 #define print(n) cout << n
+typedef long long ll;
+typedef unsigned long long ull;
