@@ -367,6 +367,19 @@ void CountDst(){
         }
     }
 }
+void Manhatten(){
+    int arr[5][5];
+    int row = -1, col = -1;
+    for(int i = 0, j = 0, i < 5, j < 5; i++, j++){
+        cin >> arr[i][j];
+        if(arr[i][j] = 1){
+            row = i; col = j;
+        }
+    }
+    int Distance = abs(row - 2) + abs(col - 2);
+    cout << Distance;
+}
+
 //determine how many iterations it takes for the length to become greater than the breadth
 //if, in each iteration, the length is tripled and the breadth is doubled
 void MakeEqual(){
