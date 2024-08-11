@@ -486,18 +486,6 @@ void DivideEven(){
         cout << "No";
 }
 
-//calculate and print the minimum number of square tiles of size a x a needed to cover a rectangular area of size x * y
-void MinTile(){
-    int x, y, a;
-    cin >> x >> y >> a;
-    int r1 = x / a;
-    int r2 = y / a;
-    if(x % a !=0)
-        r1++;
-    if(y % a !=0)
-        r2++;
-    cout << r1 * r2;
-}
 void Condition() {
     int n;
     while (cin >> n) {
