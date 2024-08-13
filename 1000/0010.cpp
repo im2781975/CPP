@@ -154,6 +154,83 @@ void RoundRobin(){
     delete []ready;
 }
 
+using namespace std;
+void BankesAlgo() {
+    int numProcesses;
+    cin >> numProcesses;
+    vector<vector<int>> allocation(numProcesses, vector<int>(3));
+    vector<vector<int>> maximum(numProcesses, vector<int>(3));
+    vector<int> available(3);
+
+    for (int i = 0; i < numProcesses; i++) {
+        cout << "Enter the allocation of P" << i + 1 << " separated by spaces: ";
+        for (int j = 0; j < 3; j++) {
+            cin >> allocation[i][j];
+        }
+    }
+    // Input maximum matrix
+    for (int i = 0; i < numProcesses; i++) {
+        cout << "Enter the maximum of P" << i + 1 << " separated by spaces: ";
+        for (int j = 0; j < 3; j++) {
+            cin >> maximum[i][j];
+        }
+    }
+    // Input available resources
+    cout << "Enter the available resources separated by spaces: ";
+    for (int j = 0; j < 3; j++) {
+        cin >> available[j];
+    }
+
+    // Calculate the need matrix
+    vector<vector<int>> need(numProcesses, vector<int>(3));
+    for (int i = 0; i < numProcesses; i++) {
+        for (int j = 0; j < 3; j++) {
+            need[i][j] = maximum[i][j] - allocation[i][j];
+        }
+    }
+    vector<bool> finished(numProcesses, false);
+    vector<int> safeSequence;
+
+    // Loop to check the safe sequence
+    for (int k = 0; k < numProcesses; k++) {
+        bool found = false;
+        for (int i = 0; i < numProcesses; i++) {
+            if (!finished[i]) {
+                bool canAllocate = true;
+                for (int j = 0; j < 3; j++) {
+                    if (need[i][j] > available[j]) {
+                        canAllocate = false;
+                        break;
+                    }
+                }
+
+                if (canAllocate) {
+                    // Allocate resources to this process
+                    for (int j = 0; j < 3; j++) {
+                        available[j] += allocation[i][j];
+                    }
+                    safeSequence.push_back(i);
+                    finished[i] = true;
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) {
+            cout << "The system is not in a safe state\n";
+            return 0;
+        }
+    }
+    // Print the safe sequence
+    cout << "The system is in a safe state.\nSafe sequence is: ";
+    for (int i = 0; i < safeSequence.size(); i++) {
+        cout << "P" << safeSequence[i] + 1;
+        if (i != safeSequence.size() - 1) {
+            cout << " -> ";
+        }
+    }
+    cout << endl;
+}
 int Factorial(int n){
     if(n == 0 || n == 1)
         return 1;
