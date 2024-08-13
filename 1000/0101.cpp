@@ -273,6 +273,23 @@ void checkPalindrome(){
     cout << "palindrome";
     return 0;
 }
+void MakePalindrome(){
+    int length; cin >> length;
+    char ch[length + 1];
+    cin >> ch;
+    int left = 0, right = length - 1, change = 0;
+    while(left < right){
+        if(ch[left] != ch[right]){
+            change++;
+            if(ch[left] < ch[right])
+                ch[right] = ch[left];
+            else
+                ch[left] = ch[right];
+        }
+        left++; right--;
+    }
+    cout << change;
+}
 
 //check is number contain all unique int
 void IsUnique(){
