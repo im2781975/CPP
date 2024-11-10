@@ -1,3 +1,30 @@
+#include <bits/stdc++.h>
+#define pb push_back
+#define ll long long
+#define pf push_front
+#define start ios_base::sync_with_stdio(0)
+#define fi first
+#define se second
+include <iostream>
+#include <set>
+ 
+using namespace std;
+#define int long long
+#define pb push_back
+#define s second
+#define f first
+#define pii pair<int,int>
+ 
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <set>
+#include <deque>
+#include <iomanip>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include <set>
