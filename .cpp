@@ -271,3 +271,142 @@ typedef priority_queue<int> pq;
 
 typedef set<int> si;
 typedef set<ll> sl
+#include <algorithm> 
+#include <array>
+#include <bitset>
+#include <unordered_map>
+#include <cassert>
+#include <chrono>
+#include <climits>
+#include <cmath>
+#include <complex>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <random>
+#include <set>
+#include <string>
+#include <vector>
+#include <immintrin.h>
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfenv>
+#include <cfloat>
+#include <chrono>
+#include <cinttypes>
+#include <climits>
+#include <cmath>
+#include <complex>
+#include <cstdarg>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <deque>
+#include <fstream>
+#include <functional>
+#include <immintrin.h>
+#include <initializer_list>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <limits>
+#include <list>
+#include <map>
+#include <memory>
+#include <new>
+#include <numeric>
+#include <ostream>
+#include <queue>
+#include <random>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <streambuf>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <variant>
+// typedef vector<int> VI;// Standard template library (STL)
+#define all(v) ((v).begin()),((v).end()); // Standard template library(STL)
+#define sz(v)  ((int)((v).size())); // Standard template library (STL)
+// two functions for vector : front {V.front()}   back {V.back()}  
+// For swaping the first and the last element => swap(V.front() , V.end())
+//=========================================================================//
+//vector from vector
+//v3(v1.begin() , v1.end())
+// RESIZE => resize(15) from 10 for example to 15
+// Unique => v.resize(unique (all(v)) - v.begin())
+// Set intersection    => set_intersection(all(v1) , all(v2) , back_intersecter(v)) [find the intersection between them]
+// Set difference      => set_difference  (all(v1) , all(v2) , back_intersecter(v)) [find what is in v1 not in v2]
+// FOR decreasing sort => sort(v.begin() , v.end() , greater<int>) || sort(v.rbegin() , v.rend());
+// Set union           => set_union(all(v1) , all(v2) , back_intersecter(v))) 
+ 
+/*
+MAX_ELEMENT => maxx = *max_element(v.begin() , v.end()); 
+MIN_ELEMENT => minn = *min_element(v.begin() , v.end()); 
+ 
+int vecSum = accumulate(all(v) , 0) => SUMMTION
+int vecMulti = accumulate(all(v) , 1 , multiplies<int> ()) => multiplie all elements
+ 
+INNER PRODUCT => 
+int sumproduct1 = inner_product(A.begin(), A.end(), A.begin(), 0); // every element multiples by itself and sum with the next
+*/
+//============================ Queue =======================//
+// queue<int> q;
+// q.push(10); 
+// q.push(20); 
+// q.push(30);
+ 
+// while(!q.empty()){
+//     cout << q.front() << endl;
+//     q.pop();
+// }
+//=========================== deQue =====================//
+// deque <int> dq;
+// dq.push_back(30);
+// dq.push_front(10);
+//=========================== Stack (LIFO)===============//
+//LAST IN FIRST OUT
+// stack<int> st;
+// st.push(10);
+// st.push(20);
+// st.push(30);
+// cout << "Element of stack : ";
+// while(!st.empty()){
+//     cout << st.top() << " ";
+//     st.pop();
+// }
+//========================== PAIR =======================//
+// pair<int , char> p1 = make_pair(20,'a')
+// pair<string , pair<int  , char>   p2 =  make_pair("mostafa" , p1)
+// cout << p2 . first << "\n";
+// cout << p2 . second . first << "\n";
+// cout << p2 . second . second << "\n";
+// vector<pair<int,int> vp;
+// vp . push_back(make_pair(1 , 2))
+// vp . push_back(make_pair(2 , 2))
+// vp . push_back(make_pair(3 , 3))
+// sort(all(vp) , sortpairscmp);
+//========================== MAP =======================//
+ 
+// map<string , int> mp ;
+// mp["muhamed"] = 10 ;
+// mp["hamed"] = 20 ;
+//convert map to vector
+// vector<pair<string,int> > mptov(all(mp));
+// for(int i = 0 ; i < (int)(mptov.size()) ; ++i){
+//     cout << mptov[i].first << " " << mptov[i].second<<"\n"; 
+// }
+typedef long long ll;
+typedef long double ld;
