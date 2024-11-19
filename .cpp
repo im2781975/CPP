@@ -7,7 +7,13 @@
 #define se second
 include <iostream>
 #include <set>
- 
+ #define pr pair<long long, long long>
+#define fr first
+#define sc second
+#define ll long long int
+#define rep(i, a, b) for (ll i = a; i < b; i++)
+#define repf(i, a, b) for (ll i = a; i <= b; i++)
+#define repr(i, a, b) for (ll i = a; i >= b; i--)
 using namespace std;
 #define int long long
 #define pb push_back
