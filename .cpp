@@ -21,7 +21,38 @@ using namespace std;
 #define f first
 #define pii pair<int,int>
  
-#include <iostream>
+#include <iostream>#include <iostream>
+#include <string>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <cfloat>
+#include <sstream>
+#include <unordered_set>
+#include <queue>
+#include <deque>
+#include <iomanip>
+#include <bitset>
+#include <iterator>
+#include <list>
+#include <stack>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <cctype>
+#include <chrono>
+#include <random>
+
 #include <string>
 #include <algorithm>
 #include <cmath>
