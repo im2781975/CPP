@@ -150,3 +150,124 @@ typedef double d;
 const double pi = 3.14159265359; //atan(1)*4 as precision(13)
 const double e = 2.71828182846;
 const int mod = 1e9 + 7;
+/ For printing
+#define p0(a) cout << a << " "
+#define p1(a) cout << a << "\n"
+#define p2(a, b) cout << a << " " << b << "\n"
+#define p3(a, b, c) cout << a << " " << b << " " << c << "\n"
+#define p4(a, b, c, d) cout << a << " " << b << " " << c << " " << d << "\n"
+#define p5(a, b, c, d, e) cout << a << " " << b << " " << c << " " << d << " " << e << "\n"
+
+#define fsp(n) fixed << setprecision(n)
+
+#define pfi(x) printf("%d\n", x);
+#define pfi2(x, y) printf("%d %d\n", x, y);
+#define pfi3(x, y, z) printf("%d %d %d\n", x, y, z);
+
+#define pfl(x) printf("%lld\n", x);
+#define pfl2(x, y) printf("%lld %lld\n", x, y);
+#define pfl3(x, y, z) printf("%lld %lld %lld\n", x, y, z);
+
+#define pfs(x) printf("%s\n", x);
+#define pfs2(x, y) printf("%s %s\n", x, y);
+#define pfs3(x, y, z) printf("%s %s %s\n", x, y, z);
+
+#define ia(arr, n) \
+    f0(i, n) { cin >> arr[i]; }
+#define pa(arr, n)                      \
+    f0(i, n) { cout << arr[i] << " "; } \
+    cout << "\n";
+
+//Scanf
+#define sf1(a) scanf("%d", &a)
+#define sf2(a, b) scanf("%d %d", &a, &b)
+#define sf3(a, b, c) scanf("%d %d %d", &a, &b, &c)
+#define sf4(a, b, c, d) scanf("%d %d %d %d", &a, &b, &c, &d)
+#define sf5(a, b, c, d, e) scanf("%d %d %d %d %d", &a, &b, &c, &d, &e)
+#define sf1l(a) scanf("%I64d", &a)
+#define sf2l(a, b) scanf("%I64d %I64d", &a, &b)
+#define sf3l(a, b, c) scanf("%I64d %I64d %I64d", &a, &b, &c)
+#define sf4l(a, b, c, d) scanf("%I64d %I64d %I64d %I64d", &a, &b, &c, &d)
+#define sf5l(a, b, c, d, e) scanf("%I64d %I64d %I64d %I64d %I64d", &a, &b, &c, &d, &e)
+
+// Short Forms
+#define ld long double
+#define F first
+#define S second
+#define pb push_back
+#define eb emplace_back
+#define all(x) (x).begin(), (x).end()
+#define al(x, n) (x), (x) + n
+#define mp make_pair
+#define sz size()
+#define clr clear()
+#define len length()
+
+// Constant
+#define Mod 1000000007
+#define Mod2 998244353
+#define INF 2147483647
+const double PI = 3.14159265358979323846264338327950288419716939937510582097494459230;
+const int dx4[] = {-1, 0, 1, 0};
+const int dy4[] = {0, 1, 0, -1};
+const int dx8[] = {-1, 0, 1, 0, -1, -1, 1, 1};
+const int dy8[] = {0, 1, 0, -1, -1, 1, -1, 1};
+
+// Self Defined
+#define gcd __gcd
+#define lcm(a, b) (a * b) / gcd(a, b)
+#define rsort(r) sort(r, greater<ll>())
+#define ABS(r) ((r) < 0 ? -(r) : (r))
+#define deb(x) cout << ">> " << #x << " : " << x << endl;
+
+// Max - Min
+#define max3(a, b, c) max(max(a, b), c)
+#define min3(a, b, c) min(min(a, b), c)
+#define max4(a, b, c, d) max(a, max3(b, c, d))
+#define min4(a, b, c, d) min(a, min3(b, c, d))
+#define max5(a, b, c, d, e) max(max4(a, b, c, d), e)
+#define min5(a, b, c, d, e) min(min4(a, b, c, d), e)
+#define maxa(v) *max_element(v, v + v.size())
+#define mina(v) *min_element(v, v + v.size())
+
+//remain
+#define f0(i, n) for (ll i = 0; i < n; i++)
+#define f1(i, n) for (ll i = 1; i <= n; i++)
+#define f3(i, n) for (ll i = n - 1; i >= 0; i--)
+#define f4(i, n) for (ll i = n; i > 0; i--)
+
+// Type Def Start
+typedef long long int ll;
+// typedef int64_t ll;
+typedef map<string, int> msi;
+typedef map<int, int> mii;
+typedef map<ll, ll> mll;
+typedef map<char, int> mci;
+typedef map<int, string> mis;
+
+typedef unordered_map<string, int> usi;
+typedef unordered_map<int, int> uii;
+typedef unordered_map<ll, ll> ull;
+typedef unordered_map<char, int> uci;
+typedef unordered_map<int, string> uis;
+
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef pair<string, int> psi;
+typedef pair<string, string> pss;
+typedef pair<int, pii> tri;
+typedef pair<double, double> pd;
+
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef vector<ll> vl;
+typedef vector<string> vs;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<pii> vpi;
+
+typedef priority_queue<int, vector<int>, greater<int>> rpq;
+typedef priority_queue<int> pq;
+
+typedef set<int> si;
+typedef set<ll> sl
