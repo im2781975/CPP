@@ -83,6 +83,41 @@ typedef priority_queue<int, vector<int>, greater<int>> pqr;
 #define clr(x, val)    memset((x), (val), sizeof(x))
 
 #define tests int t; cin >> t; int i = 0; while(i++ < t)
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <queue>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <iomanip>
+
+using namespace std;
+
+typedef long long ll;
+
+#define P pair
+typedef P<int, int> Pii;
+typedef P<ll, ll> Pll;
+#define mp make_pair
+#define fi first
+#define se second
+
+#define V vector
+typedef V<int> Vi;
+typedef V<Pii> VPii;
+typedef V<ll> Vll;
+typedef V<Pll> VPll;
+
+#define pb push_back
+#define all(v) (v).begin(), (v).end()
+#define forn(i, n, l) for (int i = l; i < n; i++)
+
+typedef set<int> si;
+typedef multiset<int> mi;
+typedef map<int, int> mii;
 
 #define endl '\n'
 #define escanor return 0
