@@ -20,8 +20,127 @@ using namespace std;
 #define s second
 #define f first
 #define pii pair<int,int>
- 
-#include <iostream>#include <iostream>
+ #define _CRT_SECURE_NO_DEPRECATE
+
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <cmath>
+#include <stack>
+#include <utility>
+#include <cstdlib>
+#include <cmath>
+#include <regex>
+#include <vector>
+#include <utility>
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <set>
+#include <queue>
+#include <queue>
+#define MAXN 100005
+#define ZERO 0
+#define ONE 1
+#define TWO 2
+#include <unordered_set>
+#include <deque>
+#include <map>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+typedef pair<int, int> pii;
+typedef pair<int, pii> piii;
+typedef pair<ll, ll> pll;
+typedef pair<ll, pll> plll;
+typedef pair<ll, ld> pld;
+typedef pair<double, pii> pdii;
+typedef vector<int> vi;
+typedef vector<pii> vii;
+typedef vector<piii> viii;
+typedef vector<ll> vl;
+typedef vector<pll> vll;
+typedef vector<plll> vlll;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<bool> vb;
+typedef vector<vl> vvl;
+#define loop(n)          for(int i = 0; i < (n); i++)
+#define loop2(n)          for(int j = 0; j < (n); j++)
+#define loop1(n)          for(int i = 1; i < (n); i++)
+#define lp(x, s, e)      for(int x = (s); x < (e); x++)
+#define lpe(x, s, e)     for(int x = (s); x <= (e); x++)
+#define for_each(n)     for(auto &it : n)
+#define SZ(v) ((int)((v).size()))
+#define MP make_pair
+#define PB push_back
+#define len(s)   (int)s.length()
+#define sz(v)    (int)v.size()
+#define all(a)   a.begin(),a.end()
+#define all_r(a)   a.rbegin(),a.rend()
+#define _CRT_SECURE_NO_DEPRECATE
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <cmath>
+#include <utility>
+#include <cstdlib>
+#include <cmath>
+#include <regex>
+#include <vector>
+#include <utility>
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <set>
+#include <deque>
+
+
+using namespace std;
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+
+typedef pair<int, int> pii;
+typedef pair<int, pii> piii;
+
+typedef pair<ll, ll> pll;
+typedef pair<ll, pll> plll;
+
+typedef pair<ll, ld> pld;
+typedef pair<double, pii> pdii;
+
+typedef vector<int> vi;
+typedef vector<pii> vii;
+typedef vector<piii> viii;
+
+typedef vector<ll> vl;
+typedef vector<pll> vll;
+typedef vector<plll> vlll;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<bool> vb;
+
+typedef vector<vl> vvl;
+#define loop(n)          for(int i = 0; i < (n); i++)
+#define loop2(n)          for(int j = 0; j < (n); j++)
+#define loop1(n)          for(int i = 1; i < (n); i++)
+#define lp(x, s, e)      for(int x = (s); x < (e); x++)
+#define lpe(x, s, e)     for(int x = (s); x <= (e); x++)
+#define for_each(n)     for(auto &it : n)
+#define SZ(v) ((int)((v).size()))
+#define MP make_pair
+#define PB push_back
+#define len(s)   (int)s.length()
+#define sz(v)    (int)v.size()
+#define all(a)   a.begin(),a.end()
+#define sc second
+#define fi first
+
+#define all_r(a)   a.rbegin(),a.rend()
+#include <iostream>
 #include <string>
 #include <vector>
 #include <climits>
