@@ -1,3 +1,281 @@
+
+void fastio() {ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+#define ll long long
+#define int ll
+#define endl "\n"
+#define ll          long long
+#define vi          vector<int>
+#define vll         vector<ll>
+#define pll         pair<ll, ll>
+#define pb          push_back
+#define endl        '\n'
+#define ll          long long
+#define pb          push_back
+#define endl        '\n'
+: #pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,char>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#define all(c) c.begin(),c.end()
+#define gcd(a,b) __gcd(abs(a),abs(b))
+#define lcm(a,b) (((a)/(__gcd(a,b)))*(b))
+#define isodd(a) ((a)&1)
+#define iseven(a) !((a)&1)
+#define sync() ios_base::sync_with_stdio(false),cin.tie(nullptr)
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define tr(it,c) for(auto & it : (c))
+#define rtr(it,c) for(auto it = (c).rbegin(); it != (c).rend(); it++)
+#define ll long long
+#define endl "\n"
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#define clr(x,y) memset((x),(y),sizeof(x))
+#define popcount(x) __builtin_popcount(x)
+#define fileout(x) freopen(x, "w", stdout)
+#define filein(x) freopen(x, "r",stdin)
+#define error(x) freopen(x,"w",stderr)
+#define sqr(x) ((x)*(x))
+#define cube(x) ((x)(x)(x))
+#define inf 1<<30
+#defin#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+const long double pi = 3.141592653;
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#define all(c) c.begin(),c.end()
+#define gcd(a,b) __gcd(abs(a),abs(b))
+#define lcm(a,b) (((a)/(__gcd(a,b)))*(b))
+#define isodd(a) ((a)&1)
+#define iseven(a) !((a)&1)
+#define sync() ios_base::sync_with_stdio(false),cin.tie(nullptr)
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define tr(it,c) for(auto & it : (c))
+#define rtr(it,c) for(auto it = (c).rbegin(); it != (c).rend(); it++)
+#define ll long long
+#define endl "\n"
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#define clr(x,y) memset((x),(y),sizeof(x))
+#define popcount(x) __builtin_popcount(x)
+#define fileout(x) freopen(x, "w", stdout)
+#define filein(x) freopen(x, "r",stdin)
+#define error(x) freopen(x,"w",stderr)
+#define sqr(x) ((x)*(x))
+#…
+[8:18 pm, 21/01/2022] Pratik Suryawanshi: #pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#include <bits/stdc++.h>
+using namespace std;
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+const long double pi = 3.141592653;
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#define all(c) c.begin(),c.end()
+#define gcd(a,b) __gcd(abs(a),abs(b))
+#define lcm(a,b) (((a)/(__gcd(a,b)))*(b))
+#define isodd(a) ((a)&1)
+#define iseven(a) !((a)&1)
+#define sync() ios_base::sync_with_stdio(false),cin.tie(nullptr)
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define tr(it,c) for(auto & it : (c))
+#define rtr(it,c) for(auto it = (c).rbegin(); it != (c).rend(); it++)
+#define ll long long
+#define endl "\n"
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#define clr(x,y) memset((x),(y),sizeof(x))
+#define popcount(x) __builtin_popcount(x)
+#define fileout(x) freopen(x, "w", stdout)
+#define filein(x) freopen(x, "r",stdin)
+#define error(x) freopen(x,"w",stderr)
+#define sqr(x) ((x)*(x))
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 1001001001
+typedef unsigned int ui;
+typedef unsigned long long int ul;
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimization("unroll-loops")
+#define tc ll t sc cin >> t sc while (t--)
+#define ff first
+#define vp vector<pair<ll,ll>>
+#define sc ;
+#define ss second
+#define srt sort
+#define endl '\n'
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define modulo 1e9+7
+#define ll long long int
+#define MAX(a, b) a = max(a, b)
+#define MIN(a, b) a = min(a, b)
+#define INF 100100100
+#define all(c) c.begin(),c.end()
+#define gcd(a,b) __gcd(abs(a),abs(b))
+#define lcm(a,b) (((a)/(__gcd(a,b)))*(b))
+#define isodd(a) ((a)&1)
+#define iseven(a) !((a)&1)
+#define sync() ios_base::sync_with_stdio(false),cin.tie(nullptr)
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define tr(it,c) for(auto & it : (c))
+#define rtr(it,c) for(auto it = (c).rbegin(); it != (c).rend(); it++)
+#define ll long long
+#define endl "\n"
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#define clr(x,y) memset((x),(y),sizeof(x))
+#define popcount(x) __builtin_popcount(x)
+#define fileout(x) freopen(x, "w", stdout)
+#define filein(x) freopen(x, "r",stdin)
+#define error(x) freopen(x,"w",stderr)
+#define sqr(x) ((x)*(x))
+#define all(c) c.begin(),c.end()
+#define gcd(a,b) __gcd(abs(a),abs(b))
+#define lcm(a,b) (((a)/(__gcd(a,b)))*(b))
+#define isodd(a) ((a)&1)
+#define iseven(a) !((a)&1)
+#define sync() ios_base::sync_with_stdio(false),cin.tie(nullptr)
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define tr(it,c) for(auto & it : (c))
+#define rtr(it,c) for(auto it = (c).rbegin(); it != (c).rend(); it++)
+#define ll long long
+#define endl "\n"
+#define abs(x) (((x) < 0) ? -(x) : (x))
+#define clr(x,y) memset((x),(y),sizeof(x))
+#define popcount(x) __builtin_popcount(x)
+#define fileout(x) freopen(x, "w", stdout)
+#define filein(x) freopen(x, "r",stdin)
+#define error(x) freopen(x,"w",stderr)
+#define sqr(x) ((x)*(x))
+#include <iostream>
+#include <bits/stdc++.h>
+#include <string>
+#define ll long long
 #define _CRT_SECURE_NO_DEPRECATE
 #include <bits/stdc++.h>
 using namespace std;
