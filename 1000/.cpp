@@ -232,3 +232,24 @@ void print(){
     for(int i = 0; i < vec.size(); i++)
         cout << vec[i] << " ";
 }
+using namespace std;
+//takes three integer and determine if it's possible to represent sum of distinct integers from 1 to n excluding the integer x
+void forbiddenInteger(){
+    int sum, n, x; cin >> sum >> n >> x;
+    vector <int> vec(n), res;
+    for(int i = 0; i < n; i++)
+        vec[i] = i + 1;
+    for(int i = 0; i < n; i++){
+        while(sum >= vec[i] && vec[i] != x){
+            sum -= vec[i];
+            res.push_back(vec[i]);
+        }
+    }
+    if(sum == 0){
+        cout << "Yes, size is: " << vec.size() << "\n";
+        for(int i = 0; i < res.size(); i++)
+            cout << res[i] << " ";
+    }
+    else
+        cout << "No";
+}
