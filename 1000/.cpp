@@ -33,3 +33,20 @@ void CntElements(){
     }
     cout << "Maximum Sum elements Count are: " << cnt;
 }
+using namespace std;
+//calculates the length of the longest contiguous subarray that excludes the min & max values
+void lengthSubarr(){
+    int n, res = 0; cin >> n;
+    vector <int> vec;
+    for(int i = 0; i < n; i++){
+        int val; cin >> val;
+        vec.push_back(val);
+    }
+    sort(vec.begin(), vec.end());
+    auto it = upper_bound(vec.begin(), vec.end(), vec[0]);
+    int dist1 = it - vec.begin();
+    it = lower_bound(vec.begin(), vec.end(), vec[vec.size() - 1]);
+    it--;
+    int dist2 = it - vec.begin();
+    cout << "Diff between upper & lower bound is: " << max(res, dist2 - dist1 + 1);
+}
