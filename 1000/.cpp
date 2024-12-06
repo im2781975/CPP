@@ -304,3 +304,22 @@ void varifyPair(){
     }
     (cnt > 0) ? cout << "Yes" : cout << "No";
 }
+using namespace std;
+//if contain odd or even or diffrence between consecutive odd or even print 'Yes' else 'No'
+void containOddOrEven(){
+    int n; cin >> n;
+    vector <int> vec(n);
+    bool hasOdd = hasEven = diffOdd = diffEven = false;
+    for(int i = 0; i < n; i++){
+        cin >> vec[i];
+        if(vec[i] > 0)
+            (vec[i] % 2 == 0) ?  hasEven = true :  hasOdd = true;
+        if(i > 0){
+            int diff = abs(vec[i] - vec[i - 1])
+            if(diff > 0){
+                (diff % 2 == 0) ? diffEven = true : diffOdd = true;
+            }
+        }
+    }
+    (hasOdd || hasEven || diffOdd || diffEven) ? cout << "Yes" : cout << "No";
+}
