@@ -14,6 +14,26 @@ void FindMinDiff(){
     cout << "Minimum Diff is: " << min((vec[n - 1] - vec[1]), (vec[n - 2] - vec[0]));
 }
 using namespace std;
+//calculates the difference between the sum of the max and sum of the min elements
+void maxDiffrence(){
+    int n; cin >> n;
+    if(n < 2){
+        cout << "Invalid Input";
+        return;
+    }
+    int mid = n / 2;
+    vector <int> vec(mid), cev(mid);
+    for(int i = 0; i < mid; i++)
+        cin >> vec[i];
+    for(int i = 0; i < mid; i++)
+        cin >> cev[i];
+    sort(vec.begin(), vec.end())
+    sort(cev.begin(), cev.end());
+    int maxSum = vec[mid - 1] + cev[mid - 1];
+    int minSum = vec[0] + cev[0];
+    cout << maxSum - minSum;
+}
+using namespace std;
 //determines the minimum number of elements needed such that 
 //their sum is greater than the sum of the remaining elements in the vector.
 void CntElements(){
