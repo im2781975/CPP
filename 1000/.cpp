@@ -102,6 +102,7 @@ using namespace std;
 void cntConsecutiveLen(){
     int n, cnt = 0; cin >> n;
     string str; cin >> str;
+    vector <int> vec;
     for(int i = 0; str[i]; i++){
         if(str[i] == 'B')
             cnt++;
