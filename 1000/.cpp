@@ -50,3 +50,29 @@ void lengthSubarr(){
     int dist2 = it - vec.begin();
     cout << "Diff between upper & lower bound is: " << max(res, dist2 - dist1 + 1);
 }
+using namespace std;
+// Determine weither a vector decreasing or not
+void IsDecreasing(){
+    int n, m, val; cin >> n >> m;
+    vector <int> vec, cev;
+    for(int i = 0; i < n; i++){
+        cin >> val; vec.push_back(val);
+    }
+    for(int i = 0; i < m; i++){
+        cin >> val; cev.push_back(val);
+    }
+    sort(cev.begin(), cev.end(), greater <int> ());
+    int j = 0;
+    for(int i = 0; i < n; i++){
+        if(vec[i] == 0 && j < m){
+            vec[i] = cev[j];
+            j++;
+        }
+    }
+    bool IsDecrease = true;
+    for(int i = 1; i < n ; i++){
+        if(vec[i] >= vec[i - 1])
+            IsDecrease = false;
+    }
+    (IsDecrease)? cout << "Yes" : cout << "No";
+}
