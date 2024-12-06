@@ -198,3 +198,37 @@ void splitString(){
     if(!found)
         cout << "-";
 }
+using namespace std;
+//print first positive and negetive integer
+void print(){
+    int n; cin >> n;
+    vector <int> vec;
+    int pos = neg = 0;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x > 0){
+            if(pos == 0) pos = x;
+            else vec.push_back(x);
+        }
+        else if(x < 0){
+            if(neg == 0) neg = x;
+            else vec.push_back(x);
+        }
+        //zero case
+        else vec.push_back(x);
+    }
+    sort(vec.begin(), vec.end(), greater <int> ());
+    //first positive number
+    cout << 1 << " " << pos << "\n";
+    if(neg != 0)
+        cout << 1 << " " << neg << "\n";
+    else{
+        // If no negative number, select the last two elements from `vec`
+        int a = vec.back(); vec.pop_back();
+        int b = vec.back(); vec.pop_back();
+        cout << 2 << " " << a << " " << b << "\n";
+    }
+    cout << vec.size() << " ";
+    for(int i = 0; i < vec.size(); i++)
+        cout << vec[i] << " ";
+}
