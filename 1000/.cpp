@@ -284,3 +284,23 @@ void forbiddenInteger(){
     else
         cout << "No";
 }
+using namespace std;
+//determine whether there exists a pair such that elements of the vector vec at those indices are equal (vec[i]==vec[j]),
+//but the corresponding elements of the vector cev are different (cev[i]!=cev[j]). 
+//If such a pair is found, the code outputs "Yes", otherwise it outputs "No".
+void varifyPair(){
+    int n, cnt = 0; cin >> n;
+    vector <int> vec(n), cev(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i];
+    for(int i = 0; i < n; i++)
+        cin >> cev[i];
+    for(int i = 0; i < n; i++){
+        int x = vec[i], y = cev[i];
+        for(int j = 1; j < n; j++){
+            if(vec[i] == x && cev[i] != y)
+                cnt++;
+        }
+    }
+    (cnt > 0) ? cout << "Yes" : cout << "No";
+}
