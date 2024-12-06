@@ -117,3 +117,23 @@ void cntConsecutiveLen(){
     for(int i = 0; i < vec.size(); i++)
         cout << vec[i] << " ";
 }
+using namespace std;
+//counts consecutive zeros and outputs the length of
+//longest such consecutive zero sequence for each test case
+void cntZeroLen(){
+    int n, cnt = 0; cin >> n;
+    vector <int> vec;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x == 0) cnt++;
+        else if(cnt != 0){
+            vec.push_back(cnt);
+            cnt = 0;
+        }
+    }
+    if(cnt > 0)
+        vec.push_back(cnt);
+    sort(vec.begin(), vec.end());
+    for(int i = 0; i < vec.size(); i++)
+        cout << vec[i] << " ";
+}
