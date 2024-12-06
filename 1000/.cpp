@@ -76,3 +76,23 @@ void IsDecreasing(){
     }
     (IsDecrease)? cout << "Yes" : cout << "No";
 }
+using namespace std;
+//find and print the absolute diff between consecutive elements, 
+//the absolute diff between each element and the max & min values in the sequence, 
+// the diff between the min and max values in the sequence.
+void AbsDiff(){
+    int x = INT_MIN, y = INT_MAX;
+    int n, val; cin >> n;
+    vector <int> vec;
+    for(int i = 0; i < n; i++){
+        cin >> val; vec.push_back(val);
+        x = max(x, val);
+        y = min(y, val);
+    }
+    cout << abs(vec[0] - vec[1]) << "\n" << abs(vec[1] - x) << "\n";
+    for(int i = 1; i < n - 1; i++){
+        cout << min(abs(vec[i] - vec[i - 1]), abs(vec[i] - vec[i + 1])) << "\n";
+        cout << max(abs(vec[i] - x), abs(vec[i] - y)) << "\n";
+    }
+    cout << abs(vec[n - 1] - vec[n - 2]) << "\n" << y - x;
+}
