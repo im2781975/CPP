@@ -137,3 +137,64 @@ void cntZeroLen(){
     for(int i = 0; i < vec.size(); i++)
         cout << vec[i] << " ";
 }
+using namespace std;
+// Determines whether it's possible to split a string of digits into two increasing subsequences. 
+//If possible, outputs a vector indicating which subsequence each digit belongs to (1 or 2). else outputs "-".
+void splitString(){
+    int n; cin >> n;
+    string str; cin >> str;
+    bool found = false;
+    for(int i = 0; i <= 9; i++){
+        string a, b;
+        vector <int> vec;
+        bool validSplit = true;
+        bool added = false;
+        for(int j = 0; j < n; j++){
+            int cur = str[j] - '0';
+            if(cur > i){
+                if(!a.empty() && a.back() > str[j]){
+                    validSplit = false;
+                    break;
+                }
+                vec.push_back(2);
+                a += str[j];
+                added = true;
+            }
+            else if(cur < i){
+                if(!b.empty() && b.back() > str[j]){
+                    validSplit = false;
+                    break;
+                }
+                vec.push_back(1);
+                b += str[j];
+            }
+            else{
+                if(added){
+                    if (!b.empty() && b.back() > str[j]) {
+                        validSplit = false;
+                        break;
+                    }
+                    vec.push_back(1);
+                    b += str[j];
+                }
+                else{
+                    if (!a.empty() && a.back() > str[j]) {
+                        validSplit = false;
+                        break;
+                    }
+                    vec.push_back(2);
+                    a += str[j];
+                    added = true;
+                }
+            }
+        }
+        if(validSplit){
+            for(int i = 0; i < vec.size(); i++)
+                cout << vec[i] << " ";
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        cout << "-";
+}
