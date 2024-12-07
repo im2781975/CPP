@@ -541,3 +541,40 @@ void FindWinner(){
             break;
     }
 }
+using namespace std;
+// Determine x can be written as the sum of two even numbers. If such pair found,print 'Yes' else 'No'.
+void EvenPair(){
+    int n; cin >> n;
+    for(int i = 2; i < x; i+= 2){
+        if((n - i) % 2 == 0){
+            cout << "Yes";
+            return 0;
+        }
+    }
+    cout << "No";
+}
+using namespace std;
+//Seperate into Even & Odd, and sort them.
+void SeperateEvenOdd(){
+    int n; cin >> n;
+    int Ec = Oc = -1;
+    int *Even = new int[n];
+    int *Odd = new int[n];
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x % 2 == 0)
+            Even[Ec++] = x;
+        else
+            Odd[Oc++] = x;
+    }
+    if(Oc > -1){
+        for(int i = Oc; i >= 0; i--)
+            cout << Odd[i] << " ";
+    }
+    if(Ec > -1){
+        for(int i = 0; i <= Ec; i++)
+            cout << Even[i] << " ";
+    }
+    delete []Odd;
+    delete []Even;
+}
