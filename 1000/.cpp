@@ -323,3 +323,44 @@ void containOddOrEven(){
     }
     (hasOdd || hasEven || diffOdd || diffEven) ? cout << "Yes" : cout << "No";
 }
+using namespace std;
+void Manipulate(){
+    int n, k; cin >> n >> k;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i];
+    int res = 0;
+    while(true){
+        sort(vec.begin(), vec.end());
+        if(vec[n - 1] > k)
+            break;
+        vec[1] += vec[0];
+        vec[0] = 0;
+        res++;
+    }
+    cout << "Number of operation: " << res << "\n";
+    print(vec); cout << "\n";
+    int trv = -1;
+    for(int i = 0; i < n; i++){
+        if(arr[i] % 2 == 0){
+            trv = i;
+            break;
+        }
+    }
+    cout << "First Even occuring idx is: " << trv << "\n";
+    int mini = *min_element(vec.begin(), vec.end());
+    int maxi = *max_element(vec.begin(), vec.end());
+    cout << (mini != 1)? cout << maxi : cout << mini + 1;
+    int cnt = 0;
+    while(accumulate(vec.begin(), vec.end(), 0) > n){
+        print(vec); cout << "\n";
+        cout << "Sum is: " << accumulate(vec.begin(), vec.end(), 0) << "\n";
+        for(int i = 0; i < n; i++){
+            if(vec[i] > mini)
+                vec[i] -= mini;
+        }
+        print(vec); cout << "\n";
+        cnt++; break;
+    }
+    cout << "Count of iteration is: " << cnt + 1;
+}
