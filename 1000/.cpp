@@ -495,3 +495,30 @@ void BinToDecimal(){
     }
     cout << sum;
 }
+using namespace std;
+//transform a given string into a palindrome with the minimum number of
+//character changes & then output the number of changes
+void TransformStr(){
+    int n; cin >> n;
+    char *str = new char[n + 1];
+    cin >> str;
+    if(strlen(str) != n){
+        cout << "Size Mismatch";
+        delete []arr;
+        return 0;
+    }
+    int cnt = 0; //count transform
+    int l = 0, r = n - 1;
+    while(l < r){
+        if(arr[l] != arr[r]){
+            cnt++;
+            if(arr[l] < arr[r])
+                arr[r] = arr[l];
+            else
+                arr[l] = arr[r];
+        }
+        l++; r--;
+    }
+    cout << cnt << " " << str;
+    delete []str;
+}
