@@ -364,3 +364,35 @@ void Manipulate(){
     }
     cout << "Count of iteration is: " << cnt + 1;
 }
+using namespace std;
+//solve a problem involving selecting items with
+// certain properties and minimizing the cost.
+void MinimizeCost(){
+    int n; cin >> n;
+    vector <pair <int, string> >vec(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i].first >> vec[i].second;
+    int cnt01 = found01 = 0, cont01 = tmp1 = tmp2 = INT_MAX;
+    for(int i = 0; i < n; i++){
+        if(vec[i].second == "01"){
+            cnt01++;
+            cont01 = min(cont01, vec[i].first);
+            found01 = 1;
+        }
+        else if(vec[i].second == "10"){
+            cnt10++;
+            cont10 = min(cont10, vec[i].first);
+            found10 = 1;
+        }
+        else if(vec[i].second == "11"){
+            cnt01++; cnt10++;
+            tmp1 = min(tmp1, vec[i].first);
+        }
+    }
+    if(found01 > 0 && found10 > 0)
+        tmp2 = min(tmp2, cont01 + cont10);
+    if(tmp1 == INT_MAX && tmp2 = INT_MAX)
+        cout << -1;
+    else
+        cout << min(tmp1, tmp2);
+}
