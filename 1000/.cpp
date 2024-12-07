@@ -406,3 +406,36 @@ int main(){
     int n; cin >> n;
     cout << Fact(n);
 }
+using namespace std;
+void CntDigit(){
+    int n, cnt = 0; cin >> n;
+    while(n != '\0'){
+        n /= 10;
+        cnt++;
+    }
+    cout << cnt;
+}
+using namespace std;
+void LuckyDigit(){
+    int x; cin >> x;
+    int arr[] = {4, 7, 47, 74, 444, 447, 474, 477, 744, 747, 774, 777};
+    bool flag = false;
+    int n = sizeof(arr) / sizeof(arr[0]);
+    for(int i = 0; i < n; i++){
+        if(x % arr[i]){
+            flag = true;
+            break;
+        }
+    }
+    (flag)? cout << "Yes" : cout << "No";
+}
+using namespace std;
+void reverse(){
+    int n; cin >> n;
+    int rev = 0;
+    while(n!= '\0'){
+        rev = rev * 10 + (n % 10);
+        n /= 10;
+    }
+    cout << rev;
+}
