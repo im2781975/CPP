@@ -462,3 +462,26 @@ int main(){
     int n; cin >> n;
     cout << Hex(n);
 }
+using namespace std;
+void SubArrSum(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int q; cin >> q;
+    while(q--){
+        int x, y, sum = 0; cin >> x >> y;
+        //converst 1th based to 0th based idx
+        x--; y--;
+        if(x > y) swap(x, y);
+        int maxi = x, mini = x;
+        for(int i = x; i <= y; i++){
+            sum += arr[i];
+            if(arr[i] > maxi)
+                maxi = i;
+            if(arr[i] < mini)
+                mini = i;
+        }
+    }
+    cout << arr[maxi] << " " << arr[mini] << " " << sum;
+}
