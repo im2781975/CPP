@@ -634,3 +634,19 @@ void calculateWidth(){
     }
     cout << width;
 }
+using namespace std;
+//calculate how many sub-blocks can fit into a larger grid of size x * y, 
+// and to account for any additional blocks needed if there are leftover spaces along the edges of the grid.
+void calculateSubBlock(){
+    int x, y, z; cin >> x >> y >> z;
+    int a = x / z;
+    int b = y / z;
+    int cnt = a * b;
+    if(x % z != 0)
+        cnt += b;
+    if(y % z != 0)
+        cnt += a;
+    if(x % z != 0 && y % z != 0)
+        cnt += 1;
+    cout << cnt;
+}
