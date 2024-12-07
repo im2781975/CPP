@@ -603,3 +603,34 @@ void Manhatten(){
     }
     cout << abs(row - 2) + abs(col - 2);
 }
+using namespace std;
+//determine how many iterations takes for the length to become greater than breadth
+void MakeEqual(){
+    int len, breadth; cin >> len >> breadth;
+    while(true){
+        if(len > breadth)
+            break;
+        else{
+            len *= 3;
+            breadth *= 2;
+            cnt++;
+        }
+    }
+    cout << cnt;
+}
+//calculates the total width required to pass through a checkpoint based on their heights.
+//Each person either takes 1 unit or 2 units of width depending on 
+//whether they are taller than a specified height limit.
+using namespace std;
+void calculateWidth(){
+    int num, limit; cin >> num >> limit;
+    int width = 0
+    for(int i = 0; i < num; i++){
+        int height; cin >> height;
+        if(height > limit)
+            width += 2;
+        else
+            width += 1;
+    }
+    cout << width;
+}
