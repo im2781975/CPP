@@ -578,3 +578,28 @@ void SeperateEvenOdd(){
     delete []Odd;
     delete []Even;
 }
+using namespace std;
+void Manhatten(){
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            int x; cin >> x;
+            if(x == 1){
+                cout << abs(i - 2) + abs(j - 2);
+                return 0;
+            }
+        }
+    }
+}
+void Manhatten(){
+    int arr[5][5];
+    int row, col;
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            cin >> arr[i][j];
+            if(arr[i][j] == 1){
+                row = i; col = j;
+            }
+        }
+    }
+    cout << abs(row - 2) + abs(col - 2);
+}
