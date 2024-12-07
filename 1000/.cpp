@@ -522,3 +522,22 @@ void TransformStr(){
     cout << cnt << " " << str;
     delete []str;
 }
+using namespace std;
+//Subtract n among a & b.in which player n will be zero,He will 
+//be win.If neg another player will be win
+void FindWinner(){
+    int a, b, n; cin >> a >> b >> n;
+    while(true){
+        if(n >= __gcd(a, b))
+            n -= __gcd(a, b);
+        else{
+            cout << "Second Win";
+            break;
+        }
+        if(n >= __gcd(b, a))
+            n -= __gcd(b, a);
+        else
+            cout << "First win";
+            break;
+    }
+}
