@@ -485,3 +485,13 @@ void SubArrSum(){
     }
     cout << arr[maxi] << " " << arr[mini] << " " << sum;
 }
+using namespace std;
+void BinToDecimal(){
+    int n; cin >> n;
+    int sum = 0, cnt = 0;
+    while(n > 0){
+        sum += (n % 10) * pow(2, cnt++);
+        n /= 10;
+    }
+    cout << sum;
+}
