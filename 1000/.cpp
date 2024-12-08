@@ -847,3 +847,23 @@ void calculatePercent(){
     //Avg = round(c);
     cout << Top << '%' << "\n" << Avg << '%';
 }
+using namespace std;
+//determine the minimum number of boxes required to store a certain number of balls of  three different colors.
+//Each type of ball has a specific quantity requirement based on a given integer n, and the boxes have a capacity of k balls.
+void main(){
+    int n, k; cin >> n >> k;
+    int blue, green, red;
+    blue = (8 * n) / k;
+    green = (5 * n) / k;
+    red = (2 * n) / k;
+    if(8 * n % k != 0)
+        blue += 1;
+    if(5 * n % k != 0)
+        green += 1;
+    if(2 * n % k != 0)
+        red += 1;
+    /*blue = (8 * n + k - 1) / k;
+    green = (5 * n + k - 1) / k;
+    red = (2 * n + k - 1) / k;*/
+    cout << blue + green + red;
+}
