@@ -779,3 +779,49 @@ void countPositive(){
     }
     cout << cnt;
 }
+using namespace std;
+//determine if the square of l is less than or equal to half the square of r.
+void IsEqual(){
+    int l, r; cin >> l >> r;
+    int x = l * l;
+    int y = 0.5 * r * r;
+    (x <= y) ? cout << "Yes": cout << "No";
+}
+using namespace std;
+void collatzLength(int num){
+    int len = 1;
+    while(num > 1){
+        if(num % 2 != 0)
+            num = num * 3 + 1;
+        else
+            num /= 2;
+        len++;
+    }
+    return len;
+}
+int main(){
+    int start, end, maxL = -1;
+    for(int i = start; i < end; i++){
+        int len = collatzLength(i);
+        if(len > maxL)
+            maxL = len;
+    }
+    cout << maxL;
+}
+void collatzLength(){
+    int x, y; cin >> x >> y;
+    int maxi = 1;
+    for(int i = x; i <= y; i++){
+        int tmp = i, cnt = 1;
+        while(tmp > 1){
+            if(tmp % 2 != 0)
+                tmp = tmp * 3 + 1;
+            else
+                tmp /= 2;
+            cnt++;
+        }
+        if(cnt > maxi)
+            maxi = cnt;
+    }
+    cout << maxi;
+}
