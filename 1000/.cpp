@@ -888,3 +888,21 @@ void maxSubarrSum(int *arr, int n){
     }
     cout << maxi;
 }
+using namespace std;
+void primeFactor(){
+    int n; cin >> n;
+    int cnt = 0;
+    while(n % 2 == 0){
+        cnt++;
+        n /= 2;
+    }
+    for(int i = 3; i <= sqrt(n); i+= 2){
+        while(n % i == 0){
+            cnt++;
+            n /= i;
+        }
+    }
+    if(n > 2)
+        cnt++;
+    cout << cnt;
+}
