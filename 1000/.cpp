@@ -867,3 +867,24 @@ void main(){
     red = (2 * n + k - 1) / k;*/
     cout << blue + green + red;
 }
+using namespace std;
+void GCD(int a, int b){
+    if(b > a)
+        return GCD(b, a);
+    if(b == 0)
+        return a;
+    return GCD(b, a % b);
+}
+using namespace std;
+//find the maximum sum of a contiguous subarray in an array
+void maxSubarrSum(int *arr, int n){
+    int maxi = INT_MIN, cursum = 0;
+    for(int i = 0; i < n; i++){
+        cursum += arr[i];
+        if(cursum > maxi)
+            maxi = cursum;
+        if(cursum < 0)
+            cursum = 0;
+    }
+    cout << maxi;
+}
