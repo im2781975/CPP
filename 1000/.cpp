@@ -650,3 +650,59 @@ void calculateSubBlock(){
         cnt += 1;
     cout << cnt;
 }
+using namespace std;
+void BankersAlgo(){
+    int num; cin >> num;
+    vector <vector <int> >allocation(num, vector <int> (3));
+    vector <vector <int> > maximum(num, vector <int> (3));
+    vector <int> available(3);
+    for(int i = 0; i < num; i++){
+        for(int j = 0; j < 3; j++)
+            cin >> allocation[i][j];
+    }
+    for(int i = 0; i < num; i++){
+        for(int j = 0; j < 3; j++)
+            cin >> maximum[i][j];
+    }
+    for(int i = 0; i < 3; i++)
+        cin >> available[i];
+    vector <vector <int> >need(num, vector <int> (3));
+    for(int i = 0; i < num; i++){
+        for(int j = 0; j < 3; j++)
+            need[i][j] = maximum[i][j] - allocation[i][j];
+    }
+    vector <bool> finished(num, false);
+    vector <int> safeseq;
+    for(int k = 0; k < num; k++){
+        bool found = false;
+        for(int i = 0; i < num; i++){
+            if(!finished[i]){
+                bool canAllocate = true;
+                for(int j = 0; j < 3; j++){
+                    if(need[i][j] > available[j]){
+                        canAllocate = false;
+                        break;
+                    }
+                }
+                if(canAllocate){
+                    for(int j = 0; j < 3; j++)
+                        available[j] += allocation[i][j];
+                    safeseq.push_back(i);
+                    finished[i] = true;
+                    found = true;
+                }
+            }
+        }
+        if (!found) {
+            cout << "The system is not in a safe state\n";
+            return 0;
+        }
+    }
+    cout << "The system is in a safe state.\nSafe sequence is: ";
+    for (int i = 0; i < safeseq.size(); i++) {
+        cout << "P" << safeseq[i] + 1;
+        if (i != safeseq.size() - 1) 
+            cout << " -> ";
+    }
+    cout << endl;
+}
