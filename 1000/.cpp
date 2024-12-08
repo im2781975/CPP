@@ -706,3 +706,14 @@ void BankersAlgo(){
     }
     cout << endl;
 }
+using namespace std;
+// determine if the total sums of three series of integers are all zero
+void checkSum(){
+    int n; cin >> n;
+    int suma = sumb = sumc = 0;
+    for(int i = 0; i < n; i++){
+        int a, b, c; cin >> a >> b >> c;
+        suma += a; sumb += b; sumc += c;
+    }
+    (suma == sumb == sumc == 0) ? cout << "Yes" : cout << "No";
+}
