@@ -717,3 +717,19 @@ void checkSum(){
     }
     (suma == sumb == sumc == 0) ? cout << "Yes" : cout << "No";
 }
+using namespace std;
+//counting occurrences of the integer 1 among three given numbers for each test case. 
+void CountOne(){
+    int n; cin >> n;
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        int cntOne = 0;
+        for(int j = 0; j < 3; j++){
+            int x; cin >> x;
+            if(x == 1) cntOne++;
+        }
+        if(cntOne > 1)
+            cnt++;
+    }
+    cout << cnt;
+}
