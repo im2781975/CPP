@@ -733,3 +733,49 @@ void CountOne(){
     }
     cout << cnt;
 }
+using namespace std;
+//Increment if positive else decreament.return count
+void countPositive(){
+    int n; cin >> n;
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        char ch; cin >> ch;
+        if(ch == '+')
+            cnt++;
+        if(ch == '-')
+            cnt--;
+    }
+    cout << cnt;
+}
+void countPositive(){
+    int n; cin >> n;
+    int cnt = 0; char arr[3];
+    for(int i = 0; i < n; i++){
+        cin >> arr;
+        int idx = 0;
+        while(idx < 2){
+            if(arr[idx] == '+'){
+                cnt++;
+                break;
+            }
+            if(arr[idx] == '-'){
+                cnt--;
+                break;
+            }
+            idx++;
+        }
+    }
+    cout << cnt;
+}
+void countPositive(){
+    int n; cin >> n;
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        string str; cin >> str;
+        if(str.find('+') != string::npos)
+            cnt++;
+        if(str.find('-') != string::npos)
+            cnt--;
+    }
+    cout << cnt;
+}
