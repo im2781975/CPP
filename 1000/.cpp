@@ -906,3 +906,13 @@ void primeFactor(){
         cnt++;
     cout << cnt;
 }
+using namespace std;
+//partition an number into two nearly equal parts.
+void MakePartition(){
+    int n; cin >> n;
+    //Bitwise And operation if n becomes odd returns true(0011 & 0001 = 0001)
+    if(n & 1)
+        cout << n / 2 << " " << n / 2 + 1;
+    else
+        cout << n / 2;
+}
