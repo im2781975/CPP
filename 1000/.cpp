@@ -916,3 +916,13 @@ void MakePartition(){
     else
         cout << n / 2;
 }
+using namespace std;
+void sqrt(){
+    int x; cin >> x;
+    int res = 0;
+    for(int i = 1 << 15; i > 0; i >>= 1){
+        if((res + i) * (res + i) <= x)
+            res += i;
+    }
+    cout << res << " ";
+}
