@@ -926,3 +926,19 @@ void sqrt(){
     }
     cout << res << " ";
 }
+using namespace std;
+//compute the result of raising a base a to an exponent b under a modulus mod
+int powerMod(int a, int b, int mod){
+    if(b == 0)
+        return 1;
+    k = powerMod(a, b / 2, mod);
+    k *= k;
+    k %= mod;
+    if(b & 1)
+        k = (k * a) % mod;
+    return k;
+}
+int main(){
+    int a, b, mod; cin >> a >> b >> mod;
+    cout << powerMod(a, b, mod);
+}
