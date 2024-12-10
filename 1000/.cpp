@@ -1055,3 +1055,17 @@ void kthElement(){
     int n, k; cin >> n >> k;
     cout << k + ((k - 1) / (n - 1));
 }
+using namespace std;
+//determine whether the Equity(even or odd nature) of the input
+//matches the parity of their positions (index)
+void checkEquity(){
+    int num; cin >> num;
+    int cur, idx = 1, cnt = 0;
+    for(int i = 0; i < num; i++){
+        cin >> cur;
+        if((cur % 2 == 0 && idx % 2 == 0) || (cur % 2 != 0 && idx % 2 != 0))
+            cnt++;
+        idx++;
+    }
+    (cnt == num) ? cout << "Yes" : cout << "No";
+}
