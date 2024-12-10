@@ -986,3 +986,72 @@ void BubbleSort(){
     for(int i = 0; i < n; i++)
         cout << arr[i] << " ";
 }
+using namespace std;
+//count how many times a sequence is greater or less than the previous integer in the sequence.
+void cntGreaterLess(){
+    int n; cin >> n;
+    int greater = 0, less = 0;
+    int prv; cin >> prv;
+    for(int i = 0; i < n; i++){
+        int cur; cin >> cur;
+        if(cur > prv)
+            greater++;
+        else if(cur < prv)
+            less++;
+        prv = cur;
+    }
+    cout << greater << " " << less;
+}
+using namespace std;
+//count the consecutive integers that are divisors of n
+//Find the max length of such consecutive divisors and prints this max length.
+void cntMaxLen(){
+    int n; cin >> n;
+    int cnt = mxsz = 0;
+    int sqrt_ = sqrt(n);
+    for(int i = 1; i <= sqrt_; i++){
+        if(n % i == 0)
+            cnt++;
+        else{
+            mxsz = max(mxsz, cnt);
+            cnt = 0;
+        }
+    }
+    mxsz = max(mxsz, cnt);
+    cout << mxsz;
+}
+using namespace std;
+//Is the string contain NonZero
+bool check(string str){
+    for(int i = 0; i < str.length(); i++){
+        if(str[i]!= '0')
+            return true;
+    }
+    return false;
+}
+using namespace std;
+//determines whether a vector of integers has any local maximum
+//A local maximum is an element that is greater than its immediate neighbors
+bool LocalMax(vector <int> vec){
+    for(int i = 1; i < vec.size(); i++){
+        if(i != vec.size() - 1){
+            if(vec[i] > vec[i - 1] && vec[i] < vec[i + 1])
+                return true;
+        }
+        return false;
+    }
+}
+using namespace std;
+bool IsSorted(vector <int> vec){
+    for(int i = 1; i < vec.size(); i++){
+        if(vec[i - 1] > vec[i])
+            return false;
+    }
+    return true;
+}
+using namespace std;
+//Find Kth element which is not divisible by n
+void kthElement(){
+    int n, k; cin >> n >> k;
+    cout << k + ((k - 1) / (n - 1));
+}
