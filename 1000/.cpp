@@ -1152,3 +1152,29 @@ void cntPos(){
     }
     (cnt == 0) ? cout << -1 : cout << pos << " " << cnt;
 }
+using namespace std;
+//Count hididng places & positions in a grid which is represent by '#'
+void hidingPlaces(){
+    int row; cin >> row;
+    if(row <= 0){
+        cout << "Invalid input";
+        return 0;
+    }
+    vector <string> grid(row);
+    for(int i = 0; i < row; i++){
+        cin >> grid[i];
+        if(grid[i].length() != row){
+            cout << "row didn't match";
+            return 0;
+        }
+    }
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < row; j++){
+            if(grid[i][j] == '#'){
+                cout << i + 1 << " " << j + 1 << "\n";
+                cnt++;
+            }
+        }
+    }
+    (cnt == 0)? cout << "No Hiding Places" : cout << "Hiding places are: " << cnt;
+}
