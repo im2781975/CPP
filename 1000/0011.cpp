@@ -155,31 +155,3 @@ main(){
     cin >> x >> y;
     cout << request(x, y);
 }
-
-//checks if a given number is prime using a probabilistic method similar to the Fermat primality test.
-bool powermod(int a, int b, int n){
-    if(b == 0)
-        return 1;
-    int k = powermod(a, b/2, n);
-    k = (k * k)% n;
-    if(b & 1)
-        k = (k * a) % n;
-    return k;
-}
-bool IsPrime(int n, int iter = 5){
-    if(n < 4)
-        return n == 3 || n == 2;
-    if(n % 3 == 0 || n % 2 == 0)
-        return false;
-    srand(time(nullptr));
-    for(int i = 0; i < iter; i++){
-        int a = 2 + rand() % (n - 2);
-        if(powermod(a, n - 1, n) != 1)
-            return false;
-    }
-    return true;
-}
-main(){
-    int num; cin >> num;
-    (IsPrime(num))?cout << num << " Is prime":cout << "Not prime";
-}
