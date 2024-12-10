@@ -1069,3 +1069,86 @@ void checkEquity(){
     }
     (cnt == num) ? cout << "Yes" : cout << "No";
 }
+using namespace std;
+void Operation(){
+    int n; cin >> n;
+    vector <char> str(n);
+    vector <double> dbl(n + 1);
+    for(int i = 0; i < n; i++)
+        cin >> str[i];
+    for(int i = 0; i <= n; i++)
+        cin >> dbl[i];
+    for(int i = 0; i < n; i++){
+        switch(str[i]){
+            case '+': dbl[i + 1] = dbl[i] + dbl[i + 1]; break;
+            case '-': dbl[i + 1] = dbl[i] - dbl[i + 1]; break;
+            case '*': dbl[i + 1] = dbl[i] * dbl[i + 1]; break;
+            case '/': 
+                if(dbl[i + 1] != 0)
+                    dbl[i + 1] = dbl[i] / dbl[i + 1];
+                else{
+                    cout << "Division By Zero";
+                    return 1;
+                }
+                break;
+            default:
+                cout << "Invalid Operator";
+                return 1;
+        }
+    }
+    cout << dbl[n];
+}
+//print the unique integers in sorted order
+void uniqueInt(){
+    const int maxi = 1001;
+    int n; cin >> n;
+    vector <int> vec(maxi, -1);
+    for(int i = 0; i < maxi; i++){
+        int x; cin >> x;
+        vec[x] = x;
+    }
+    for(int i = 0; i < maxi; i++){
+        if(vec[i] != -1)
+            cout << vec[i] << " ";
+    }
+}
+using namespace std;
+// check if there is any row or column in a grid that is  filled with '*'.
+void fillChar(){
+    char arr[10][10];
+    int rowCnt[10] = {0}, colCnt[10] = {0};
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++)
+            cin >> arr[i][j];
+    }
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            if(arr[i][j] == '*')
+                rowCnt++; colCnt++;
+        }
+    }
+    for(int i = 0; i < 10; i++){
+        if(rowCnt[i] == 10 || colCnt[i] == 10)
+            cout << "Yes"
+        else
+            cout << "No";
+    }
+}
+using namespace std;
+// count the occurance of trg & print the first idx of trg
+void cntPos(){
+    int n, trg, pos = -1;
+    int idx = cnt = 0;
+    while(cin >> n >> trg && n > 0 && trg > 0){
+        for(int i = 0; i < n; i++){
+            int x; cin >> x;
+            if(x == trg){
+                if(cnt == 0)
+                    pos = idx;
+                cnt++;
+            }
+            idx++;
+        }
+    }
+    (cnt == 0) ? cout << -1 : cout << pos << " " << cnt;
+}
