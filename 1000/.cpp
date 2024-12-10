@@ -942,3 +942,18 @@ int main(){
     int a, b, mod; cin >> a >> b >> mod;
     cout << powerMod(a, b, mod);
 }
+using namespace std;
+//computes the binomial coefficient C(n,r) using a recursive
+int fact(int n, int r, vector <vector <int> >dp){
+    if(r > n) return 0;
+    if(r == 0 || r == 1) return 1;
+    if(dp[n][r] != -1) return dp[n][r];
+    // Use the recursive relation: nCr = (n-1)Cr + (n-1)C(r-1)
+    dp[n][r] = fact(n - 1, r, dp) + fact(n - 1, r - 1, dp);
+    return dp[n][r];
+}
+int main(){
+    int n, r; cin >> n >> r;
+    vector <vector <int> >dp(n, vector <int> (r + 1, 1))
+    cout << fact(n, r, dp);
+}
