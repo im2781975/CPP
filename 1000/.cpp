@@ -927,22 +927,6 @@ void sqrt(){
     cout << res << " ";
 }
 using namespace std;
-//compute the result of raising a base a to an exponent b under a modulus mod
-int powerMod(int a, int b, int mod){
-    if(b == 0)
-        return 1;
-    k = powerMod(a, b / 2, mod);
-    k *= k;
-    k %= mod;
-    if(b & 1)
-        k = (k * a) % mod;
-    return k;
-}
-int main(){
-    int a, b, mod; cin >> a >> b >> mod;
-    cout << powerMod(a, b, mod);
-}
-using namespace std;
 //computes the binomial coefficient C(n,r) using a recursive
 int fact(int n, int r, vector <vector <int> >dp){
     if(r > n) return 0;
@@ -1177,4 +1161,34 @@ void hidingPlaces(){
         }
     }
     (cnt == 0)? cout << "No Hiding Places" : cout << "Hiding places are: " << cnt;
+}
+using namespace std;
+//compute the result of raising a base a to an exponent b under a modulus mod
+bool powerMod(int a, int b, int mod){
+    if(b == 0)
+        return 1;
+    int k = powerMod(a, b / 2, mod);
+    k = (k * k) % mod;
+    if(b & 1)
+        k = (k * a) % mod;
+    return k;
+}
+bool Isprime(int n, int iter = 5){
+    if(n < 4)
+        return n == 3 || n == 2;
+    if(n % 2 == 0 || n % 3 == 0)
+        return false;
+    srand(time(nullptr));
+    for(int i = 0; i < iter; i++){
+        int a = 2 + rand() % (n - 2);
+        if(powerMod(a, n - 1, n) != 1)
+            return false;
+    }
+    return true;
+}
+int main(){
+    int num; cin >> num;
+    (Isprime(num)) ? cout << "Yes": cout << "No";
+    int a, b, mod; cin >> a >> b >> mod;
+    cout << powerMod(a, b, mod);
 }
