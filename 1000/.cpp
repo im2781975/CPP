@@ -1221,3 +1221,156 @@ int main(){
     int a, b, mod; cin >> a >> b >> mod;
     cout << powerMod(a, b, mod);
 }
+using namespace std;
+void Power(){
+    int a, b; cin >> a >> b;
+    int res = 1;
+    while(b){
+        if(b & 1)
+            res *= a;
+        a *= a;
+        b >>= 1;
+    }
+    cout << res;
+}
+void FindSqrt(){
+    int n; cin >> n;
+    int l = 1, r = n;
+    while(l > r){
+        r = l + (r - l) / 2;
+        l = n / r;
+    }
+    cout << r;
+}
+void countCeil(){
+    int a, b; cin >> a >> b;
+    (a % b == 0) ? cout << a / b : cout << a / b + 1;
+}
+using namespace std;
+//Count the number of times the digit '2' appears in the loop
+void cntTwo(){
+    int res = 0;
+    for(int i = 1; i <= 2020; i++){
+        int tmp = i;
+        while(tmp){
+            cout << tmp << " ";
+            if(tmp % 10 == 2)
+                res++;
+            tmp /= 10;
+        }
+    }
+    cout << res;
+}
+//counts the number of pairs  within the range that are coprime (they share no common divisors other than 1).
+using namespace std;
+int gcd(int a, int b){
+    if(a % b == 0)
+        return b;
+    return gcd(b, a % b);
+}
+int main(){
+    int cnt = 0;
+    for(int i = 1; i <= 2020; i++){
+        for(int j = 1; j <= 2020; j++){
+            if(gcd(i, j) == 1)
+                cnt++;
+        }
+    }
+    cout << cnt;
+}
+using namespace std;
+//check if all numbers in the range [x,y], transformed by f(i)=i^2 + i + 41 result in prime numbers.if match outputs "ok"; else  "Break out".
+bool Isprime(int x){
+    if(x <= 1)
+        return false;
+    for(int i = 2; i * i <= x; i++){
+        if(x % i == 0)
+            return false;
+    }
+    return true;
+}
+int main(){
+    int x, y;
+    while(cin >> x >> y && x != 0 && y != 0){
+        bool flag = true;
+        for(int i = x; i <= y; i++){
+            if(!Isprime(i * i + i + 41)){
+                flag = false;
+                break;
+            }
+        }
+        (flag) ? cout << "Ok" : cout << "Breakout";
+    }
+}
+using namespace std;
+//check if all numbers in the range [x,y], transformed by f(i)=i^2 + i + 41 result in prime numbers.if match outputs "ok"; else  "Break out".
+bool Isprime(int x){
+    if(x <= 1)
+        return false;
+    for(int i = 2; i * i <= x; i++){
+        if(x % i == 0)
+            return false;
+    }
+    return true;
+}
+int main(){
+    int x, y;
+    while(cin >> x >> y && x != 0 && y != 0){
+        bool flag = true;
+        for(int i = x; i <= y; i++){
+            if(!Isprime(i * i + i + 41)){
+                flag = false;
+                break;
+            }
+        }
+        (flag) ? cout << "Ok" : cout << "Breakout";
+    }
+}
+//Divide n in even pair
+using namespace std;
+void DivideEvenPair(){
+    int n; cin >> n;
+    for(int i = 2; i < n; i+= 2){
+        if((n - i) % 2 == 0){
+            cout << "Yes";
+            return 0;
+        }
+    }
+    cout << "No";
+}
+using namespace std;
+//determine whether there exists an integer i in range[0, 65] such that the expression (n * i + 18) % 65 == 0 will true
+void determineCond(){
+    int n; cin >> n;
+    bool flag = false;
+    for(int i = 0; i < 66; i++){
+        if((n * i + 18) % 65 == 0){
+            flag = true;
+            cout << i << " ";
+            break;
+        }
+    }
+    (flag) ? cout << "Yes" : cout << "No";
+}
+using namespace std;
+//calculates the area of the smallest square that can completely cover two given rectangles on a 2D plane. 
+void CoveredRect(){
+    int x1, x2, x3, x4; cin >> x1 >> x2 >> x3 >> x4;
+    int y1, y2, y3, y4; cin >> y1 >> y2 >> y3 >> y4;
+    int a = max(x2, x4) - min(x1, x3);
+    int b = max(y2, y4) - min(y1, y3);
+    int c = max(a, b);
+    cout << c * c;
+}
+using namespace std;
+//wether sum of the three num less than two
+void cond(){
+    int n; cin >> n;
+    int res = 0;
+    for(int i = 0; i < n; i++){
+        int a, b, c; cin >> a >> b >> c;
+        if((a + b + c) <= 2)
+            res++;
+    }
+    cout << res;
+}
