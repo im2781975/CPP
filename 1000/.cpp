@@ -1374,3 +1374,58 @@ void cond(){
     }
     cout << res;
 }
+#include <bits/stdc++.h>
+//determine if a & b form an amicable pair. Amicable numbers are two different numbers so related that 
+// the sum of the proper divisors (excluding the number itself) of each is equal to the other number
+
+using namespace std;
+int IsAmicable(int x){
+    int res = 1;
+    for(int i = 2; i * i <= x; i++){
+        if(x % i == 0){
+            res += i;
+            if(i != x / i)
+                res += x /i;
+        }
+    }
+    return res;
+}
+int main(){
+    int a, b; cin >> a >> b;
+    (IsAmicable(a) == b && IsAmicable(b) == a) ? cout << "Yes" : cout << "No";
+}
+using namespace std;
+void timeAdd(){
+    int Sec, Min, Hrs; cin >> Sec >> Min >> Hrs;
+    int addHrs, addMin, addSec; cin >> addHrs >> addMin >> addSec;
+    Sec += addSec;
+    if(Sec >= 60){
+        Min += Sec /60;
+        Sec %= 60;
+    }
+    Min += addMin;
+    if(Min >= 60){
+        Hrs += Min / 60;
+        Min %= 60
+    }
+    Hrs += addHrs;
+    cout << "\nHours: " << Hrs << "\nMinutes: " << Min << "\nSecond: " << Sec;
+}
+using namespace std;
+void Fibonacci(){
+    int n; cin >> n;
+    int a = 0, b = 1, c;
+    for(int i = 0; i < n; i++){
+        c = a + b;
+        a = b; b = c;
+    } 
+    cout << c;
+}
+using namespace std;
+//perform operations on the last two digits of two numbers & print the sum as the result
+void operation(){
+    int a, b; cin >> a >> b;
+    a %= 100; b %= 100;
+    a += b;
+    cout << a % 100;
+}
