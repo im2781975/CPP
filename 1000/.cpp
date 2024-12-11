@@ -970,6 +970,21 @@ void BubbleSort(){
     for(int i = 0; i < n; i++)
         cout << arr[i] << " ";
 }
+void Bubblesort(){
+    int n; cin >> n;
+    int arr[n + 5];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            if(abs(arr[i]) > abs(arr[j]))
+                swap(arr[i], arr[j]);
+        }
+    }
+    for(int i = 0; i < n - 1; i++)
+        cout << arr[i] << " ";
+    cout << arr[n - 1] << " ";
+}
 using namespace std;
 //count how many times a sequence is greater or less than the previous integer in the sequence.
 void cntGreaterLess(){
