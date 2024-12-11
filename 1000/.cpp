@@ -1447,3 +1447,37 @@ void fractionFormat(){
         }
     }
 }
+using namespace std;
+void BitManipulation(){
+    int x = -2147483647;
+    long z = 4294967296U;
+    unsigned int y = static_cast <unsigned int> (x);
+    cout << "x: " << x << "\n" << "y (unsigned version of x): " << y << "\n";
+    cout << "z: " << z << "\n" << "z - (-x): " << z - (-x) << "\n";
+    cout << "Enter integer for see binary rep: ";
+    cin >> x;
+    for(int i = 31; i >=0; i--){
+        if(x & (1 << i))
+            cout << "1";
+        else
+            cout << "0";
+    }
+    //set bits of a & b
+    int a = (1 << 1) | (1 << 3) | (1 << 4) | (1 << 8);
+    int b = (1 << 3) | (1 << 6) | (1 << 8) | (1 << 9);
+    int c = a | b;
+    cout << "\nposition of " << c << " is: " ;
+    for(int i = 0; i < 32; i++){
+        if(c & (1 << i))
+            cout << i << " ";
+    }
+}
+using namespace std;
+void CountSetBits(){
+    int num, cnt = 0; cin >> num;
+    while(num){
+        cnt += (num & 1);
+        num >>= 1;
+    }
+    cout << cnt;
+}
