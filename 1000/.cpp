@@ -1178,6 +1178,19 @@ void hidingPlaces(){
     (cnt == 0)? cout << "No Hiding Places" : cout << "Hiding places are: " << cnt;
 }
 using namespace std;
+void Exponentiation(){
+    int a, b, mod; cin >> a >> b >> mod;
+    int res = 1;
+    a %= mod;
+    while(b){
+        if(b & 1)
+            res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    cout << res;
+}
+using namespace std;
 //compute the result of raising a base a to an exponent b under a modulus mod
 bool powerMod(int a, int b, int mod){
     if(b == 0)
