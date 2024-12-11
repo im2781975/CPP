@@ -1429,3 +1429,21 @@ void operation(){
     a += b;
     cout << a % 100;
 }
+using namespace std;
+//process a list of arithmetic operations and output their results in fraction format
+void fractionFormat(){
+    int n; cin >> n;
+    for(int i = 0; i < n; i++){
+        int x, y; cin >> x >> y;
+        if(y == 0){
+            cout << "Undefined";
+            return 0;
+        }
+        else if(x % y == 0)
+            cout << x / y << " ";
+        else{
+            int divi = __gcd(x, y);
+            cout << x / divi << "/" << y / divi ;
+        }
+    }
+}
