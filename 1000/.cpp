@@ -1481,3 +1481,13 @@ void CountSetBits(){
     }
     cout << cnt;
 }
+using namespace std;
+void BinConv(){
+    int num; cin >> num;
+    for(int i = 31; i >= 0; i--){
+        if(num & (1 << i))
+            cout << "1";
+        else
+            cout << "0";
+    }
+}
