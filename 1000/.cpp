@@ -1178,6 +1178,7 @@ void hidingPlaces(){
     (cnt == 0)? cout << "No Hiding Places" : cout << "Hiding places are: " << cnt;
 }
 using namespace std;
+//implementation of the modular exponentiation algorithm, which efficiently computes (a^b) % c
 void Exponentiation(){
     int a, b, mod; cin >> a >> b >> mod;
     int res = 1;
