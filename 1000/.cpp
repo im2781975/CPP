@@ -182,3 +182,36 @@ int main(){
     int res = (numer * Inverse(denom)) % mod;
     cout << res;
 }
+using namespace std;
+//finds the minimum integer x such that the sum of the following series is at least a given target sum = x+ x/k + x/k^2 + x/k^3..... 
+bool check(int x, int trg, int k){
+    int a = k;
+    int sum = x;
+    while(x / a > 0){
+        sum += x / a;
+        a *= k;
+    }
+    if(sum >= trg)
+        return true;
+    return false;
+}
+int FindMin(int trg, int k){
+    int low = 1, high = trg;
+    while(low < high){
+        int mid = low + (high - low) / 2;
+        if(check(mid, trg, k))
+            high = mid;
+        else
+            low = mid + 1;
+    }
+    return low;
+}
+int main(){
+    int trg, k; cin >> trg >> k;
+    if(k == 1){
+        cout << "The minimum x such that the sum of the series is at least " << trg << " is: " << trg << "\n";
+        return 0;
+    }
+    int res = FindMin(trg, k);
+    cout << "The minimum x such that the sum of the series is at least " << trg << " is: " << res << "\n";
+}
