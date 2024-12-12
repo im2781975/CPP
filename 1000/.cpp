@@ -215,3 +215,73 @@ int main(){
     int res = FindMin(trg, k);
     cout << "The minimum x such that the sum of the series is at least " << trg << " is: " << res << "\n";
 }
+using namespace std;
+void lastDig(){
+    int n; cin >> n;
+    int tmp = n, mult = 1, sum = 0;
+    while(tmp > 0){
+        mult *= tmp % 10;
+        sum += tmp % 10;
+        tmp /= 10;
+    }
+    cout << "Multiplication of Digits is: " << mult;
+    int cnt = 0; tmp = n;
+    while(tmp > 0){
+        if(tmp % 10 == 0)
+            cnt++;
+        tmp /= 10;
+    }
+    cout << "\nCount of Zero is: " << cnt;
+    int rev = 0; tmp = n;
+    while(tmp > 0){
+        rev += tmp % 10;
+        rev *= 10;
+        tmp /= 10;
+    }
+    rev /= 10;
+    cout << "\nAfter Reverse the seq is: " << rev;
+}
+using namespace std;
+void statement(){
+    int n;
+    while(cin >> n){
+        int res = n;
+        if(n == 1) cout << 1;
+        else if(n == 2) cout << 4;
+        else{
+            int tmp = n;
+            while(tmp > 0){
+                if(tmp == 2){
+                    res *= 2; break;
+                }
+                else
+                    res = (res + 1) * 2 + 1;
+                tmp--;
+            }
+        }
+        cout << res;
+    }
+}
+//read integers n and m. compute the average of every m consecutive numbers in the sequence of the first n even numbers, and print these averages.
+using namespace std;
+void cntGrpAvg(){
+    int n, m;
+    vector <int> res;
+    while(cin >> n >> m){
+        int sum = 0;
+        for(int i = 1; i <= n; i++){
+            sum += i * 2;
+            if(i % m == 0){
+                res.push_back(sum / m);
+                sum = 0;
+            }
+        }
+        if(n % m != 0)
+            res.push_back(sum / (n % m));
+        if(!res.empty()){
+            cout << res[0] << " ";
+            for(int i = 0; i < res.size(); i++)
+                cout << res[i] << " ";
+        }
+    }
+}
