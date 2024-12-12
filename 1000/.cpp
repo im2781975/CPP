@@ -117,3 +117,37 @@ void countAvg(){
     double avg = double(sum) / double(n);
     cout << "Maxi: " << maxi << "\nMini: " << mini << "\nAvg: " << avg;
 }
+using namespace std;
+//compute the modular inverse of a number num modulo mod using the Extended Euclidean Algorithm. 
+int Extend(int num, int mod, int x, int y){
+    //num * x + mod * y = gcd(num, mod)
+    if(num == 0){
+        x = 0; y = 1;
+        return mod;
+    }
+    int a, b;
+    // mod * a + (num % mod) * b = gcd(num, num % mod)
+    int gcd = Extend(mod % num, num, a, b);
+    x = b - (mod / num) * a;
+    y = a;
+    return gcd;
+}
+int modInv(int num, int mod){
+    if x, y;
+    int gcd = Extend(int num, int mod, int x, int y);
+    if(gcd != 1)
+        return -1;
+    else{
+        x = (x % mod + mod) % mod;
+        return x;
+    }
+}
+int main(){
+    int num, mod; cin >> num >> mod;
+    int inverse = modInv(num, mod);
+    if (inverse == -1)
+        cout << "Modular Inverse doesn't exist" << endl;
+    else
+        cout << "Modular Inverse of " << num << " mod " << mod << " is " << inverse << endl;
+
+}
