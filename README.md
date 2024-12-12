@@ -1,1 +1,1 @@
-Attached Solved Problems From various sources For Practise Purpose.
+Attached Solved Problems From various sources For Practice Purpose.
