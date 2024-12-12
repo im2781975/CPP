@@ -1,4 +1,3 @@
-
 using namespace std;
 void euclidGCD(int a, int b){
     if(b == 0)
