@@ -151,3 +151,34 @@ int main(){
         cout << "Modular Inverse of " << num << " mod " << mod << " is " << inverse << endl;
 
 }
+using namespace std;
+//Calculate Binomial Coefficient(ncr)
+#define mod 998244353
+int Exp(int a, int b){
+    int res = 1;
+    while(b){
+        if(b & 1)
+            res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    return res;
+}
+int Inverse(int n){
+    return Exp(n, mod - 2);
+}
+int fact(int n){
+    int res = 1;
+    while(n){
+        res = (res * n) % mod;
+        n--;
+    }
+    return res;
+}
+int main(){
+    int n, r; cin >> n >> r;
+    int numer = fact(n);
+    int denom = (fact(r) * fact(n - r)) % mod;
+    int res = (numer * Inverse(denom)) % mod;
+    cout << res;
+}
