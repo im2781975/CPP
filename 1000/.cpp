@@ -597,3 +597,46 @@ void Lucky(){
     }
     (cnt == 4 || cnt == 7) ? cout << "Yes" : cout << "No";
 }
+using namespace std;
+//Geo series
+int modPower(int a, int b, int mod){
+    if(b == 0)
+        return 1;
+    int tmp = modPower(a, b / 2, mod);
+    tmp = (tmp * tmp) % mod;
+    if(b % 2 == 0)
+        return tmp;
+    else
+        return (tmp * a) % mod;
+}
+int Geoseries(int a, int b, int mod){
+    //a^0 + a^1 + a^2 + a^3+.... 
+    if(b == 1) return 1;
+    if(b == 2) return (1 + a) % mod;
+    //calculate geo of the first half
+    int tmp = Geoseries(a, b / 2, mod) % mod;
+    int x = modPower(a, b/2, mod) % mod;
+    int y = modPower(a, b - 1, mod) % mod;
+    if(b % 2 == 0)
+        return (tmp *(1 + x)) % mod;
+    else
+        return ((tmp *(1 + x)) % mod + y % mod) % mod;
+}
+int main(){
+    int a, b, mod; cin >> a >> b >> mod;
+    cout << "\nMod power is: " << modPower(a, b, mod);
+    cout << "\nGeometricSeries are: " << Geoseries(a, b, mod);
+}
+using namespace std;
+void Bitwise(){
+    const int mod = 1e9;
+    int n; cin >> n;
+    if(n < 31)
+        cout << (1 << n) % mod << " ";
+    else
+        cout << "OutOf Bound";
+    int x = 1;
+    for(int i = 0; i < n; i++)
+        x = 2 * x % mod;
+    cout << x << " ";
+}
