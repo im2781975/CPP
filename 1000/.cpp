@@ -732,3 +732,19 @@ int main(){
     cout << "x: " << vec[0] << ", y: " << vec[1] << "\n";
     cout << "gcd(a, b): " << vec[2] << "\n";
 }
+using namespace std;
+//prints the number of ways to place two knights on i x i chessboard such that they do not attack each other.
+//A knight can attack total 8 position in L shape.(i - 1) or (i - 2).(x + 2, y + 1), (x + 2, y - 1), (x - 2, y + 1), (x - 2, y - 1)
+//(i−1)×(i−2) horizontally & (i - 2)*(i - 1) vertically.total ways 4*(i - 1)*(i - 2)
+void knightAttack(){
+    int n; cin >> n;
+    for(int i = 1; i <= n; i++){
+        int sqr = i * i;
+        int totalway = sqr * (sqr - 1) / 2;
+        int invalidWay = 0;
+        if(i > 2)
+            invalidway = 4 * (i - 1) * (i - 2);
+        int validway = totalway - invalidway;
+        cout << validway << " ";
+    }
+}
