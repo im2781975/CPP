@@ -773,3 +773,185 @@ void statement(){
     }
     cout << res;
 }
+using namespace std;
+//count how many elements in a given list are greater than or equal to a specific threshold value.
+int cntGreater(){
+    int n; cin >> n;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i];
+    sort(vec.begin(), vec.end(), greater <int> ());
+    int hold = max(1, vec[n - 1]);
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        if(vec[i] >= hold)
+            cnt++;
+    }
+    cout << cnt;
+
+using namespace std;
+vector <bool> DetectPrime(int n){
+    vector <bool> num(n, true);
+    num[0] = num[1] = false;
+    for(int i = 2; i < n; i++){
+        if(num[i]){
+            for(int j = i * i; j <= n; j += i)
+                num[j] = false;
+        }
+    }
+    return num;
+}
+vector <int> getDigit(int n){
+    vector <int> Digits;
+    while(n > 0){
+        Digits.push_back(n % 10);
+        n /= 10;
+    }
+    return Digits;
+}
+int main(){
+    int n; cin >> n;
+    vector <bool> prime = DetectPrime(n);
+    vector <int> get = getDigit(n);
+    for(int i = 2; i <= n; i++){
+        if(prime[i])
+            cout << i << " ";
+    }
+    for(int i = 0; i < get.size(); i++)
+        cout << get[i] << " ";
+}
+using namespace std;
+// determine whether a given target number n can be reached starting from 1
+bool canReached(int cur, int trg){
+    if(cur == trg) return true;
+    if(cur > trg) return false;
+    return canReached(cur *10, trg) || canReached(cur * 20, trg);
+}
+int main(){
+    int n; cin >> n;
+    (canReached(1, n)? cout << "Yes" : cout << "No");
+}
+using namespace std;
+// check whether a given integer num will eventually converge to 1 when repeatedly replaced by 
+//the sum of the squares of its digits. If not, it checks if the sequence enters a cycle
+int squaresum(int num){
+    int sum = 0;
+    while(num > 0){
+        int dig = num % 10;
+        sum += dig * dig;
+        num /= 10;
+    }
+    return sum;
+}
+void convergence(int num, int maxiter){
+    int cur = num, org = num, iter = 0;
+    do{
+        cur = squaresum(num);
+        if(cur == 1) return 1;
+        if(cur == org) return 0;
+        iter++;
+    }while(iter < maxiter);
+    return 0;
+}
+int main(){
+    int num; cin >> num;
+    res = convergence(num, 100);
+    (res == 1)? cout << num << "Covergence to 1" : cout << "Not convergence or entered into cycle";
+}
+using namespace std;
+void statement(){
+    int a, b, res; cin >> a >> b;
+    (a == 0) ? res = 1 : res = a + 2 * b + 1;
+    cout << res;
+}
+using namespace std;
+void statement(){
+    int n; cin >> n;
+    int x = n % 10 - 1;
+    int res += 10 * x;
+    int k = n % 10;
+    int cnt = 0, ptr = 1;
+    while(cnt <= n){
+        cnt = cnt % 10 + k;
+        res += ptr;
+        ptr++;
+    }
+    cout << res;
+}
+using namespace std;
+void statement(){
+    int x, y; cin >> x >> y;
+    if(x == 1 && y == 1)
+        cout << 0;
+    else if((x == 1 && y == 2) || (x == 2 && y == 1))
+        cout << 1;
+    else if(x == 1 || y == 1)
+        cout << 2;
+    else{
+        int maxi = max(x, y);
+        if((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1))
+            cout << (maxi - 1) * 2;
+        else 
+            cout << (maxi - 1) * 2 -1;
+    }
+}
+using namespace std;
+void Hanoi(int n, char a, char b, char c){
+    if(n > 0){
+        Hanoi(n - 1, a, c, b);
+        cout << "Move from " << a << " to " << b << " use " << c << "\n";
+        Hanoi(n - 1, c, b, a)
+    }
+}
+int main(){
+    int n; cin >> n;
+    int a, b, c; cin >> a >> b >> c;
+    Hanoi(n, a, b, c);
+}
+using namespace std;
+int GCD(int a, int b){
+    if(b > a) swap(b, a);
+    if(a == b) return a;
+    for(int i = b; i > 0; i--){
+        if(a % i == 0 && b % i == 0)
+            return i;
+    }
+}
+int GCD(int a, int b){
+    if(a == 0 || b == 0) return a + b;
+    if(a > b) return GCD(a % b, b);
+    else
+        return GCD(a, b % a);
+}
+int LCM(int a, int b){
+    for(int i = max(a, b); i <= a * b; i++){
+        if(i % a == 0 && i % b == 0)
+            return i;
+    }
+    return -1;
+}
+int main(){
+    int n, x; cin >> n >> x;
+    cout << GCD(n, x);
+}
+using namespace std;
+// Print three consecutive even numbers starting from l. if they fit within the range [l, r].
+void printBetween(){
+    int l, r; cin >> l >> r;
+    if(l % 2 != 0) l += 1;
+    if(r - l >= 4)
+        cout << l << " " << l + 2 << " " << l + 4;
+    else
+        cout << -1;
+}
+using namespace std;
+//calculate the maximum number of drinks (servings) that can be made for a group of friends based on the availability of ingredients:
+void partyArrange(){
+    int amico, bottle, mlBottle, lime, sliceLime, salt, mlServing, saltServing;
+    cin >> amico >> bottle >> mlBottle >> lime >> sliceLime >> salt >> mlServing >> saltServing;
+   int totalMl = (bottle * mlBottle) / mlServing / amico;
+    int totalLime = (lime * sliceLime) / amico;
+    int totalsalt = salt / saltServing / amico;
+    res = min({totalMl, totalLime, totalsalt});
+    cout << res;
+}
