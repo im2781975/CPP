@@ -691,3 +691,23 @@ int fact(int n){
         return 1;
     return n * fact(n - 1);
 }
+using namespace std;
+void recursive(int a, int b){
+    if(a <= b){
+        cout << a << " ";
+        if(a < b){
+            cout << " ";
+            recursive(a + 1, b);
+        }
+    }
+}
+using namespace std;
+int GCD(int a, int b){
+    while(a > 0 && b > 0){
+        if(a > b)
+            a %= b;
+        else
+            b %= a;
+    }
+    return a + b;
+}
