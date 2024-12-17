@@ -711,3 +711,24 @@ int GCD(int a, int b){
     }
     return a + b;
 }
+using namespace std;
+void ExtendGCD(int a, int b, vector<int> vec){
+    if(b == 0){
+        vec[0] = 1; //x
+        vec[1] = 0; //y
+        vec[2] = a; //gcd(a, b)
+        return;
+    }
+    ExtendGCD(b, a % b, vec);
+    int tmp = vec[1];
+    vec[1] = vec[0] - vec[1] *(a / b);
+    vec[0] = tmp;
+}
+int main(){
+    int a, b; cin >> a >> b;
+    vector <int> vec(3);
+    ExtendGCD(a, b, vec);
+    cout << "Coefficients x and y such that ax + by = gcd(a, b):" << "\n";
+    cout << "x: " << vec[0] << ", y: " << vec[1] << "\n";
+    cout << "gcd(a, b): " << vec[2] << "\n";
+}
