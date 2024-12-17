@@ -748,3 +748,28 @@ void knightAttack(){
         cout << validway << " ";
     }
 }
+using namespace std;
+// define four conditions define specific regions in a 2D coordinate plane
+//a ->upper ragion / b->left ragion
+//c->lower ragion / d -> right ragion
+void statement(){
+    int x, y; cin >> x >> y;
+    int res = 0;
+    if(x < y && x >= -y){
+        res += -2 *y + 4;
+        cout << "a";
+    }
+    else if(x > y && x <= -y + 1){
+        cout << "b";
+        res += -y * 4;
+    }
+    else if(x >= y && x > -y + 1){
+        cout << "c";
+        res += -3 + x*4;
+    }
+    else if(x <= y && x > -y){
+        cout << "d";
+        res += -1 - 4*x;
+    }
+    cout << res;
+}
