@@ -640,3 +640,54 @@ void Bitwise(){
         x = 2 * x % mod;
     cout << x << " ";
 }
+using namespace std;
+bool Isprime(int n){
+    if(n <= 1)
+        return false;
+    for(int i = 2; i <= sqrt(n); i++){
+        if(n % i == 0)
+            return false;
+    }
+    return true;
+}
+using namespace std;
+void Ispalindrome(int n){
+    int rev = 0, tmp = n;
+    while(n > 0){
+        rev += rev * 10 + n % 10;
+        n /= 10;
+    }
+    (tmp == rev) ? cout << "palindrome" : cout << "Not palindrome";
+}
+using namespace std;
+int fib(int n){
+    if(n == 1 || n == 2)
+        return 1
+    return fib(n - 1) + fib(n - 2);
+}
+using namespace std;
+//check of all digits of giver integer odd
+bool oddDigit(int n){
+    while(n > 0){
+        if((n % 10) % 2 == 0)
+            return false;
+        n /= 10;
+    }
+    return true;
+}
+using namespace std;
+//Is Last number even or odd
+bool lastDigit(int n){
+    while(n > 0){
+        if(n % 2 == 0)
+            return false;
+        n /= 10;
+    }
+    return true;
+}
+using namespace std;
+int fact(int n){
+    if(n == 0 || n == 1)
+        return 1;
+    return n * fact(n - 1);
+}
