@@ -909,6 +909,299 @@ int main(){
     Hanoi(n, a, b, c);
 }
 using namespace std;
+void calAvg(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++)
+        sum += arr[i];
+    cout << sum / n;
+}
+using namespace std;
+//determine whether an array of integers contains any 1s. If it does, output "Hard"; otherwise, "Easy".
+void hardEasy(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++){
+        if(arr[i] == 1) cnt++;
+    }
+    (cnt == 0)? cout << "Easy" : cout << "Hard";
+}
+using namespace std;
+// count how many times the cumulative sum of the array elements becomes negative.
+//while also keeping the cumulative sum within the range of -1 to 1 during the process.
+void cntNegSum(){
+    int n; cin >> n;
+    int arr[n], cnt = sum = 0;
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++){
+        sum += arr[i];
+        if(sum < 0){
+            cnt++; 
+            sum = 0;
+        }
+        /*if(sum < -1)
+            sum = -1;
+        else if(sum > 1)
+            sum = 1;*/
+    }
+    cout << cnt;
+}
+using namespace std;
+//Find the mid between n & m
+void FindMid(){
+    int n, m; cin >> n >> m;
+    int cnt = (n + 1) / 2;
+    int res = ((cnt + m - 1) / m) * m;
+    (res > n)? cout << -1 : cout << res;
+}
+using namespace std;
+// maximize the value of a number when it is negative by simulating the removal of one digit
+void maximize(){
+    int n; cin >> n;
+    if(n >= 0)
+        cout << n;
+    else{
+        int a = -n /10 %10;
+        int b = n % 10;
+        cout << (a > b) ? n /10 - b : n / 10;
+    }
+}
+using namespace std;
+// outputs the coordinates of the other two points required to complete a square. 
+void CompleteSquare(){
+    int x1, x2, y1, y2;
+    cin >> x1 >> x2 >> y1 >> y2;
+    if(abs(x1 - x2) == abs(y1 - y2))
+        cout << x1 << " " << x2 << " " << y1 << " " << y2;
+    //if these points are horizontal
+    else if(x1 == x2){
+        int length = abs(y2 - y1);
+        cout << x1 + length << " " << y1 << " " << x2 + length << " " << y2;
+    }
+    //if these points are vertically
+    else if(y1 == y2){
+        int length = abs(x2 - x1);
+        cout << x1 << " " << y1 + length << " " << x2 << " " << y2 + length;
+    }
+    else 
+        cout << -1;
+}
+using namespace std;
+//count How Much 5 will be exits
+void cntFive(){
+    int n; cin >> n;
+    int cnt = 0, tmp = 0;
+    while(n--){
+        int x; cin >> x;
+        (x == 5) ? cnt++ : tmp++;
+    }
+    if(tmp == 0){
+        cout << -1; return;
+    }
+    if(cnt < 9){
+        cout << 0; return;
+    }
+    int five = (cnt / 9) * 9;
+    for(int i = 0; i < five; i++)
+        cout << 5 << " ";
+    for(int i = 0; i < tmp; i++)
+        cout << 0 << " ";
+}
+using namespace std;
+//calculate the sum of 5 integers , and determine if the sum can be evenly divided by 5
+void DivisibleFive(){
+    int a, b, c, d, e; cin >> a >> b >> c >> d >> e;
+    a += b + c + d + e;
+    (a % 5 == 0 && a / 5 != 0) ? cout << "Yes" : cout << "No";
+}
+//count how many of the n integers are greater than the threshold value 
+using namespace std;
+void cntGreater(){
+    int n, trg; cin >> n >> trg;
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        int num; cin >> num;
+        if(num > trg) cnt++;
+    }
+    cout << cnt + n;
+}
+using namespace std;
+// divide a resource c into chunks of size equal to the LCM of two other quantities a & b
+void divide(){
+    int a, b, c; cin >> a >> b >> c;
+    int x = (a * b) / __gcd(a, b);
+    cout << c / x;
+}
+using namespace std;
+//calculate the minimum number of steps required to adjust a given range defined by start and end to a target range
+void calculateStep(){
+    int l, r, start, end; cin >> l >> r >> start >> end;
+    int cnt = 0;
+    if(start != l)cnt++;
+    if(end != r) cnt++;
+    if(start != l && end != r){
+        cnt += abs(start - end);
+        cnt += min(abs(l - start), abs(r - end));
+    }
+    else if(start == l && end != r)
+        cnt += abs(end - r);
+    else if(start != l && end == r)
+        cnt += abs(start - l);
+    cout << cnt;
+}
+using namespace std;
+//find the highest possible value of maxi
+void statement(){
+    int a, b, maxi = -1;
+    int n, trg; cin >> n >> trg;
+    while(n--){
+        cin >> a >> b;
+        if(a < trg){
+            if(b != 0)
+                maxi = max(maxi, 100 - b);
+            else
+                maxi = max(maxi, 0);
+        }
+        else if(a == trg){
+            if(b == 0)
+                maxi = max(maxi, 0);
+        }
+    }
+    cout << maxi;
+}
+using namespace std;
+// compare two numbers and output which one is larger, 
+void compBetween(){
+    int a, b; cin >> a >> b;
+    if(a > b) cout << "A";
+    else if cout << "B";
+    else cout << "Equal";
+}
+using namespace std;
+// determine whether it is possible to perform a series of jumps between two integers
+//a and b, using a fixed step size c, such that the total number of jumps is even.
+void cntJump(){
+    int start, end, step; cin >> start >> end >> step;
+    int dist = abs(start - end);
+    if(dist % step != 0){
+        cout << "No";
+        return 0;
+    }
+    dist /= step;
+    (dist % 2 == 0) ? cout << "Yes" : cout << "No";
+}
+using namespace std;
+//determines the final position in a circular range after performing a given number of adjustments. 
+void circularRange(){
+    int maxi, adjust, cur; cin >> maxi >> adjust >> cur;
+    cur = (cur + adjust) % maxi;
+    if(cur <= 0)
+        cur += maxi;
+    cout << cur;
+}
+using namespace std;
+//How much steps we need for being two variable same
+void cntOperation(){
+    int x, y; cin >> x >> y;
+    if(x == y)
+        cout << 0;
+    else if(x > y)
+        cout << x - y;
+    else{
+        int operation = 0;
+        while(y > x){
+            (y % 2 == 0) ? y /= 2 : y++; 
+            operation++;
+        }
+        operation += x - y;
+        cout << operation;
+    }
+}
+using namespace std;
+// divide an integer into the smallest possible number of parts, where each part is either 2 or 3
+void divideInto(){
+    int n; cin >> n;
+    if(n % 2 == 0){
+        cout << n / 2 << "\n";
+        for(int i = 0; i < n / 2; i++)
+            cout << 2 << " ";
+    }
+    else{
+        cout << (n - 3) / 2 + 1 << "\n";
+        cout << 3 << " ";
+        for(int i = 0; i < (n - 3) / 2 ; i++)
+            cout << 2 << " ";
+    }
+}
+using namespace std;
+// determines whether a given number of units can be distributed evenly across a specified number of groups
+void EvenDistribute(){
+    int x, y; cin >> x >> y;
+    if(y == 1){
+        cout << (x == 0 ? cout << "Yes" : cout << "No");
+        return;
+    }
+    y -= 1;
+    x -= y;
+    (x >= 0 && y >= 0 && x % 2 == 0) ? cout << "Even" : cout << "Odd";
+}
+using namespace std;
+// Calculate total values for two participants & determine which one is win
+void compare(){
+    int a, b, c, d, e; cin >> a >> b >> c >> d >> e;
+    int first = b * a + 2 *d;
+    int sec = c * a + 2 * e;
+    if(first > sec) cout << "first";
+    else if(sec > first) cout << "Second";
+    else cout << "Friendship"
+}
+using namespace std;
+//compute and print the minimum value from a set of given expressions 
+void findMin(){
+    int a, b, c; cin >> a >> b >> c;
+    cout << min({a + b + c, 2 *(a + b), 2 * (b + c), 2 *(c + a)});
+}
+using namespace std;
+vector <int> suffixSum(vector <int> &vec){
+    vector <int> suffix(vec.size());
+    suffix[vec.size() - 1] = vec[vec.size() - 1];
+    for(int i = vec.size() - 2; i >= 0; i--)
+        suffix[i] = suffix[i + 1] + vec[i];
+    return suffix;
+}
+vector <int> prefixSum(vector <int> &vec){
+    vector <int> prefix;
+    prefix[0] = vec[0];
+    for(int i = 1; i < vec.size(); i++)
+        prefix[i] = prefix[i - 1] + vec[i];
+    return prefix;
+}
+vector <int> minPos(vector <int> &vec){
+    int maxi= 0, mini = 0;
+    for(int i = 1; i < vec.size(); i++){
+        if(vec[i] > vec[maxi])
+            maxi = i;
+    }
+    for(int i = 1; i < vec.size(); i++){
+        if(vec[i] < vec[mini])
+            mini = i;
+    }
+    return maxi, mini;
+}
+int main(){
+    vector <int> vec{2, 3, 1, 5, 4};
+    vector <int> suffix = suffixSum(vec);
+    vector <int> prefix = prefixSum(vec);
+    for(int i = 0; i < suffix.size(); i++)
+        cout << suffix[i] << " "; 
+}
+
+using namespace std;
 int GCD(int a, int b){
     if(b > a) swap(b, a);
     if(a == b) return a;
