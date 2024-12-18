@@ -521,3 +521,152 @@ void DivisibleByTen(){
         cout << arr[i] << " ";
     cout << "\nNumber Divisible not by 10 is: " << r;
 }
+//calculates the minimum cost of traveling a given number of units, 
+//given the cost of single tickets and special tickets. The special tickets cover 
+//multiple units at a potentially reduced cost
+void CountTravelCost(){
+//n ->Total units of travel required. m -> Number of units covered by the special ticket.
+//a is the Cost of a single ticket. and b is the Cost of the special ticket.
+    int n, m, a, b;
+    cout << n << m << a << b;
+    int price = 0;
+    // Cost of 'm' single tickets
+    int CostSingleTicket = a * m;
+    if(CostSingleTicket <= b)
+        price = a * n;
+    else {
+        int SpecialTickets = n/m
+        int RemainingUnit = n % m;
+
+        int x = (SpecialTickets + 1) * b;
+        int y = SpecialTickets * b + RemainingUnit * a;
+        price = min(x, y);
+    }
+    cout << price;
+}
+//check if there is at least one item where the price does not match the quality. 
+void checkQuality(){
+    int n; cin >> n;
+    for(int i = 0; i < n; i++){
+        int price, quality;
+        cin >> price >> quality;
+        if(price != quality)
+            cout << "Happy";
+        return 0;
+    }
+    cout << "Poor";
+    return 0;
+}
+//Compressed Letter
+struct CompressedLetter{
+    int num;
+    char letter;
+};
+vector <CompressedLetter> Process(const string &str){
+    vector <CompressedLetter> res;
+    int pos = 0;
+    while(pos < str.length()){
+        int len = 0;
+        while(str[pos]>= '0' && str[pos] <= '9'){
+            len = len * 10 + (str[pos] - '0');
+            pos++;
+        }
+        if(len == 0)
+            len = 1;
+        if(pos < str.length()){
+            res.push_back({len, str[pos]});
+            pos++;
+        }
+    return res;
+}
+//Sum Between Ranges
+int SumRanges(int l, int r){
+    if(r < l)
+        return 0;
+    if(l > 1)
+        return SumRanges(1, r) - SumRanges(1, l - 1);
+    if(r % 2 == 1)
+        return SumRanges(1, r - 1) + r;
+    else
+        return r * (r + 1)/2;
+}
+
+//compute specific values related to the movement or relationship between two points on a 2D grid
+void GridMove(){
+    int a, b, c, d; cin >> a >> b >> c >> d;
+    int IsDiffrent = (a != c && b != d) ? 2 : 1;
+    int SameParity = ((a + b) % 2 == (c + d) % 2) ? 1 : 0;
+    int DiffrentDirection = (a - b == c - d || a + b == c + d) ? 1 : 0;
+    int res = IsDiffrent * (2 - DiffrentDirection);
+    int maxDist = max(abs(c - a), abs(d - b));
+    cout << res << " " << SameParity * res << " " << maxDist ;
+}
+//determine how many times each die wins, and how many times there is a draw, 
+// when compared to a series of possible dice outcomes (from 1 to 6).
+void CompareDice(){
+    int dice1, dice2; cin >> dice1 >> dice2;
+    int dice1Win = 0, dice2Win = 0, draw = 0;
+    for(int i = 1; i <= 6; i++){
+        if(abs(dice1 - i) > abs(dice2 - i))
+            dice2Win++;
+        else if(abs(dice1 - i) < abs(dice2 - i))
+            dice1Win++;
+        else
+            draw++;
+    }
+    cout << dice1Win << " " << draw << " " << dice2Win;
+}
+void verify(){
+    int n, k; cin >> n >> k;
+    int maxi = INT_MIN;
+    for(int i = 0; i < n; i++){
+        int x, y; cin >> x >> y;
+        if(k >= y){
+            if(x > maxi)
+                maxi = x;
+        }
+        else {
+            if((x - (y - k)) > maxi)
+                maxi = x - (y - k);
+        }
+    }
+    cout << maxi;
+}
+//output the position of the unique number (either odd or even) in a sequence of integers. 
+void FindUnique(){
+    int n, x;
+    cin >> n;
+    int even = 0, odd = 0, pos1 = -1, pos2 = -1;
+    for(int i = 0; i < n; i++){
+        cin >> x;
+        if(x % 2 == 0){
+            even++; pos1 = i + 1;
+        }
+        else {
+            odd++; pos2 = i + 2;
+        }
+    }
+    (odd == 1) ? cout << pos2 :cout << cout << pos1;
+}
+void SnakePattern(){
+    int row, col; cin >> row >> col;
+    for(int i = 0; i < row; i++){
+        if(i % 2 == 0){
+            for(int j = 0; j < col; j++)
+                cout << "#";
+        }
+        else {
+            if((i / 2) % 2 == 0){
+                for(int j = 0; j < col - 1; j++)
+                    cout << ".";
+                cout << "#";
+            }
+            else {
+                cout << "#";
+                for(int j = 1; j < col; j++)
+                    cout << ".";
+            }
+        }
+        cout << "\n";
+    }
+}
