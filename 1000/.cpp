@@ -1332,3 +1332,188 @@ void findUnique(){
     }
     (odd == 1) ? cout << pos2 : cout << pos1;
 }
+#include<bits/stdc++.h>
+using namespace std;
+void transform(){
+    int n; cin >> n;
+    int res[n];
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        int mid = (x + 1) / 2;
+        res[i] = mid - 1;
+    }
+    for(int i = 0; i < n; i++)
+        cout << res[i] << " ";
+}
+using namespace std;
+//counting how many times an element in the guest array matches an element in the host array
+void cntMatch(){
+    int n; cin >> n;
+    int host[n], guest[n];
+    for(int i = 0; i < n; i++)
+        cin >> host[i];
+    for(int i = 0; i < n; i++)
+        cin >> guest[i];
+    for(int i = 0; i < n; i++){
+        int tmp = guest[i];
+        for(int j = 0; j < n; j++)
+            if(host[i] == tmp)
+                cnt++;
+    }
+    cout << cnt;
+}
+using namespace std;
+bool isSorted(int *arr, int n){
+    for(int i = 0; i < n - 1; i++){
+        if(arr[i] > arr[i + 1])
+            return false;
+    }
+    return true;
+}
+bool contain0(int *arr, int n){
+    for(int i = 0; i < n; i++){
+        if(arr[i] == 0)
+            return true;
+    }
+    return false;
+}
+bool containDup(int *arr, int n){
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            if(arr[i] == arr[j])
+                return true;
+        }
+    }
+    return false;
+}
+#include<bits/stdc++.h>
+using namespace std;
+void MinIdx(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int idx = 0, mini = arr[0];
+    for(int i = 1; i < n; i++){
+        if(arr[i] < mini){
+            mini = arr[i];
+            idx = i;
+        }
+    }
+    if(idx != 0)
+        swap(arr[0], arr[idx]);
+    for(int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+}
+using namespace std;
+//Find the largest abs value 1-th based idx
+void findLargest(){
+    int row, col; cin >> row >> col;
+    int arr[row][col], x, y;
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++)
+            cin >> arr[i][j];
+    }
+    int res = arr[0][0];
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            if(abs(arr[i][j]) > abs(res)){
+                res = arr[i][j];
+                x = i + 1; y = j + 1;
+            }
+        }
+    }
+    cout << x << " " << y;
+}
+using namespace std;
+void appendVal(){
+    int n, x; cin >> n >> x;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    arr[n] = x;
+    sort(arr, arr + n + 1);
+    for(int i = 0; i <= n; i++)
+        cout << arr[i] << " ";
+}
+using namespace std;
+// determine how many participants in a competition will advance to the next round based on their scores.
+void nextRound(){
+    int n, k; cin >> n >> k;
+    int arr[n], cnt = 0;
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int tmp = arr[k - 1];
+    for(int i = 0; i < n; i++){
+        if(arr[i] >= tmp && arr[i] > 0)
+            cnt++;
+    }
+    cout << cnt;
+}
+#include<bits/stdc++.h>
+using namespace std;
+//prrint integers that are div by 10 & cnt digits from int that arn't divisible by 10
+void divisibleByTen(){
+    int n; cin >> n;
+    vector <int> vec(n);
+    int cnt = 0;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x % 10 == 0)
+            vec.push_back(x);
+        else{
+            int tmp = x;
+            while(tmp != 0){
+                r++;
+                tmp /= 10;
+            }
+        }
+    }
+    for(int i = 0; i < vec.size(); i++)
+        cout << vec[i] << " ";
+    cout << "digits that aren't divisible by 10: " << r;
+}
+using namespace std
+//calculates the minimum cost of traveling a given number of units, 
+//given the cost of single tickets and special tickets. The special tickets cover 
+//multiple units at a potentially reduced cost
+//dist(total distance), Gdist(special ticket can covered dist), Ticprice(normal ticket price), (GTicketPrice)
+void TravellingCost(){
+    int dist, Gdist, Ticprice, GTicprice;
+    cin >> dist >> Gdist >> Ticprice >> GTicprice;
+    int price = 0;
+    if(TicPrice * Gdist <= GTicprice){
+        price += dist * Ticprice;
+        return 0;
+    }
+    int needGTic = dist / Gdist;
+    int remainDist = dist % Gdist;
+    int x = (needGTic + 1) * GTicprice;
+    int y = needTic * GTicprice + remainDist * Ticprice;
+    price = min(x, y);
+    cout << price;
+}
+#include<bits/stdc++.h>
+using namespace std;
+//compute specific values related to the movement or relationship between two points on a 2D grid
+void GridMove(){
+    int a, b, c, d; cin >> a >> b >> c >> d;
+    int IsDiffrent = (a != c && b != d) ? 2 : 1;
+    int SameParity = ((a + b) % 2 == (c + d) % 2) ? 1 : 0;
+    int DiffrentDirection = (a - b == c - d || a + b == c + d) ? 1 : 0;
+    int res = IsDiffrent * (2 - DiffrentDirection);
+    int maxDist = max(abs(c - a), abs(d - b));
+    cout << res << " " << SameParity * res << " " << maxDist ;
+}
+using namespace std;
+// print sum between range
+int sumRange(int l, int r){
+    if(r < l) 
+        return 0;
+    if(l > 1)
+        return sumRange(1, r) - sumRange(1, l - 1);
+    if(r % 2 == 1)
+        return sumRange(1, r - 1) + r;
+    else
+       return r * (r + 1) / 2;
+}
