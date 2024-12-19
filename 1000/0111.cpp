@@ -293,58 +293,80 @@ void CountRange(){
         cout << arr[b] - arr[a - 1];
     }
 }
-
-bool ContainDup(int *arr, int n){
-    int tmp = arr[0];
-    for(int i = 0; i < n; i++){
-        if(tmp != arr[i])
-            return false;
-    }
-    return true;
+struct CompressedLetter{
+    int num;
+    char letter;
+};
+vector <CompressedLetter> Process(const string &str){
+    vector <CompressedLetter> res;
+    int pos = 0;
+    while(pos < str.length()){
+        int len = 0;
+        while(str[pos]>= '0' && str[pos] <= '9'){
+            len = len * 10 + (str[pos] - '0');
+            pos++;
+        }
+        if(len == 0)
+            len = 1;
+        if(pos < str.length()){
+            res.push_back({len, str[pos]});
+            pos++;
+        }
+    return res;
 }
-bool ContainZero(int *arr, int n){
-    for(int i = 0; i < n; i++){
-        if(arr[i] !=0)
-            return false;
-    }
-    return true;
-}
-bool IsSorted(int *arr, int n){
-    for(int i = 0; i < n - 1; i++){
-        if(arr[i] > arr[i + 1]){
-            return false;
-            swap(arr[i], arr[i + 1]);
+const int N = 20100;
+// find the minimal unused capacity of a knapsack of size m given n items of various sizes. 
+void RemainCap(){
+    // capacity of the knapsack (m) and the number of items (n) are read.Each item size x
+    int m, n, arr[N];
+    for(int i = 1; i <= n; i++){
+        int x; cin >> x;
+        for(int j = m; j >= x; j--){
+            arr[j] = max(arr[j - x] + x, arr[j]);
         }
     }
-    return true;
+    cout << m - arr[m];
 }
-
-//counting how many times an element in the guest array matches an element in the host array
-void CountMatch(){
+//display Pascal's Triangle up to n rows. Pascal's Triangle is a triangular array of binomial coefficients
+void PescalTriangle(){
+    int n, arr[33][33];
+    arr[1][1] = 1;
+    arr[2][1] = arr[2][2] = 1;
+    for(int i = 3; i <= 30; i++){
+        for(int j = 1; j <= i; j++)
+            arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1]
+    }
+    cin >> n;
+    for(int i = 1; i <= n; i++){
+        cout << arr[i][1];
+        for(int j = 2; j <= n; j++)
+            cout << arr[i][j] << " ";
+        cout << "\n";
+    }
+}
+//counts how many times the subsequent elements are greater than or equal to the 
+//current element, adjusts the count based on certain conditions, and
+//then prints n - cnt for each outer loop iteration.
+void SubSequent(){
     int n; cin >> n;
     int cnt = 0;
-    int host[n], guest[n];
     for(int i = 0; i < n; i++){
-        int tmp = guest[i];
-        for(int j = 0; j < n; j++){
-            if(tmp == host[i])
+        for(int j = i + 1; j < n; j++){
+            if(arr[j] >= arr[i]){
                 cnt++;
+                if(j == n - 1)
+                    cnt--;
+            }
+            else{
+                i = j - 1;
+                if(cnt > 0)
+                    cnt--;
+                break;
+            }
         }
     }
-    cout << cnt;
+    cout << n - cnt;
 }
-void Transform(){
-    int n; cin >> n;
-    int ans[n];
-    for(int i = 0; i < n; i++){
-        int x; cin >> x;
-        int a = (x + 1)/2;
-        ans[i] = a - 1;
-    }
-    for(int i = 0; i < n; i++)
-        cout << ans[i] << " ";
-}
-
 void SubArraySum(){
     int n; cin >> n;
     for(int i = 1; i <= n; i++)
@@ -369,235 +391,4 @@ void SubArraySum(){
     for(int idx = i; idx <= j; idx++)
         sum += arr[idx];
     cout << sum;
-}
-
-//counts how many times the subsequent elements are greater than or equal to the 
-//current element, adjusts the count based on certain conditions, and
-//then prints n - cnt for each outer loop iteration.
-void SubSequent(){
-    int n; cin >> n;
-    int cnt = 0;
-    for(int i = 0; i < n; i++){
-        for(int j = i + 1; j < n; j++){
-            if(arr[j] >= arr[i]){
-                cnt++;
-                if(j == n - 1)
-                    cnt--;
-            }
-            else{
-                i = j - 1;
-                if(cnt > 0)
-                    cnt--;
-                break;
-            }
-        }
-    }
-    cout << n - cnt;
-}
-
-// determine how many participants in a competition will advance to the next round based on their scores.
-void NextRound(){
-    int n, k; cin >> n >> k;
-    int arr[n + 10];
-    for(int i = 0; i < n; i++)
-        cin >> arr[i];
-    int tmp = arr[k - 1], cnt = 0;
-    for(int i = 0; i < n; i++){
-        if(arr[i] >= tmp && arr[i] > 0)
-            cnt++;
-    }
-    cout << cnt;
-}
-
-//display Pascal's Triangle up to n rows. Pascal's Triangle is a triangular array of binomial coefficients
-void PescalTriangle(){
-    int n, arr[33][33];
-    arr[1][1] = 1;
-    arr[2][1] = arr[2][2] = 1;
-    for(int i = 3; i <= 30; i++){
-        for(int j = 1; j <= i; j++)
-            arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1]
-    }
-    cin >> n;
-    for(int i = 1; i <= n; i++){
-        cout << arr[i][1];
-        for(int j = 2; j <= n; j++)
-            cout << arr[i][j] << " ";
-        cout << "\n";
-    }
-}
-
-// demonstrate how to append an integer to an array, sort the array, and print it in sorted order.
-void Operation(){
-    int n, m; cin >> n >> m;
-    int arr[n + 10];
-    for(int i = 0; i < n; i++)
-        cin >> arr[i];
-    arr[n] = m;
-    sort(arr, arr + n + 1);
-    cout << arr[0] << " ";
-    for(int i = 1; i <= n; i++)
-        cout << arr[i] << " ";
-}
-
-//finds the element with the largest absolute value in the array and outputs its 1-based position along with its value.
-void FindLargest(){
-    int row, col;
-    cin >> row >> col;
-    if(row == 0 && col == 0)
-        return 0;
-    int arr[row][col];
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++)
-            cin >> arr[i][j];
-    }
-    int ans = arr[0][0];
-    int x = 0, y = 0;
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
-            if(abs(arr[i][j]) > abs(ans)){
-                 ans = arr[i][j];
-                 x = i + 1; y = j + 1;
-            }
-        }
-    }
-    cout << x << " " << y << " " << ans;
-}
-
-//print Minimum value
-void Minvalue(){
-    int n; cin >> n;
-    int arr[n + 10];
-    for(int i = 0; i < n; i++)
-        cin >> arr[i];
-    int minIdx = 0, mini = arr[0];
-    for(int i = 1; i < n; i++){
-        if(arr[i] < mini){
-            mini = arr[i];
-            minIdx = i;
-        }
-    }
-    if(minIdx != 0)
-        swap(arr[0], arr[minIdx]);
-    cout << arr[0] << "\n";
-    for(int i = 1; i < n; i++)
-        cout << arr[i] << " ";
-}
-
-const int N = 20100;
-// find the minimal unused capacity of a knapsack of size m given n items of various sizes. 
-void RemainCap(){
-    // capacity of the knapsack (m) and the number of items (n) are read.Each item size x
-    int m, n, arr[N];
-    for(int i = 1; i <= n; i++){
-        int x; cin >> x;
-        for(int j = m; j >= x; j--){
-            arr[j] = max(arr[j - x] + x, arr[j]);
-        }
-    }
-    cout << m - arr[m];
-}
-
-void DivisibleByTen(){
-    int n; cin >> n;
-    int *arr = new int[n];
-    int k = 0, r = 0;
-    //k -> Count of numbers divisible by 10
-    //r-> Count of digits in numbers not divisible by 10
-    for(int i = 0; i < n; i++){
-        int x; cin >> x;
-        if(x % 10 == 0)
-            arr[k++] = x;
-        else {
-            tmp = x;
-            while(tmp != 0){
-                r++;
-                tmp /= 10;
-            }
-        }
-    }
-    cout << "Numbers Divisible by 10: ";
-    for(int i = 0; i < k; i++)
-        cout << arr[i] << " ";
-    cout << "\nNumber Divisible not by 10 is: " << r;
-}
-//calculates the minimum cost of traveling a given number of units, 
-//given the cost of single tickets and special tickets. The special tickets cover 
-//multiple units at a potentially reduced cost
-void CountTravelCost(){
-//n ->Total units of travel required. m -> Number of units covered by the special ticket.
-//a is the Cost of a single ticket. and b is the Cost of the special ticket.
-    int n, m, a, b;
-    cout << n << m << a << b;
-    int price = 0;
-    // Cost of 'm' single tickets
-    int CostSingleTicket = a * m;
-    if(CostSingleTicket <= b)
-        price = a * n;
-    else {
-        int SpecialTickets = n/m
-        int RemainingUnit = n % m;
-
-        int x = (SpecialTickets + 1) * b;
-        int y = SpecialTickets * b + RemainingUnit * a;
-        price = min(x, y);
-    }
-    cout << price;
-}
-//check if there is at least one item where the price does not match the quality. 
-void checkQuality(){
-    int n; cin >> n;
-    for(int i = 0; i < n; i++){
-        int price, quality;
-        cin >> price >> quality;
-        if(price != quality)
-            cout << "Happy";
-        return 0;
-    }
-    cout << "Poor";
-    return 0;
-}
-//Compressed Letter
-struct CompressedLetter{
-    int num;
-    char letter;
-};
-vector <CompressedLetter> Process(const string &str){
-    vector <CompressedLetter> res;
-    int pos = 0;
-    while(pos < str.length()){
-        int len = 0;
-        while(str[pos]>= '0' && str[pos] <= '9'){
-            len = len * 10 + (str[pos] - '0');
-            pos++;
-        }
-        if(len == 0)
-            len = 1;
-        if(pos < str.length()){
-            res.push_back({len, str[pos]});
-            pos++;
-        }
-    return res;
-}
-//Sum Between Ranges
-int SumRanges(int l, int r){
-    if(r < l)
-        return 0;
-    if(l > 1)
-        return SumRanges(1, r) - SumRanges(1, l - 1);
-    if(r % 2 == 1)
-        return SumRanges(1, r - 1) + r;
-    else
-        return r * (r + 1)/2;
-}
-
-//compute specific values related to the movement or relationship between two points on a 2D grid
-void GridMove(){
-    int a, b, c, d; cin >> a >> b >> c >> d;
-    int IsDiffrent = (a != c && b != d) ? 2 : 1;
-    int SameParity = ((a + b) % 2 == (c + d) % 2) ? 1 : 0;
-    int DiffrentDirection = (a - b == c - d || a + b == c + d) ? 1 : 0;
-    int res = IsDiffrent * (2 - DiffrentDirection);
-    int maxDist = max(abs(c - a), abs(d - b));
-    cout << res << " " << SameParity * res << " " << maxDist ;
 }
