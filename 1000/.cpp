@@ -1248,3 +1248,87 @@ void partyArrange(){
     res = min({totalMl, totalLime, totalsalt});
     cout << res;
 }
+using namespace std;
+//check if there is at least one item where the price does not match the quality.
+void checkQuality(){
+    int n; cin >> n; 
+    for(int i = 0; i < n; i++){
+        int price, quality; cin >> price >> quality;
+        if(price != quality)
+            cout << "Happy";
+            return 0;
+    }
+    cout << "Poor";
+}
+using namespace std;
+//calculates the maximum "happiness" value achievable from a list of items, 
+//considering a penalty for exceeding a given time limit.
+void cntmaxHappiness(){
+    int n, k; cin >> n >> k;
+    int maxi = INT_MIN;
+    for(int i = 0; i < n; i++){
+        int x, y; cin >> x >> y;
+        int curr;
+        if(y <= k)
+            curr = x;
+        else
+            curr = x - (y - k);
+        maxi = max(maxi, curr);
+    }
+}
+using namespace std;
+//determine how many times each die wins, and how many times there is a draw, 
+// when compared to a series of possible dice outcomes (from 1 to 6).
+void compDice(){
+    int dice1, dice2; cin >> dice1 >> dice2;
+    int win1, win2, draw = 0;
+    for(int i = 1; i <= 6; i++){
+        if(abs(dice1 - i) > abs(dice2 - i))
+            win1++;
+        else if(abs(dic1 - i) < abs(dice2 - i))
+            win2++;
+        else
+            draw++;
+    }
+}
+using namespace std;
+void snakePattern(){
+    int row, col; cin >> row >> col;
+    for(int i = 0; i < row; i++){
+        if(i % 2 == 0){
+            for(int j = 0; j < col; j++)
+                cout << "#";
+        }
+        else{
+            if((i / 2) % 2 == 0){
+                for(int j = 0; j < col - 1; j++)
+                    cout << ".";
+                cout << "#";
+            }
+            else{
+                cout << "#";
+                for(int j = 1; j < col; j++)
+                    cout << ".";
+            }
+        }
+        cout << "\n";
+    }
+}
+using namespace std;
+//find first even or odd unique element
+void findUnique(){
+    int n; cin >> n;
+    int pos1 = -1 pos2 = -1, even = 0, odd = 0;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x % 2 == 0){
+            even++;
+            pos1 = i + 1;
+        }
+        else{
+            odd++;
+            pos2 = i + 1;
+        }
+    }
+    (odd == 1) ? cout << pos2 : cout << pos1;
+}
