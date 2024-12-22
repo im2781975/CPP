@@ -277,4 +277,34 @@ void subarrSum(){
         sum += arr[idx];
     cout << sum;
 }
-
+using namespace std;
+//implements a sieve algorithm to generate prime numbers and 
+// calculate the Euler's Totient function (φ) for each number up to N
+const int N = 1e5;
+bool Isprime[N];
+int prime[N / 10], cnt = 0, phi[N], arr[N];
+void eularTotient(){
+    fill(Isprime, Isprime + N, true);
+    Isprime[0] = Isprime[1] = false;
+    for(int i = 0; i < N; i++)
+        phi[i] = i;
+    for(int i = 2; i < N; i++){
+        if(Isprime[i]){
+            prime[cnt++] = i;
+            phi[i] = i - 1;
+        }
+        for(int j = 0; j < cnt && prime[j] * i < N; j++){
+            int composite = i * prime[j];
+            arr[composite] = prime[j];
+            Isprime[composite] = false;
+            if(i % prime[j] == 0){
+                phi[composite] = phi[i] * prime[j];
+                break;
+            }
+            else
+                phi[composite] = phi[i] * (prime[j] - 1);
+        }
+    }
+    for(int i = 0; i < 20; i++)
+        cout << phi[i] << " ";
+}
