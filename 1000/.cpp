@@ -308,3 +308,157 @@ void eularTotient(){
     for(int i = 0; i < 20; i++)
         cout << phi[i] << " ";
 }
+using namespace std;
+//determine how dynamic the array is in terms of new highs and lows as you traverse it 
+//from start to end. By counting the number of times the max and min values change,
+void cntMaxMin(){
+    int n; cin >> n;
+    int arr[n], cntMin = 0, cntMax = 0;
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int mini = arr[0], maxi = arr[0];
+    for(int i = 1; i < n; i++){
+        if(mini > arr[i]){
+            mini = arr[i];
+            cntMin++;
+        }
+        if(maxi < arr[i]){
+            maxi = arr[i];
+            cntMax++;
+        }
+    }
+    cout << cntMax + cntMin;
+}
+using namespace std;
+//find the length of the longest contiguous subarray in an array of integers where the absolute difference between consecutive elements remains consistent.
+void subarrLen(){
+    int n; cin >> n;
+    int arr[n], cnt = 1, maxlen = 1;
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int diff = abs(arr[1] - arr[0]);
+    for(int i = 1; i < n; i++){
+        int tmp = abs(arr[i + 1] - arr[i]);
+        if(diff == tmp){
+            cnt++;
+            if(cnt > maxlen)
+                maxlen = cnt;
+        }
+        else{
+            diff = tmp;
+            cnt = 1;
+        }
+    }
+    cout << "maximum length is: " << maxlen;
+}
+//count the number of times the x value from one input pair matches the
+//y value from another input pair, excluding when they are at the same index. 
+using namespace std;
+void matchPair(){
+    int n; cin >> n;
+    int arr[n], tmp[n], cnt = 0;
+    for(int i = 0; i < n; i++){
+        int x, y; cin >> x >> y;
+        arr[i] = x; tmp[i] = y;
+    }
+    for(int i = 0, j = 0; i < n, j < n; i++, j++){
+        if(arr[i] == tmp[j] && i != j) cnt++;
+    }
+    cout << "Matched pair is: " << cnt;
+}
+using namespace std;
+//Count Consecutive Duplicate & count the number of distinct contiguous segments in an array of integers
+void cntUnqDup(){
+    int n; cin >> n;
+    int arr[n], unq = 0, dup = 0;
+    for(int i = 0; i < n - 1; i++){
+        if(arr[i] == arr[i + 1])
+            unq++;
+        if(arr[i] != arr[i + 1])
+            dup++;
+    }
+    cout << "Consecutive Duplicate: " << dup << "\nUnique element is: " << unq + 1;
+}
+using namespace std;
+//find the maximum gap between adjacent elements in an array after removing
+//one element in a way that minimizes the maximum gap between the remaining adjacent elements. 
+void maximumGap(){
+    int n; cin >> n;
+    int *arr = new int[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int mini = INT_MAX, pos = -1;
+    for(int i = 2; i < n; i++){
+        if(arr[i] - arr[i - 2] < mini){
+            mini = arr[i] - arr[i - 2];
+            pos = i - 1;
+        }
+    }
+    int maxi = INT_MAX;
+    for(int i = 0; i < n - 1; i++){
+        if(i + 1 == pos && i + 2 < n){
+            maxi = max(maxi, arr[i + 2] - arr[i]);
+            i++;
+        }
+        else
+            maxi = max(maxi, arr[i + 1] - arr[i]);
+    }
+}
+using namespace std;
+// calculate the total exercise done for each muscle group over the n days 
+//and determine which muscle group has the maximum exercise.
+void Exercise(){
+    int n; cin >> n;
+    int *exercise = new int[n];
+    for(int i = 0; i < n; i++)
+        cin >> exercise[i];
+    int chest = biceps = back = 0;
+    switch(i % 3){
+        case 0: 
+            chest += exercise[i]; break;
+        case 1:
+            biceps += exercise[i]; break;
+        case 2: 
+            back += exercise[i]; break;
+    }
+    if(chest > biceps && chest > back)
+        cout << "chest: " << chest;
+    else if(biceps > chest && biceps > back)
+        cout << "biceps: " << biceps;
+    else
+        cout <<"Back: " << back;
+}
+using namespace std;
+// calculate sum of the first two integers in each triplet, 
+//store these in an array, and then find and print the largest sum decreased by 1.
+void maxSum(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++){
+        int a, b, c; cin >> a >> b;
+        c = a + b;
+        arr[i] = c;
+    }
+    int maxi = arr[0];
+    for(int i = 1; i < n; i++){
+        if(maxi < arr[i])
+            maxi = arr[i];
+    }
+    cout << maxi - 1;
+}
+void maxSum(){
+    int n; cin >> n;
+    int a[n], b[n], c[n], sum = 0;
+    for(int i = 0; i < n; i++)
+        cin >> a[i] >> b[i];
+    for(int i = 0; i < n; i++){
+        sum -= (a[i] + b[i]);
+        c[i] = sum;
+    }
+    int maxi = c[0];
+    for(int i = 1; i < n; i++){
+        if(maxi < c[i])
+            maxi = c[i];
+    }
+    cout << maxi;
+}
