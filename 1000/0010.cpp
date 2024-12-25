@@ -310,3 +310,160 @@ main(){
     cin >> x >> y;
     cout << request(x, y);
 }
+// implements the Number Theoretic Transform (NTT) algorithm, 
+//which is a variant of the Fast Fourier Transform (FFT) used in modular arithmetic.
+typedef long long ll;
+const int MAX_SIZE = 1 << 18; 
+// Maximum size (adjust based on the problem constraints)
+const ll MOD = 998244353; 
+// Example prime modulus (should be a prime of the form 2^k * p + 1)
+// Function to perform modular exponentiation
+ll bit_reversal[MAX_SIZE], poly_a[MAX_SIZE], poly_b[MAX_SIZE], poly_c[MAX_SIZE];
+ll mod_exp(ll base, ll exp) {
+    ll result = 1;
+    while (exp) {
+        if (exp & 1) result = result * base % MOD;
+        base = base * base % MOD;
+        exp >>= 1;
+    }
+    return result;
+}
+// Bit-reversal permutation
+void compute_bit_reversal(int size) {
+    int bit_count = 0;
+    while ((1 << bit_count) < size) ++bit_count;
+    for (int i = 0; i < size; ++i) {
+        bit_reversal[i] = 0;
+        for (int j = 0; j < bit_count; ++j) {
+            if (i & (1 << j)) bit_reversal[i] |= (1 << (bit_count - j - 1));
+        }
+    }
+}
+void ntt(ll *poly, ll size, ll direction) {
+    ll i, j, k, block_size, half_block_size, root, root_power, temp;
+    // Perform bit-reversal permutation
+    for (i = 0; i < size; ++i) {
+        if (bit_reversal[i] < i) swap(poly[i], poly[bit_reversal[i]]);
+    }
+    // Perform the NTT or inverse NTT
+    for (block_size = 2; block_size <= size; block_size <<= 1) {
+        half_block_size = block_size >> 1;
+        root = mod_exp(3, (MOD - 1) / block_size);
+        for (i = 0; i < size; i += block_size) {
+            root_power = 1;
+            for (j = 0; j < half_block_size; ++j, root_power = root_power * root % MOD) {
+                temp = root_power * poly[i + j + half_block_size] % MOD;
+                poly[i + j + half_block_size] = (poly[i + j] - temp + MOD) % MOD;
+                poly[i + j] = (poly[i + j] + temp) % MOD;
+            }
+        }
+    }
+    // If performing inverse NTT, reverse and scale
+    if (direction == -1) {
+        reverse(poly + 1, poly + size);
+        ll inv_size = mod_exp(size, MOD - 2);
+        for (i = 0; i < size; ++i) poly[i] = poly[i] * inv_size % MOD;
+    }
+}
+__main() {
+    // Define the polynomial degree (must be a power of 2)
+    int degree = 1 << 10; 
+    int size = degree;
+    // Initialize bit-reversal permutation
+    compute_bit_reversal(size);
+    // Initialize polynomials with example values
+    for (int i = 0; i < size; ++i){
+        poly_a[i] = i + 1;
+        poly_b[i] = i + 1;
+    }
+    // Perform forward NTT on poly_a
+    ntt(poly_a, size, 1);
+    cout << "Forward NTT of poly_a:" << endl;
+    for (int i = 0; i < size; ++i)
+        cout << poly_a[i] << " ";
+    cout << endl;
+    // Perform forward NTT on poly_b
+    ntt(poly_b, size, 1);
+    cout << "Forward NTT of poly_b:" << endl;
+    for (int i = 0; i < size; ++i)
+        cout << poly_b[i] << " ";
+    cout << endl;
+
+    // Perform inverse NTT on poly_a
+    ntt(poly_a, size, -1);
+    cout << "Inverse NTT of poly_a (should be the original):" << endl;
+    for (int i = 0; i < size; ++i)
+        cout << poly_a[i] << " ";
+    cout << endl;
+    // Perform inverse NTT on poly_b
+    ntt(poly_b, size, -1);
+    cout << "Inverse NTT of poly_b (should be the original):" << endl;
+    for (int i = 0; i < size; ++i)
+        cout << poly_b[i] << " ";
+    cout << endl;
+    return 0;
+}
+
+// Perform Fast Fourier Transform or Inverse Fast Fourier Transform
+using Complex = complex<double>;
+const double PI = 3.14159265358979323846;
+// Perform bit-reversal permutation
+void change(std::vector<Complex>& y, int len) {
+    int i = 1, j = len / 2, k;
+    while (i < len - 1) {
+        if (i < j) std::swap(y[i], y[j]);
+        k = len / 2;
+        while (j >= k) {
+            j -= k;
+            k /= 2;
+        }
+        if (j < k) j += k;
+        i++;
+    }
+}
+void FFTransform(vector<Complex>& y, int len, int on) {
+    change(y, len);
+    for (int h = 2; h <= len; h <<= 1) {
+        Complex wn(cos(2 * PI / h), sin(on * 2 * PI / h));
+        for (int j = 0; j < len; j += h) {
+            Complex w(1, 0);
+            for (int k = j; k < j + h / 2; k++) {
+                Complex u = y[k];
+                Complex t = w * y[k + h / 2];
+                y[k] = u + t;
+                y[k + h / 2] = u - t;
+                w *= wn;
+            }
+        }
+    }
+    if (on == -1) {
+        for (int i = 0; i < len; i++)
+            y[i] /= len;
+    }
+}
+// Print complex number in a formatted manner
+void printComplex(const Complex& c){
+    cout << fixed << setprecision(3);
+    cout << "(" << c.real() << ", " << c.imag() << "i)";
+}
+__main(){
+    int n = 8;
+    vector<Complex> data = {
+        Complex(1, 0), Complex(1, 0), Complex(1, 0), Complex(1, 0),
+        Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0)
+    };
+    // Perform forward FFT
+    FFTransform(data, n, 1);
+    cout << "FFT result:\n";
+    for (const auto& c : data) {
+        printComplex(c);
+        cout << "\n";
+    }
+    // Perform inverse FFT
+    FFTransform(data, n, -1);
+    cout << "\nInverse FFT result:\n";
+    for (const auto& c : data) {
+        printComplex(c);
+        cout << "\n";
+    }
+}
