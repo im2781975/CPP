@@ -462,3 +462,387 @@ void maxSum(){
     }
     cout << maxi;
 }
+#include<bits/stdc++.h>
+using namespace std;
+void executeIng(){
+    int n; cin >> n;
+    string str;
+    for(int i = 0; i < n; i++){
+        cin >> str;
+        if(str.size() > 10 )
+            cout << str[0] << " " << str.size() - 2 << " " << str[str.size() - 1];
+        else
+            cout << str;
+    }
+}
+using namespace std;
+const int N = 1e7;
+bool mark[N];
+int prime[N / 10], cnt = 0;
+void printPrime(){
+    mark[0] = mark[1] = false;
+    for(int i = 2; i < N; i++)
+        mark[i] = true;
+    for(int i = 2; i < N; i++){
+        if(mark[i]){
+            prime[++cnt] = i;
+            for(int j = i * 2; j < N; j += i)
+                mark[j] = false;
+        }
+    }
+    int sum = 0;
+    for(int i = 0; i < 25; i++){
+        cout << prime[i] << " ";
+        sum += prime[i];
+    }
+    cout << "sum of the prime is: " << sum;
+}
+using namespace std;
+// find and print the 1-based index of the unique element in
+void findUnqIdx(){
+    int t; cin >> t;
+    int res[t];
+    for(int i = 0; i < t; i++){
+        int n; cin >> n;
+        int arr[n];
+        for(int i = 0; i < n; i++)
+            cin >> arr[i];
+        int unqIdx = -1;
+        if(arr[0] != arr[1]){
+            unqIdx = (arr[1] == arr[2]) ? 0 : 1;
+        }
+        else{
+            for(int i = 2; i < n; i++){
+                if(arr[0] != arr[i]){
+                    unqIdx = i;
+                    break;
+                }
+            }
+        }
+        res[t] = unqIdx + 1;
+    }
+    for(int i = 0; i < t; i++)
+        cout << res[i] << " ";
+}
+using namespace std;
+//Sum consecutive integer Diffrence
+void sumDiff(){
+    int arr[3];
+    for(int i = 0; i < 3; i++)
+        cin >> arr[i];
+    sort(arr, arr + 3);
+    for(int i = 0; i < n; i++)
+        arr[i] = abs(arr[i]);
+    
+    int x = abs(arr[1] - arr[0]);
+    int y = abs(arr[2] - arr[1]);
+    cout << x + y;
+}
+// determine the minimum number of steps required to make two integers equal. 
+using namespace std;
+void countStep(){
+    int n; cin >> n;
+    vector <int> res(n);
+    for(int i = 0; i < n; i++){
+        int a, b; cin >> a >> b;
+        int step = 0;
+        if(a > b){
+            int diff = a - b;
+            if(diff % 2 == 0) ? step = 1 : step = 2;
+        }
+        else if(a < b){
+            int diff = b - a;
+            if(diff % 2 == 0) ? step = 2 : step = 1;
+        }
+        else
+            step = 0;
+        res[i] = step;
+    }
+    for(int i = 0; i < n; i++)
+        cout << res[i] << " ";
+}
+//find the first occurrence where adjacent elements are different
+using namespace std;
+void spyDetect(){
+    int t; cin >> t;
+    vector <int> res(t);
+    for(int k = 0; k < t; k++){
+        int n; cin >> n;
+        vector <int> arr(n);
+        for(int i = 0; i < n; i++)
+            cin >> arr[i];
+        int cnt = -1;
+        if(arr[0] != arr[1]){
+            cnt = (arr[0] != arr[2]) ? 1 : 2;
+        }
+        else{
+            for(int i = 2; i < n; i++){
+                if(arr[i] != arr[0]){
+                    cnt = i + 1;
+                    break;
+                }
+            }
+        }
+        res[t] = cnt;
+    }
+    for(int i = 0; i < t; i++)
+        cout << res[i] << " ";
+}
+using namespace std;
+//Find the nxt number which contain unique digits
+bool IsDistinct(int num){
+    set <int> digits;
+    while(num > 0){
+        int dig = num % 10;
+        //if already exits dig
+        if(digits.count(dig))
+            return false;
+        digits.insert(dig);
+        num /= 10;
+    }
+    return true;
+}
+int main(){
+    int n; cin >> n;
+    for(int i = n + 1; ; i++){
+        //print the nxt distinct
+        if(IsDistinct(i)){
+            cout << i ;
+            break;
+        }
+    }
+}
+using namespace std;
+// determine if all the levels from 1 to n are covered by the unique elements present in two given arrays. 
+int RemoveDup(int *arr, int n){
+    if(n == 0 || n == 1)
+        return n;
+    int tmp[n], j = 0;
+    for(int i = 0; i < n - 1; i++){
+        if(arr[i] != arr[i + 1])
+            tmp[j++] = arr[i];
+    }
+    tmp[j++] = arr[n - 1];
+    for(int i = 0; i < n; i++)
+        arr[i] = tmp[i];
+    return j;
+}
+int main(){
+    int n; cin >> n;
+    int a, b; cin >> a >> b;
+    int arr[a], tmp[b];
+    for(int i = 0; i < a; i++)
+        cin >> arr[i];
+    a = RemoveDup(arr, n);
+    for(int i = 0; i < b; i++)
+        cin >> tmp[i];
+    b = RemoveDup(tmp, n);
+    int cnt = n;
+    for(int i = 0; i < a; i++){
+        for(int j = 0; j < n; j++){
+            if(arr[i] == j)
+                cnt--;
+        }
+    }
+    for(int i = 0; i < b; i++){
+        // Iterate over all levels Player B can complete
+        for(int j = 0; j < n; j++){
+        // Compare each level Player B can complete to all levels from 0 to n-1
+            if(tmp[i] == j)
+                cnt--;
+        }
+    }
+    (cnt == 0)? cout << "Become the Guy" : cout << "No ome";
+}
+using namespace std;
+void IsDistinct(){
+    int totalLevel; cin >> totalLevel;
+    //Number of Levels that a can complete
+    int a; cin >> a;
+    set <int> Levels;
+    for(int i = 0; i < a; i++){
+        int lev; cin >> lev;
+        Levels.insert(lev);
+    }
+    int b; cin >> b;
+    for(int i = 0; i < b; i++){
+        int lev; cin >> lev;
+        Levels.insert(lev);
+    }
+    if((int)Levels.size() == n) ? cout << "Become the Guy" : cout << "No one";
+    
+    /*bool Levels[totalLevel + 1];
+    for(int i = 0; i < a; i++)
+        Levels[i] = true;
+    for(int i = 0; i < b; i++)
+        Levels[i] = true;
+    for(int i = 1; i <= n; i++){
+        if(!Levels[i])
+            return 0;
+    }
+    cout << "Become the Guy";*/
+}
+using namespace std;
+//calculate and display 2^num to find the sum of the digits of the resulting number. 
+int powerTwo(int digits[], int cntDig){
+    int tmp = 0;
+    for(int i = 0; i < cntDig; i++){
+        //double the digit arr elements
+        int product = digits[i] * 2 + tmp;
+        digits[i] = product % 10;
+        tmp = product / 10;
+    }
+    while(tmp){
+        digits[cntDig] = tmp % 10;
+        tmp /= 10;
+        cntDig++;
+    }
+    return cntDig;
+}
+void powerBase(int num){
+    int digits[500], cntDig = 1, sumDig = 0;
+    
+    digits[0] = 1;  //2^0 = 1
+    for(int i = 1; i <= num; i++)
+        cntDig = powerTwo(digits, cntDig);
+    for(int i = cntDig - 1; i >= 0; i--){
+        cout << digits[i];
+        sumDig += digits[i];
+    }
+    cout << "\n" << sumDig << "\n";
+}
+int main(){
+    int num; cin >> num;
+    powerBase(num);
+}
+using namespace std;
+void checkDiag(){
+    int n; cin >> n;
+    vector <vector <char> >matrix(n, vector <char> (n));
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++)
+            cin >> matrix[i][j];
+    }
+    char Diag = matrix[0][0];
+    for(int i = 0; i < n; i++){
+        if(matrix[i][i] != Diag || matrix[i][n - i - 1] != Diag){
+            cout << "No";
+            return 0;
+        }
+    }
+    char notDiag = matrix[0][1];
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(i != j && i + j != n - 1){
+                if(matrix[i][j] != notDiag){
+                    cout << "No";
+                    return 0;
+                }
+            }
+        }
+    }
+    cout << "Yes";
+}
+using namespace std;
+// fill a matrix with alternating 'B' and 'W' characters, starting from the given positions marked with a dot ('.'). 
+void fillChar(){
+    int row, col; cin >> row >> col;
+    cin.ignore();
+    vector <string> matrix(row);
+    for(int i = 0; i < row; i++){
+        getline(cin, matrix[i]);
+        for(int j = 0; j < col; j++){
+            if(matrix[i][j] == '.'){
+                matrix[i][j] = ((i + j) % 2 == 0) ? 'B' : 'W';
+            }
+        }
+    }
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++)
+            cout << matrix[i][j] << " ";
+        cout << "\n";
+    }
+}
+using namespace std;
+const int N = 1010;
+int w, n, dp[N][N], wt[N], item[N];
+void KnapSack(){
+    cin >> w >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> wt[i] >> item[i];
+    for(int i = 1; i <= n; i++){
+        for(int j = 0; j < w; j++){
+            //If the curr item isn't included, the value remains the same as when considering only the first (i - 1)items.
+            dp[i][j] = dp[i - 1][j];
+            if(j >= wt[i])
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - wt[i]] + item[i]);
+        }
+    }
+    cout << dp[n][w];
+}
+using namespace std;
+//an array representing the number of additional sockets available from various devices. 
+//Each device can contribute a certain number of additional sockets.
+//determine how many of these devices you need to use to ensure that you have enough sockets to accommodate a given number of devices.
+void mergesort(int *arr, int l, int mid, int r){
+    int n1 = mid - l + 1;
+    int n2 = r - mid;
+    int left[n1], right[n2];
+    for(int i = 0; i < n1; i++)
+        left[i] = arr[l + i];
+    for(int i = 0; i < n2; i++)
+        right[i] = arr[mid + 1 + i];
+    int i = 0, j = 0, k = l;
+    while(i < n1 && j < n2){
+        if(left[i] <= right[j]){
+            arr[k] = left[i];
+            i++;
+        }
+        else{
+            arr[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+    while(i < n1){
+        arr[k] = left[i];
+        k++; i++;
+    }
+    while(j < n2){
+        arr[k] = right[j];
+        k++; j++;
+    }
+}
+void merge(int *arr, int l, int r){
+    if(l < r){
+        int mid = l + (r - l) / 2;
+        merge(arr, l, mid);
+        merge(arr, mid + 1, r);
+        mergesort(arr, l, mid, r);
+    }
+}
+int main(){
+    //supply :The number of devices have to (or array elements)add.each supply device contibute some socket which is stored in arr
+    //devices:(total number of devices) sockets: initial number of available sockets
+    int supply, socket, device; cin >> supply >> socket >> device;
+    int arr[supply];
+    for(int i = 0; i < supply; i++)
+        cin >> arr[i];
+    merge(arr, 0, supply - 1);
+    if(socket >= device)
+        cout << 0;
+    else{
+        int i = 0;
+        while(i < supply && device > socket){
+            //atleast 1 socket connect with supply device.
+            socket += arr[i] - 1;
+            i++;
+        }
+        if(i != supply)
+            cout << i;
+        else if(socket >= device)
+            cout << i;
+        else
+            cout << -1;
+    }
+}
