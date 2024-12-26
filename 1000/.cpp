@@ -1041,55 +1041,45 @@ void cntHandShakes(){
 using namespace std;
 //reorder a string letters in such a way that it becomes a palindrome
 void createPalindrome(){
-    string str;
-    cin >> str;
-    int n = str.length();
-    vector<int> freq(27, 0);
-    for (char ch : str){
-        freq[ch - 'A' + 1]++;
-
-    int oddValue = -1, totalCharCount = 0, odd = 0;
-    char oddChar;
-
-    for (int i = 1; i <= 26; ++i){
-        if (freq[i] >= 1)
-            totalCharCount++;
-        if (freq[i] % 2 != 0){
-            oddValue = freq[i];
-            oddChar = i + 64;
+    string str; cin >> str;
+    int len = str.size();
+    vector <int> freq(27, 0);
+    for(int i = 0; i < freq.size(); i++)
+        freq[str[i] - 'A' + 1]++;
+    int oddval = -1, totalchar = 0,odd = 0;
+    char ch;
+    for(int i = 1; i <= 26; i++){
+        if(freq[i] >= 0) totalchar++;
+        if(freq[i] % 2 != 0){
+            oddval = freq[i];
+            ch = i + 64;
             freq[i] = 0;
             odd++;
         }
     }
-    // If more than one odd frequency, no solution
-    if (odd > 1){
-        cout << "NO SOLUTION" << endl;
+    if(odd > 1){
+        cout << "No Solution";
         return 0;
     }
-    int remainingChar = n;
-    if (oddValue != -1){
-        totalCharCount -= 1;
-        remainingChar -= oddValue;
+    int remain = len;
+    if(odd != -1){
+        totalchar -= 1;
+        remain -= oddval;
     }
-    string firstHalf, secondHalf;
-    // Create the palindrome halves
-    for (int i = 1; i <= 26; ++i){
-        if (freq[i] > 1){
-            char evenChar = i + 64;
-            int halfCount = freq[i] / 2;
-            firstHalf.append(halfCount, evenChar);
-            secondHalf.append(halfCount, evenChar);
+    string first, second;
+    for(int i = 1; i <= 26; i++){
+        if(freq[i] > 1){
+            char evenchar = i + 64;
+            int half = freq[i] / 2;
+            first.append(half, evenchar);
+            second.append(half, evenchar);
         }
     }
-    // Reverse the second half
-    reverse(secondHalf.begin(), secondHalf.end());
-    // Print the result
-    cout << firstHalf;
-    if (oddValue != -1){
-        cout << string(oddValue, oddChar);
-    }
-    cout << secondHalf;
-    return 0;
+    reverse(second.begin(), second.end());
+    cout << first;
+    if(odd != -1)
+        cout << string(oddval, ch);
+    cout << second;
 }
 using namespace std;
 void xossPatern(){
