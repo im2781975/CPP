@@ -129,6 +129,32 @@ int main(){
     int x, y; cin >> x >> y;
     cout << newNum(x - 1) ^ newNum(y);
 }
+void FindStr(){
+    int n; cin >> n;
+    vector <string> vec(n);
+    for(int i = 0; i < n; i++)
+        cout << vec[i];
+    int m; cin >> m;
+    vector <string> name(m);
+    vector <int> src(m, 0);
+    for(int i = 0; i < m; i++){
+        cin >> name[i];
+        int x; cin >> x;
+        for(int j = 0; j < x; j++){
+            string str; cin >> str;
+            for(int k = 0; k < n; k++){
+                if(str == vec[k])
+                    src[i]++;
+            }
+        }
+    }
+    int maxIdx = 0;
+    for(int i = 1; i < m; i++){
+        if(src[i] > src[maxIdx])
+            maxIdx = i;
+    }
+    cout << name[maxIdx];
+}
 using namespace std;
 void main(){
     int n; cin >> n;
