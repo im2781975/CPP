@@ -1,4 +1,3 @@
-#include<bits/stdc++.h>
 using namespace std;
 void Isunique(){
     string str, ing; cin >> str >> ing;
@@ -1393,4 +1392,37 @@ bool IsPalindrome(string str){
     int n = str.size();
     string ing = str.substr(1, n - 1);
     return IsPalindrome(ing) && (str[0] == str.back())b;
+}
+using namespace std;
+//distribute a TotalL into a specified number of parts(num) with each part not exceeding a maximum limit (maxiL). 
+void distributeLen(){
+    int num, maxiL, totalL; cin >> num >> maxiL >> totalL;
+    for(int i = 1; i < num; i++){
+        if(maxiL <= totalL){
+            cout << maxiL << " ";
+            totalL -= maxiL;
+        }
+        else if(totalL > 0){
+            cout << totalL << " ";
+            totalL = 0;
+        }
+        else
+            cout << 0;
+    }
+}
+using namespace std;
+void binarySum(){
+    int x; cin >> x;
+    int sum = 0, i = 0;
+    while(x > 0){
+        sum += (x % 10) + pow(2, i++);
+        x /= 10;
+    }
+    cout << sum;
+}
+using namespace std;
+void Operation(){
+    int x; cin >> x;
+    int res = pow(x, 2) + x + 41;
+    cout << res;
 }
