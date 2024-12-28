@@ -1208,3 +1208,104 @@ void main(){
     int x = sqrt(p * q * r * s * t);
     cout << x/(q*s) << " " << x/(r*t) << " " << x/(p*s) << " " << x/(q*t) << " " << x/(p*r);
 }
+// find the position of the nearest 'E' (for example, an 'E' might represent an "Emergency" or an "Element") in a 2D grid. 
+void FindPos(){
+    int row, col, cnt = 0, mini = INT_MAX, MinRow = -1, MinCol = -1;
+    cin >> row >> col;
+    char arr[row][col];
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j <col; j++)
+            cin >> arr[i][j];
+    }
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            if(arr[i][j] == 'E'){
+                int dist = i + j;
+                if(distance < mini){
+                    //convert to 1-Based Idx
+                    MinRow = i + 1;
+                    MinCol = j + 1;
+                }
+                cnt++;
+            }
+        }
+    }
+    (cnt == 0)?cout << -1 : cout << MinRow << " " << MinCol;
+}
+void FindTrgIdx(){
+    int n, TrgIdx, cnt = 0;
+    cin >> n >> TrgIdx;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    if(TrgIdx < 1 || TrgIdx > n){
+        cout << "OutOf Bound";
+        return 0;
+    }
+    if(arr[TrgIdx - 1] == 0){
+        for(int i = 0; i < n; i++){
+            if(arr[i] > 0)
+                cnt++;
+        }
+    }
+    else{
+        cnt = TrgIdx;
+        for(int i = TrgIdx; i < n; i++){
+            if(arr[TrgIdx - 1] <= arr[i])
+                cnt++;
+        }
+    }
+    cout << cnt << "\n" << arr[TrgIdx - 1] << "\n";
+    if(TrgIdx < n)
+        cout << arr[TrgIdx] << "\n";
+    else
+        cout << "Idx OutOfBound";
+}
+
+//output the sequence of unique number
+const int MAX = 1001;
+void Unique(){
+    int n, cnt = 0, arr[MAX] = {0};
+    cin >> n;
+    int Unique[n];
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(arr[x] == 0)
+            arr[x] = 1;
+        Unique[cnt++] = x;
+    }
+    for(int i = 0; i < cnt; i++)
+        cout << Unique[i] << " ";
+}
+
+void ChangePos(){
+    int n; cin >> n;
+    char ch[26];
+    vector <char> arr(n);
+    vector <int> tmp(n);
+    vector <bool> used(n, false);
+    vector <int> res(n);
+    for(int i = 0; i < 26; i++)
+        ch[i] = 'a' + i;
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 26; j++){
+            if(arr[i] == ch[j]){
+                tmp[i] = j + 1;
+                break;
+            }
+        }
+    }
+    for(int i = 0; i < n; i++){
+        int minIdx = -1;
+        for(int j = 0; j < n; j++){
+            if(!used[j] && (minIdx == - 1 || tmp[j] < tmp[minIdx]))
+                minIdx = j;
+        }
+        res[minIdx] = n - i;
+        used[minIdx] = true;
+    }
+    for(int i = 0; i < n; i++)
+        cout << res[i] << " ";
+}
