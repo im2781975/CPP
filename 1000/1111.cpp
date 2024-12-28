@@ -1309,3 +1309,92 @@ void ChangePos(){
     for(int i = 0; i < n; i++)
         cout << res[i] << " ";
 }
+// determine process a list of integers representing the positions of 
+//citizens in Lineland and determine two values for each citizen: minimum & maximum distance to any other citizen.
+void LinelandMail(){
+    int n; cin >> n;
+    int arr[n], maxi[n], mini[n], res[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    /*for(int i = 0; i < n; i++){
+        maxi[i] = max(abs(arr[i] - arr[0]), abs(arr[i] - arr[n - 1]));
+        if(i == 0)
+            mini[i] = abs(arr[i] - arr[i + 1]);
+        else if(i == n - 1)
+            mini[i] = abs(arr[i] - arr[i - 1]);
+        else
+            mini[i] = min(abs(arr[i] - arr[i - 1]), abs(arr[i] - arr[i + 1]));
+    }
+    for(int i = 0; i < n; i++)
+        cin << maxi[i] << " " << mini[i];*/
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; i++){
+            if(arr[i] == arr[j])
+                continue;
+            if(arr[i] > arr[j])
+                res[j] = arr[i] - arr[j];
+            else
+                res[j] = arr[j] - arr[i];
+                
+        }
+    }
+    sort(res, res + n);
+    for(int i = 0; i < n; i++)
+        cout << res[i] << " ";
+}
+
+// create as many complete teams as possible where each team consists of 
+//one student with each of three different types of gifts. Each team should have one student 
+//with gift type 1, one student with gift type 2, and one student with gift type 3.
+void TeamOlympiad(){
+    int n; cin >> n;
+    vector <int> count(4, 0);
+    vector <vector <int> >student(4, vector <int> (5001));
+    for(int i = 1; i <= n; i++){
+        //loop runs n times for each student.each iteration, it reads the type of gift from the input.
+        int gift; cin >> gift;
+        count[gift]++;
+        student[gift][count[gift]] = i;
+    }
+    //teams is calculated as the minimum value among the counts of gift types 1, 2, and 3.
+    // it is the maximum number of teams that can be formed, where each team has one student with each type of gift.
+    int team = min({count[1], count[2], count[3]});
+    for(int i = 1; i <= team; i++){
+    //prints the index of a student with gift type 1, gift type 2, and gift type 3.
+        cout << student[1][i] << "\n";
+        cout << student[2][i] << "\n";
+        cout << student[3][i] << "\n";
+    }
+}
+void Presents(){
+    int n; cin >> n;
+    int arr[n], freq[n];
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+        if(arr[i] >= 1 && arr[i] <= n)
+            freq[arr[i] - 1] = i + 1;
+    }
+    for(int i = 0; i < n; i++)
+        cout << freq[i] << " ";
+}
+void NewPassword(){
+    int TotalLength, CycleLength, i;
+    cin >> TotalLength >> CycleLength;
+    char alpha[26] = {0};
+    for(int i = 0; i <  26; i++){
+        alpha[i] = 'a' + i;
+    }
+    /*for(i = 97; i <= 122; i++)
+        alpha[i - 97] = i;
+    alpha[i] = '\0';*/
+    int CompleteCycle = TotalLength / CycleLength;
+    for(int i = 0; i < CompleteCycle; i++){
+        for(int j = 0; j < CycleLength; j++) 
+            cout << alpha[j] << " ";
+    }
+    cout << "\n";
+    int remainChar = TotalLength % CycleLength;
+    for(int i = 0; i < remainChar; i++)
+        cout << alpha[i] << " ";
+    cout << "\n";
+}
