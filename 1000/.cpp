@@ -411,3 +411,31 @@ void Find3rdsmallest(){
     }
     cout << arr[2];
 }
+using namespace std;
+//print the idx where string matches
+vector <int> matchIdx(string txt, string str){
+    int n = txt.size(), m = str.size();
+    vector <int> vec;
+    for(int i = 0; i <= n - m; i++){
+        int j;
+        for(j = 0; j < m; j++){
+            if(txt[i + j] != str[j])
+                break;
+        }
+        // means the entire substring str matches the corresponding portion of txt.
+        if(j == m)
+            vec.push_back(i);
+    }
+    /*for(int i = 0; i <= n - m; i++){
+        if(txt.substr(i, m) == str)
+            vec.push_back(i);*/
+    }
+    return vec;
+}
+int main(){
+    string txt = "ABABDABACDABABCABAB";
+    string str = "ABABCABAB";  
+    vector <int> res = matchIdx(txt, str);
+    for(int i = 0; i < res.size(); i++)
+        cout << res[i];
+}
