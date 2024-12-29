@@ -439,3 +439,35 @@ int main(){
     for(int i = 0; i < res.size(); i++)
         cout << res[i];
 }
+using namespace std;
+void cntDiv(int n){
+    int cnt = 0;
+    for(int i = 1; i <= sqrt(n); i++){
+        if(n % i == 0){
+            //if both divisors are same(ex: 9 / 3 = 3)
+            (n / i == i) ? cnt++ : cnt += 2;
+        }
+    }
+    return cnt;
+}
+using namespace std;
+void sumOdd(int num){
+    int sum = 0;
+    for(int i = 2; i < num; i += 2){
+        sum += i + 1;
+        sum += i + 1;
+    }
+    return sum;
+}
+using namespace std;
+void sumEven(int num){
+    int sum = 0;
+    for(int i = 4; i < num; i += 3){
+        sum += i + 1;
+        sum += i + 1;
+    }
+}
+using namespace std;
+void sumOfDigit(int num){
+    return num == 0 ? 0 : num % 10 + sumOfDigit(num / 10);
+}
