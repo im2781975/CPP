@@ -1524,3 +1524,47 @@ void isSatisfied(){
     }
     cout << "Yes";
 }
+using namespace std;
+//finds the next palindromic date that is larger than n.
+int arr[13]{0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int rev(int x){
+    int ans = 0;
+    while(x){
+        ans = ans * 10 + x % 10;
+        x /= 10;
+    }
+    return ans;
+}
+bool IsLeap(int year){
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+bool check(int x, int n){
+    if(x <= n)
+        return false;
+    int day = x % 100;
+    x /= 100;
+    int month = x % 100;
+    int year = x / 100;
+    if(month < 1 && month > 12)
+        return false;
+    if(IsLeap(year) && month == 2)
+        return day <= 29;
+    return day <= arr[month];
+}
+int main(){
+    int n; cin >> n;
+    for (int i = n / 10000; i <= 9999; i++) {
+        int x = i * 10000 + rev(i);
+        if (check(x, n)) {
+            cout << x << endl;
+            break;
+        }
+    }
+    for (int i = n / 1000000; i <= 9999; i++) {
+        int x = i * 1000000 + i * 10000 + rev(i) * 100 + rev(i);
+        if (check(x, n)) {
+            cout << x << endl;
+            break;
+        }
+    }
+}
