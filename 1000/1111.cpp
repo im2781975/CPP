@@ -1449,3 +1449,78 @@ int main() {
     }
     return 0;
 }
+using namespace std;
+void check(){
+    int n; string str;
+    cin >> n >> str;
+    if(n == 1){
+        if(str == "W")
+            cout << "Yes";
+        else
+            cout << "No";
+        return 0;
+    }
+    if(n == 2){
+        if(str == "WW" || str == "RB" || str == "BR")
+            cout << "Yes";
+        else
+            cout << "No";
+        return 0;
+    }
+    int len = str.size();
+    bool flag = true;
+    for(int i = 0; i < len;){ 
+        //skip white
+        while(i < len && str[i] == 'W')
+            i++;
+        if(i == n)
+            break;
+        int blue = 0, red = 0;
+        while(i < len && str[i]!= 'W'){
+            if(str[i] == 'B')
+                blue++;
+            else if(str[i] == 'R')
+                red++;
+            i++;
+        }
+        if(blue == 0 || red == 0){
+            flag = false;
+            break;
+        }
+    }
+    (flag)? cout << "Yes" : cout << "No";
+}
+using namespace std;
+//determine if a string composed of the characters 'R', 'B', and 'W' satisfies 
+// specific adjacency rules for the characters 'R' and 'B'.
+void isSatisfied(){
+    string str; cin >> str;
+    bool valid = true;
+    int len = str.size();
+    for(int i = 0; i < len; i++){
+        if(str[i] == 'R' || str[i] == 'B'){
+            bool validVicino = false;
+            if(i > 0 && (str[i - 1] == 'R' || str[i - 1] == 'B'))
+                validVicino = true;
+            if(i < len - 1 && (str[i + 1] == 'R' || str[i + 1] == 'B'))
+                validVicino = true;
+            if(str[i] == 'R'){
+                if(i > 0 && str[i - 1] == 'W' && str[i + 1] != 'B')
+                    validVicino = false;
+                if(i < len - 1 && str[i + 1] == 'W' && str[i - 1]!= 'B')
+                    validVicino = false;
+            }
+           else if(str[i] == 'B'){
+                if(i > 0 && str[i - 1] == 'W' && str[i + 1] != 'R')
+                    validVicino = false;
+                if(i < len - 1 && str[i + 1] == 'W' && str[i - 1]!= 'R')
+                    validVicino = false;
+            }
+            if(!validVicino){
+                cout << "No";
+                return 0;
+            }
+        }
+    }
+    cout << "Yes";
+}
