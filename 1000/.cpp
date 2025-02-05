@@ -333,3 +333,192 @@ int main(){
     else if(vec.size() == n) cout << "1";
     else cout << n + 1;
 }
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int arr[10000], n; cin >> n;
+    vector <int> vec[10000];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        vec[arr[i]].push_back(x);
+    }
+    priority_queue <int> pq;
+    for(int i = 10000; i >= 1; i--){
+        for(auto j : vec[i])
+            pq.push(j);
+        if(!pq.empty()){
+            res += pq.top(); pq.pop();
+        }
+    }
+    cout << res;
+}
+using namespace std;
+void main(){
+    int n, d, a; cin >> n >> d >> a;
+    int cur = a, res = 1;
+    for(int i = 1; i < n; i++){
+        cin >> a;
+        if(a - cur >= d)
+            res++;
+        cur = a;
+    }
+    cout << res;
+}
+using namespace std;
+int main(){
+    int cur; cin >> cur;
+    int peak = lowest = prv = cur;
+    int maxDiff = 0, nxtVal;
+    while(cin >> nxtVal){
+        if(nxt > prv){
+            peak = nxt;
+            maxDiff = max(maxDiff, peak - lowest);
+        }
+        else if(nxt < prv){
+            lowest = nxt;
+            maxDiff = max(maxDiff, abs(lowest - peak));
+        }
+        prv = nxt;
+    }
+    cout << maxDiff;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    pair <int, int> pir[n];
+    for(int i = 0; i < n; i++)
+        cin >> pir[i].first >> pir[i].second;
+    sort(pir, pir + n);
+    int cur = n - 2;
+    for(int i = n - 1; i >= 0; i--){
+        if(i == cur) cur--;
+        while(pir[i].first == pir[cur].first){
+            if(pir[i].second > pir[cur].second)
+                pir[cur].first--;
+            else
+                pir[i].first--;
+        }
+    }
+    int res = 0;
+    for(int i = 0; i < n; i++){
+        if(pir[i].first != 0)
+            res += pir[i].second;
+    }
+    cout << res;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int arr[n][1000];
+    for(int i = 0; i < n; i++)
+        cin >> arr[0][i];
+    for(int i = 1; i < n; i++){
+        for(int j = 0; j < n; j++){
+            arr[i][j] = arr[i - 1][j + 1] - arr[i - 1][j];
+    }
+    for(int i = 0; i < n; i++)
+        cout << arr[i][0] << " ";
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <int> vec;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        vec.push_back(x);
+    }
+    sort(vec.begin(), vec.end());
+    for(int i = 0; i < n / 2; i++)
+        cout << vec[i] << "\n" << vec[n - 1 - i];
+    if(n % 2 != 0)
+        cout << vec[n / 2];
+}
+using namespace std;
+int main(){
+    int x, y, mn; cin >> x >> y;
+    int mx = (x - y) / 4;
+    if(x > 5 * y || y > x)
+        cout << -1;
+    else{
+        if(x <= 4 * y)
+            mn = 0;
+        else
+            mn = x - 4 * y;
+    }
+    cout << mn;
+}
+using namespace std;
+int gcd(int a, int b){
+    if(b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+int main(){
+    int x, y; cin >> x >> y;
+    if(x % y != 0){
+        cout << -1;
+        return 0;
+    }
+    int a, b, tmp = x / y;
+    for(int i = 1; i <= sqrt(tmp); i++){
+        if(gcd(i, tmp/i) == 1 && tmp % i == 0){
+            a = i; b = tmp / i;
+        }
+    }
+    cout << a * x << " " << b * x;
+}
+using namespace std;
+int main(){
+    int a, b; cin >> a >> b;
+    int gcd = __gcd(a, b);
+    int lcm = a * b/gcd;
+    cout << (lcm / a) + (lcm / b);
+}
+using namespace std;
+int main(){
+    int n, cnt = 1; cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    string str; str += "G";
+    n = n / 2 + 1;
+    while(cnt++ < n)
+        str += "LG";
+    cout << str.size() << "\n" << str;
+}
+using namespace std;
+int solve(int x){
+    if(x <= 1)
+        return 1;
+    else
+        return solve(x / 2) * 2 + x;
+}
+using namespace std;
+int main(){
+    int n, m, ans = 0; cin >> n >> m;
+    vector <int> freq(10005, 0);
+    vectror <pair <int, int> >range;
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        freq[x]++;
+    }
+    for(int i = 0; i < n; i++){
+        int l, r; cin >> l >> r;
+        range.push_back({r, l});
+    }
+    sort(range.begin(), range.end());
+    for(int i = 0; i < m; i++){
+        int l = range[i].second;
+        int r = range[i].first;
+        for(int j = l; j <= r; j++){
+            if(freq[j] > 0){
+                freq[j]--;
+                ans++;
+                break;
+            }
+        }
+    }
+    cout << ans;
+}
