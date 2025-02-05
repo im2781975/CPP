@@ -48,3 +48,25 @@ int main(){
         cout << "\n";
     }
 }
+using namespace std;
+//wildcard
+int main(){
+    int n; cin >> n;
+    string str; cin >> str;
+    int dv = str.find("*");
+    string first = str.substr(0, dv);
+    string sec = str.substr(dv + 1);
+    int len = sec.length();
+    vector <string> tmp;
+    for(int i = 0; i < n; i++){
+        string ing; cin >> ing;
+        if(str.length() - 1 > ing.length())
+            continue;
+        string c = ing.substr(0, dv);
+        string d = ing.substr(ing.length() - len);
+        if(first == c && sec == d)
+            tmp.push_back(ing);
+    }
+    for(int i = 0; i < tmp.size(); i++)
+        cout << tmp[i] << " ";
+}
