@@ -29,3 +29,22 @@ int main(){
             cout << word << "\n";
     }
 }
+using namespace std;
+// arrange a string characters in a square grid, and then prints them in a zigzag pattern (
+int main(){
+    string str; cin >> str;
+    int len = ceil(sqrt(str.length()));
+    while(str.length() < len * len)
+        str += '.';
+    for(int i = 0; i < len; i++){
+        if(i % 2 == 0){
+            for(int j = i * len; j < (i + 1) * len; j++)
+                cout << str[j] << " ";
+        }
+        else{
+            for(int j = (i + 1) * len - 1; j > i * len - 1; j--)
+                cout << str[j] << " ";
+        }
+        cout << "\n";
+    }
+}
