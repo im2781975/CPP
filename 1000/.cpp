@@ -70,3 +70,38 @@ int main(){
     for(int i = 0; i < tmp.size(); i++)
         cout << tmp[i] << " ";
 }
+using namespace std;
+int delta(int x){
+    if(x % 4 == 0) return x;
+    if(x % 4 == 1) return 1;
+    if(x % 4 == 2) return x + 1;
+    return 0;
+}
+int main(){
+    int x, y; cin >> x >> y;
+    cout << delta(x - 1) ^ delta(y);
+}
+using namespace std;
+int main(){
+    string str, ing; cin >> str >> ing;
+    int len1 = str.length(), len2 = ing.length();
+    int maxL = max(len1, len2);
+    vector <int> vec(maxL, 0), tor(maxL, 0), res(maxL + 1, 0);
+    for(int i = 0; i < len1; i++)
+        vec[len1 - 1 - i] = str[i] - '0';
+    for(int i = 0; i < len2; i++)
+        tor[len2 - 1 - i] = ing[i] - '0';
+    int carry = 0;
+    for(int i = 0; i < maxL; i++){
+        sum = vec[i] + tor[i] + carry;
+        res[i] = sum % 10;
+        carry = sum / 10;
+    }
+    if(carry > 0)
+        res[maxL] = carry;
+    int highestIndex = maxL;
+    while (highestIndex > 0 && res[highestIndex] == 0)
+        highestIndex--;
+    for (int i = highestIndex; i >= 0; i--)
+        cout << res[i] << " ";
+}
