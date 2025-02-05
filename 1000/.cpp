@@ -200,3 +200,136 @@ int main(){
         res += mx + 1;
     cout << res;
 }
+using namespace std;
+// determine whether a student, identified by their id, ranks within the top m students based on their scores in three subjects (sub1, sub2, and sub3).
+int main(){
+    int t; cin >> t;
+    while(t--){
+        int n, m; cin >> n >> m; 
+        // number of student & thereshold
+        int id; cin >> id;
+        vector <int> dent(n), sub1(n), sub2(n), sub3(n);
+        for(int i = 0; i < n; i++)
+            cin >> dent[i] >> sub1[i] >> sub2[i] >> sub3[i];
+        for (int j = 0; j < n; j++) {
+            if (id == dent[j]) { 
+                for (int k = 0; k < n; k++) {
+                    if (j == k) continue;  
+                    if (sub3[k] > sub3[j] || 
+                        (sub3[k] == sub3[j] && sub2[k] > sub2[j]) || 
+                        (sub3[k] == sub3[j] && sub2[k] == sub2[j] && sub1[k] > sub1[j]))
+                        rank++;
+                }
+                break; 
+               
+            }
+        }
+        (rank <= m) ? cout << "YA" : cout << "TIDAK" ;
+    }
+}
+using namespace std;
+int main(){
+    int n, a, b; cin >> n >> a >> b;
+    int x = n - (n * (a / 100));
+    int y = x * (b / 100);
+    cout << x + y;
+}
+using namespace std;
+int main(){
+    string str; getline(cin, str);
+    string ing = "mollav ai";
+    int i = 10, cnt = 0, res = 1;
+    while(i--){
+        if(str[i] == ing[i] || str[i] + 32 = ing[i])
+            cnt++;
+    }
+    for(int i = 0; i < str.length(); i++){
+        if(str[i] == 'e'){
+            if(str[i] == 'u') res *= 3;
+            else res *= 2;
+        }
+    }
+    cout << cnt << " " << res;
+    string str, ing; cin >> str >> ing;
+    cout << str + ing << "\n";
+    int tmp = str.find(ing);
+    if(tmp != -1)
+        cout << "No";
+    else
+        cout << "Yes" << "\n" << str + "molla";
+}
+using namespace std;
+void func(int n, int denom){
+    if(n >= denom){
+        cout << denom << " " << n / denom << "\n";
+        n %= denom;
+    }
+}
+int main(){
+    int n; cin >> n;
+    func(n, 1000);  func(n, 500);
+    func(n, 200);   func(n, 100);
+    func(n, 50);    func(n, 20);
+    func(n, 10);    func(n, 5);
+    func(n, 2);     func(n, 1);
+}
+using namespace std;
+int main(){
+    int n, m, x, y; cin >> n >> m >> x >> y;
+    int a = (n / x) * (m / y);
+    int b = (n / y) * (m / x);
+    cout << max(a, b);
+}
+using namespace std;
+int main(){
+    int x, y, n; cin >> x >> y >> n;
+    int arr[2006], res = 0;
+    for(int i = 0; i < n * n; i++){
+        if(arr[x] == 0){
+            arr[x]++; res++;
+        }
+        int tmp = (x + y) % m;
+        x = y; y = tmp;
+    }
+    cout << res;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    for(int i = 1; i <= n; i++){
+        if(i % 3 == 0 || i % 5 == 0 || i % 7 == 0){
+            if(i % 3 == 0) cout << "Three";
+            else if(i % 5 == 0) cout << "Five";
+            else if(i % 7 == 0) cout << "seven";
+        }
+        else
+            cout << " " << i;
+    }
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <int> vec(n);
+    for(int i = 0; i < n * 2; i++){
+        int x; cin >> x;
+        vec.push_back(x);
+    }
+    sort(vec.begin(), vec.end());
+    int res = 0, tmp = 2 * n - 1;
+    for(int i = tmp; i >= n; i--)
+        res += vec[i];
+    cout << res;
+}
+using namespace std;
+int main(){
+    int n, prv = -1; cin >> n;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++){
+        int x; cin >> x;
+        if(x == 0 || x != prv)
+            vec.push_back(x);
+    }
+    if(vec.size() < n) cout << "0";
+    else if(vec.size() == n) cout << "1";
+    else cout << n + 1;
+}
