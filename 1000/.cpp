@@ -105,3 +105,98 @@ int main(){
     for (int i = highestIndex; i >= 0; i--)
         cout << res[i] << " ";
 }
+using namespace std;
+// identify the name that has the highest number of matching strings from a given list.
+void FindStr() {
+    int n; cin >> n;
+    vector <string> vec(n);
+    unordered_set <string> st;
+    for (int i = 0; i < n; i++) {
+        cin >> vec[i];
+        st.insert(vec[i]);
+    }
+    int m; cin >> m;
+    vector <string> name(m);
+    vector <int> src(m, 0);  
+    for (int i = 0; i < m; i++) {
+        cin >> name[i];
+        int x; cin >> x;
+        for (int j = 0; j < x; j++) {
+            string str; cin >> str;
+            if (st.count(str)) {
+                src[i]++;
+            }
+        }
+    }
+    int maxIdx = 0;
+    for (int i = 1; i < m; i++) {
+        if (src[i] > src[maxIdx])
+            maxIdx = i;
+    }
+    cout << name[maxIdx] << endl;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector < pair < int, int> > pir(n);
+    for(int i = 0; i < n; i++)
+        cin >> pir[i].first >> pir[i].second;
+    sort(pir.rbegin(), pir.rend());
+    int mx = pr[0].second, res = 1;
+    for(int i = 1; i < n; i++){
+        if(pr[i].second > mx){
+            mx = pr[i].second;
+            res++;
+        }
+    }
+    cout << res;
+}
+using namespace std;
+int main(){
+    string str; getline(cin, str);
+    (str.find("molla") != -1) ? cout << str.find("molla") + 1 : cout << -1;
+    double n; cin >> n;
+    cout << fixed << setprecision(2) << (n - 1)/2 * n/2;
+    int x, k; cin >> x >> k;
+    cout << fixed << setprecision(5) << (1 / x) * (x - k - 1) / (x - 1);
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    string arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    /*for(int i = 0; i < n / 2; i++)
+        cout << arr[i] << "\n" << arr[n - 1 - i] << "\n";
+    if(n % 2 != 0)
+        cout << arr[n / 2] << "\n"; */
+    if(n % 2 == 1){
+        for(int i = 1; i <= n /2; i++)
+            swap(arr[i], arr[n - i]);
+    }
+    else{
+        for(int i = 1; i < n /2; i++)
+            swap(arr[i], arr[n - i]);
+    }
+    for(int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+}
+using namespace std;
+// process a list of n integers in groups of size k, adding the max value of each group plus 1 
+//to an accumulator, and finally output the accumulated result.
+int main(){
+    int n, k; cin >> n >> k;
+    int mx = 0, cnt = 0, res = 1;
+    while(n--){
+        cnt++;
+        int x; cin >> x;
+        mx = max(mx, x);
+        if(cnt == k){
+            res += mx + 1;
+            mx = 0; cnt = 0;
+        }
+    }
+    if(cnt > 0)
+        res += mx + 1;
+    cout << res;
+}
