@@ -1058,3 +1058,53 @@ int main(){
     }
     cout << res;
 }
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 4
+int arr[N], tree[4 * N];
+void initial(int node, int start, int end){
+    if(start == end){
+        tree[node] = arr[start]; return;
+    }
+    int left = 2 * node, right = 2 * node + 1;
+    int mid = (start + end) / 2;
+    initial(left, start, mid);
+    initial(right, mid + 1, end);
+    tree[node] = tree[left] + tree[right];
+}
+void update(int node, int start, int end, int pos, int val){
+    if(pos > end || pos < start)
+        return;
+    if(start == end){
+        tree[node] = val;
+        return;
+    }
+    int left = 2 * node, right = 2 * node + 1;
+    int mid = (start + end) / 2;
+    update(left, start, mid, pos, val);
+    update(right, mid + 1, end, pos, val);
+    tree[node] = tree[left] + tree[right];
+}
+int query(int node, int start, int end, int i, int j){
+    if(i > end || j < start) return 0;
+    if(i <= start && j >= end) return tree[node];
+    int left = 2 * node, right = 2 * node + 1, mid = (start + end) / 2;
+    int q1 = query(left, start, mid, i, j);
+    int q2 = query(right, mid + 1, end, i, j);
+    return q1 + q2;
+}
+int main(){
+    int n, q; cin >> n >> q;
+    initial(1, 1, n);
+    while(q--){
+        int type; cin >> type;
+        if(type == 1){
+            int pos, val; cin >> pos >> val;
+            update(1, 1, n, pos, val);
+        }
+        else{
+            int a, b; cin >> a >> b;
+            cout << query(1, 1, n, a, b);
+        }
+    }
+} 
