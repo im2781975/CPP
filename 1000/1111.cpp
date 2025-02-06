@@ -1,4 +1,3 @@
-
 // determine process a list of integers representing the positions of 
 //citizens in Lineland and determine two values for each citizen: minimum & maximum distance to any other citizen.
 void LinelandMail(){
