@@ -131,7 +131,6 @@ int main(){
         }
     }
 }
-#include<bits/stdc++.h>
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
