@@ -166,3 +166,25 @@ int main(){
     string arr[] = {"1/6", "1/3", "1/2", "2/3", "5/6", "1/1", "0/1"};
     cout << arr[maxi] << endl; */
 }
+http://codeforces.com/contest/16/problem/A
+// 16A. Flag
+using namespace std;
+int main(){
+    int n, m; cin >> n >> m;
+    int flag[n];
+    for(int i = 0; i < n; i++)    cin >> flag[i];
+    bool Isvalid = true;
+    for(int i = 0; i < n; i++){
+        for(int j = 1; j < m; j++){
+            if(flag[i][j] != flag[i][0]){
+                Isvalid = false;
+                break;
+            }
+        }
+        if(i > 0 && flag[i][0] == flag[i - 1][0]){
+            Isvalid = false;
+            break;
+        }
+    }
+    cout << Isvalid ? "YES" : "NO";
+}
