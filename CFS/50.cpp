@@ -1,6 +1,6 @@
 using namespace std;
 https://codeforces.com/problemset/problem/1/A
-// A. Theatre Square
+// 1A. Theatre Square
 int main(){
     unsigned long long n, m, a; cin >> n >> m >> a;
     cout << ceil((double)n / a) * ceil((double)m / a);
@@ -13,7 +13,7 @@ int main(){
 }
 using namespace std;
 https://codeforces.com/problemset/problem/1/B
-// B. Spreadsheets
+// 1B. Spreadsheets
 bool determine(const string &str){
     if(str[0] != 'R' || !(str[1] >= '0' && str[1] <= '9'))    return true;
     int i = 1;
@@ -150,7 +150,7 @@ int main(){
     }
 }
 http://codeforces.com/contest/9/problem/A
-// Die Roll
+// 9A. Die Roll
 using namespace std;
 int main(){
     int y, w; cin >> y >> w;
