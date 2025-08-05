@@ -188,3 +188,22 @@ int main(){
     }
     cout << Isvalid ? "YES" : "NO";
 }
+http://codeforces.com/contest/16/problem/B
+// 16B. Burglar and Matches
+using namespace std;
+bool comp(pair <int, int> a, pair <int, int> b){
+    return a.second > b.second;
+}
+int main(){
+    int n, m; cin >> n >> m;
+    vector <pair <int, int> >boxes(m);
+    for(int i = 0; i < m; i++)    cin >> boxes[i].first >> boxes[i].second;
+    sort(boxes.begin(), boxes.end(), comp);
+    int total_matches = 0, rem = n;
+    for(int i = 0; i < m && rem > 0; i++){
+        int take = min(boxes[i].first, rem);
+        total_matches += 1LL * take * boxes[i].second;
+        rem -= take;
+    }
+    cout << total_matches;
+}
