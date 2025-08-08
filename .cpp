@@ -98,7 +98,7 @@ typedef vector<xx>          vll;
 #define PPB pop_back  
 #define PPF pop_front  
 #define Endl endl
-
+#define fastread()      (ios_base:: sync_with_stdio(false),cin.tie(NULL));
 #define in(arr,n) for(int i=0;i<n;i++) cin>>arr[i];
 #define in2(arr,n,m) for(int i=0;i<n;i++){ for(int j=0;j<m;j++) cin>>arr[i][j];}
 #define dis(arr,n) for(int i=0;i<n;i++) cout<<arr[i]<<" "; cout<<endl;
