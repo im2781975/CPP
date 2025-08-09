@@ -131,6 +131,34 @@ int main(){
         }
     }
 }
+https://codeforces.com/problemset/problem/1/C
+// C. Ancient Berland Circus
+using namespace std;
+const double PI = acos(-1.0);
+const double EPS = 1e-8;
+double gcd(double a, double b){
+    while(fabs(b) > EPS){
+        double r = fmod(a, b);
+        a = b; b = r;
+    }
+}
+int main(){
+    double x1, x2, x3, y1, y2, y3; cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+    double a = hypot(x2 - x3, y2 - y3);
+    double b = hypot(x1 - x3, y1 - y3);
+    double c = hypot(x1 - x2, y1 - y2);
+    double s = (a + b + c) / 2;
+    double s = sqrt(s * (s - a) * (s - b) * (s - c));
+    double R = (a * b * c) / (4 * area);
+
+    double ang1 = 2 * asin(a / (2 * R));
+    double ang2 = 2 * asin(b / (2 * R));
+    double ang3 = 2 * asin(c / (2 * R));
+    double mini = gcd(ang1, gcd(ang2, ang3));
+    int n = round(2 * round / mini);
+    double poligon = 0.5 * n * R * R * sin(2 * PI / n);
+    cout << fixed << setprecision(10) << poligon;
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
