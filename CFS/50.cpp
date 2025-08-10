@@ -159,6 +159,82 @@ int main(){
     double poligon = 0.5 * n * R * R * sin(2 * PI / n);
     cout << fixed << setprecision(10) << poligon;
 }
+https://codeforces.com/problemset/problem/2/A
+// A. Winner
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <pair <string, int> >rounds(n);
+    map <string, int> points;
+    for(int i = 0; i < n; i++){
+        cin >> rounds[i].first >> rounds[i].second;
+        points[rounds[i].first] += rounds[i].second;
+    }
+    int sign = INT_MIN;
+    set <string> winner;
+    for(map <string, int> ::iterator it = points.begin(); it != points.end(); ++it){
+        if(it->second > sign){
+            sign = it->second;
+            winner.clear();
+            winner.insert(it->first);
+        }
+        else if(it->second == sign)    winner.insert(it->first);
+    }/*
+    for(const auto &[name, score] : points){
+        if(score > sign){
+            sign = score;
+            winner.clear();
+            winner.insert(name);
+        }
+        else if(score == sign)    winner.insert(name)
+    }*/
+    if(winner.size() > 1){
+        points.clear();
+        for(vector <pair <string, int> > ::iterator it = rounds.begin(); it != rounds.end(); ++it){
+            points[it->first] += it-> second;
+            if(points[it->first] >= sign && winner.count(it->first) == 1){
+                winner.clear();
+                winner.insert(it->first);
+                break;
+            }
+        }/*
+        for(const auto &[name, score] : rounds){
+            points[name] += score;
+            if(points[name] >= sign && winner.count(name) == 1){
+                winner.clear();
+                winner.insert(name);
+                break;
+            }
+        } */
+    }
+    cout << *winner.begin();
+    /*
+    for(int i = 0; i < n; i++){
+        string name;
+        int score; cin >> name >> score;
+        rounds[i] = {name, score};
+        points[name] += score;
+    }
+    int sign = INT_MIN;
+    for(map <string, int> ::iterator it = points.begin(); it!= points.end(); ++it)
+        sign = max(sign, it->second);
+    map <string, int> entrant;
+    for(map <string, int> ::iterator it = points.begin(); it != points.end(); ++it){
+        if(it->second == sign)
+            entrant[it->first] = 0;
+    }
+    for(vector <pair <string, int> > ::iterator it = rounds.begin(); it != rounds.end(); it++){
+        const string &name = it->first;
+        int score = it->second;
+        if(entrant.count(name)){
+            entrant[name] += score;
+            if(entrant[name] >= score){
+                cout << name;
+                break
+            }
+        }
+    }*/
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
