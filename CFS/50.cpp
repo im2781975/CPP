@@ -228,7 +228,7 @@ int main(){
         int score = it->second;
         if(entrant.count(name)){
             entrant[name] += score;
-            if(entrant[name] >= score){
+            if(entrant[name] >= sign){
                 cout << name;
                 break
             }
