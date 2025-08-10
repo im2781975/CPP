@@ -211,29 +211,30 @@ int main(){
     /*
     for(int i = 0; i < n; i++){
         string name;
-        int score; cin >> name >> score;
+        int score;
         rounds[i] = {name, score};
         points[name] += score;
     }
+    map <string, int> candid;
     int sign = INT_MIN;
-    for(map <string, int> ::iterator it = points.begin(); it!= points.end(); ++it)
+    for(auto it = points.begin(); it != points.end(); it++)
         sign = max(sign, it->second);
-    map <string, int> entrant;
-    for(map <string, int> ::iterator it = points.begin(); it != points.end(); ++it){
-        if(it->second == sign)
-            entrant[it->first] = 0;
+    for(auto it = points.begin(); it != points.end(); it++){
+        if(sign == it->second)
+            candid[it->first] = 0;
+            // prepare for tie-break replay
     }
-    for(vector <pair <string, int> > ::iterator it = rounds.begin(); it != rounds.end(); it++){
+    for(auto it = rounds.begin(); it != rounds.end(); it++){
         const string &name = it->first;
         int score = it->second;
-        if(entrant.count(name)){
-            entrant[name] += score;
-            if(entrant[name] >= sign){
+        if(candid.count(name)){
+            candid[name] += score;
+            if(candid[name] >= sign){
                 cout << name;
-                break
+                break;
             }
         }
-    }*/
+    } */
 }
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
