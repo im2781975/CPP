@@ -1,1 +1,2 @@
-Attached Solved Problems From various sources For Practice Purpose.
+
+A repository to keep track of problem solving practice, containing solutions from various platforms
