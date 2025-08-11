@@ -236,6 +236,174 @@ int main(){
         }
     } */
 }
+https://codeforces.com/problemset/problem/2/B
+// 2B. The least round way
+using namespace std;
+vector <vector <pair <int, int>>>matrix;
+int power(int num, int base){
+    int cnt = 0;
+    while(num % base == 0){
+        num /= base;
+        cnt++;
+    }
+    return cnt;
+}
+int getmatrix(bool five, int r, int c){
+    return five ? matrix[r][c].second : matrix[r][c].first;
+}
+int findpath(int r, int c, bool five, vector <vector <int> >&dp){
+    // dp[r][c] = minimum total cost from (0,0) to (r,c) when counting either 2’s or 5’s
+    string path = "";
+    // If that cost matches the value in dp[r-1][c], then 
+    // the optimal path came from above (r-1, c) else (r, c - 1)
+    if(r > 0 && dp[r][c] - getmatrix(five, r, c) == dp[r - 1][c]){
+        r--; path += "D";
+    }
+    else{
+        c--; path += "R";
+    }
+}
+int main(){
+    int n; cin >> n;
+    int row = -1, col = -1;
+    bool hasZero = true;
+    matrix.assign(n, vector <pair <int, int> >(n));
+    vector <vector <int>>dp2(n, vector <int>(n, INT_MAX));
+    vector <vector <int>>dp5(n, vector <int>(n, INT_MAX));
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            int k; cin >> k;
+            if(k == 0){
+                row = i; col = j;
+                k = 10;
+                hasZero = false;
+            }
+            matrix[i][j] = {power(k, 2), power(k, 5)};
+        }
+    }
+    dp2[0][0] = matrix[0][0].first;
+    dp5[0][0] = matrix[0][0].second;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(i > 0){
+                dp2[i][j] = min(dp[i][j], dp[i - 1][j] + matrix[i][j].first);
+                dp5[i][j] = min(dp[i][j], dp[i- 1][j] + matrix[i][j].second);
+            }
+            if(j > 0){
+                dp2[i][j] = min(dp[i][j], dp[i][j - 1] + matrix[i][j].first);
+                dp5[i][j] = min(dp[i][j], dp[i][j - 1] + matrix[i][j].second);
+            }
+        }
+    }
+    int minDecimal = min(dp2[n - 1][n - 1], dp5[n - 1][n - 1]);
+    string path;
+    if(hasZero && minDecimal > 1){
+        minDecimal = 1;
+        // Create a path that goes through the zero cell
+        path = string(col - 1, 'R') + string(n - 1, 'D') + string(n - 1 - col, 'R');
+    }
+    else{
+        if(dp5[n - 1][n - 1] == minDecimal)
+            path = findpath(n - 1, n - 1, true, dp5);
+        else
+            path = findpath(n - 1, n - 1, false, dp2);
+    }
+    cout << minDecimal << "\n" << path;
+}
+using namespace std;
+const int peak = 1010;
+int n;
+int grid[peak][peak];
+int dp[2][peak][peak];
+bool path[2][peak][peak];
+int printpath(int row, int col){
+    // Start at (top-left) and move down until we reach the row containing the zero cell.
+    for(int i = 1; i < row; i++)    cout << 'D';
+    for(int j = 1; j < col; j++)    cout << 'R';
+    // After touching the zero, keep moving down until we hit the last row.
+    for(int i = row; i < n; i++)    cout << 'D';
+    for(int j = col; j < n; j++)    cout << 'R';
+}
+void cntfactors(int num, int cnt2, int cnt5){
+    cnt2 = cnt5 = 0;
+    while(num && num % 2 == 0){
+        num /= 2; cnt2++;
+    }
+    while(num && num % 5 == 0){
+        num /= 5; cnt5++;
+    }
+}
+int main(){
+    int n; cin >> n;
+    int row = 0, col = 0;
+    bool hasZero = false;
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= n; j++){
+            cin >> grid[i][j];
+            if(grid[i][j] == 0){
+                hasZero = true;
+                row = i; col = j;
+            }
+        }
+    }
+    if(grid[1][1] = 0){
+        printpath(1, 1);
+        return 0;
+    }
+    // k loop is used for 2 dimention(2's & 5's factors)
+    for(int k = 0; k < 2; k++){
+        for(int i = 0; i <= n; i++){
+            for(int j = 0; j <= n; j++)
+                dp[k][i][j] = INT_MAX;
+        }
+    }
+    int cnt2, cnt5;
+    cntfactors(grid[1][1], cnt2, cnt5);
+    dp[0][1][1] = cnt2; dp[1][1][1] = cnt5;
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= n; j++){
+            if(!(i == 1 && j == 1) && grid[i][j]){
+                cntfactors(grid[i][j], cnt2, cnt5);
+                if(dp[0][i - 1][j] < dp[0][i][j - 1]){
+                    dp[0][i][j] = dp[0][i - 1][j] + cnt2;
+                    path[0][i][j] = false;
+                }
+                else{
+                    dp[0][i][j] = dp[0][i][j - 1] + cnt2;
+                    path[0][i][j] = true;
+                }
+                if(dp[1][i - 1][j] < dp[1][i][j - 1]){
+                    dp[1][i][j] = dp[1][i - 1][j] + cnt5;
+                    path[1][i][j] = false;
+                }
+                else{
+                    dp[1][i][j] = dp[1][i][j - 1] + cnt5;
+                    path[1][i][j] = true;
+                }
+            }
+        }
+    }
+    int type = (dp[0][n][n] > dp[1][n][n]) ? 1 : 0;
+    int minZeros = min(dp[0][n][n], dp[1][n][n]);
+    if(minZeros >= 1 && hasZero){
+        printpath(row, col);
+        return 0;
+    }
+    cout << minZeros << '\n';
+    stack <char> st;
+    while(i > 1 || j > 1){
+        if(path[type][i][j]){
+            st.push('R'); j--;
+        }
+        else{
+            st.push('D'); i--;
+        }
+    }
+    while(!st.empty()){
+        cout << st.top(); st.pop();
+    }
+    cout << '\n';
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
