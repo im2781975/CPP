@@ -132,7 +132,7 @@ int main(){
     }
 }
 https://codeforces.com/problemset/problem/1/C
-// C. Ancient Berland Circus
+// 1C. Ancient Berland Circus
 using namespace std;
 const double PI = acos(-1.0);
 const double EPS = 1e-8;
@@ -160,7 +160,7 @@ int main(){
     cout << fixed << setprecision(10) << poligon;
 }
 https://codeforces.com/problemset/problem/2/A
-// A. Winner
+// 2A. Winner
 using namespace std;
 int main(){
     int n; cin >> n;
