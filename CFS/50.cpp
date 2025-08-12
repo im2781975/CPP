@@ -404,6 +404,70 @@ int main(){
     }
     cout << '\n';
 }
+https://codeforces.com/problemset/problem/3/A
+// A. Shortest path of the king
+using namespace std;
+int main(){
+    string start, end; cin >> start >> end;
+    // dx counts columns (horizontal distance) because it's based on letter differences.
+    // dy counts rows (vertical distance) because it's based on digit differences.
+    int dx = abs(start[0] - end[0]);
+    int dy = abs(start[1] - end[1]);
+    cout << max(dx, dy) << '\n';
+    while(start != end){
+        string move = "";
+        if(start[0] < end[0]){
+            move += 'R'; start[0]++;
+            // cout << 'R';
+        }
+        else if(start[0] > end[0]){
+            move += 'L'; start[0]--;
+            // cout << 'L';
+        }
+        if(start[1] < end[1]){
+            move += 'U'; start[1]++;
+            // cout << 'U';
+        }
+        else if(start[1] > end[1]){
+            move += 'D'; start[1]--;
+            // cout << 'D';
+        }
+        // cout << endl;
+        cout << move << '\n';
+    }
+}
+using namespace std;
+typedef pair <int, int> square;
+int main(){
+    square start, end; 
+    list <string> res;
+    
+    string str; cin >> str;
+    start.first = str[1] - '1';
+    start.second = str[0] - 'a';
+    cin >> str;
+    end.first = str[1] - '1';
+    end.second = str[0] - 'a';
+    while(start != end){
+        string move = "";
+        if(start.first < end.first){
+            move += 'U'; start.first++;
+        }
+        else if(start.first > end.first){
+            move += 'D';  start.first--;
+        }
+        if(start.second < end.second){
+            move += 'R'; start.second++;
+        }
+        else if(start.second > end.second){
+            move += 'L'; start.second--;
+        }
+        res.push_back(move);
+    }
+    cout << res.size() << "\n";
+    for(auto it = res.begin(); it!= res.end(); ++it)
+        cout << *it << "\n";
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
