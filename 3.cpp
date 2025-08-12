@@ -4091,6 +4091,27 @@ int main() {
     cout << ans << '\n';
 }
 using namespace std;
+int main()
+{
+    int n,d;
+    cin>>n>>d;
+    int heights[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>heights[i];
+    }
+    int ans=0;
+    for(int j=0;j<n;j++)
+    {
+        for(int k=0;k<n;k++)
+        {
+        if(abs(heights[j]-heights[k])<=d && j!=k)
+        ans++;
+        }
+    }
+    cout<<ans<<endl;
+}
+using namespace std;
 http://codeforces.com/problemset/problem/32/B
 // B. Borze
 int main() {
@@ -4134,6 +4155,33 @@ int main(){
     for (int i = 0; i < c; i++)
         cout << ans[i];
     return 0;
+}
+using namespace std;
+int main()
+{
+    string Bcode;
+    cin>>Bcode; 
+    string decoded;
+    int i=0;
+    while(i!=Bcode.size())
+    {
+        if(Bcode[i]=='.')
+        {
+        decoded+="0";
+        i++;
+        }
+        else if(Bcode.substr(i,2)=="-.")
+        {
+        decoded+="1";
+        i+=2;
+        }
+        else
+        {
+            decoded+="2";
+            i+=2;
+        }
+    }
+    cout<<decoded<<endl;
 }
 using namespace std;
 int main() {
@@ -4340,6 +4388,35 @@ int main(){
     cout << a1 << " " << a2;
     return 0;
 }
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    int heights[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>heights[i];
+    }
+    vector<pair<int,int>> ans;
+    for(int j=0;j<n-1;j++)
+    {
+        int diff=abs(heights[j]-heights[j+1]);
+        ans.push_back(make_pair(diff,j));
+    }
+    int lastfirstdiff=abs(heights[n-1]-heights[0]);
+    sort(ans.begin(),ans.end());
+    if(lastfirstdiff<ans[0].first)
+    cout<<n<<" "<<1<<endl;
+    else
+    cout<<ans[0].second+1<<" "<<ans[0].second+2<<endl;    
+}
+    
+
+
+
+
+
 
 https://codeforces.com/problemset/problem/34/B
 // B. Sale
@@ -4548,6 +4625,25 @@ int main(){
     cin >> a >> b;
     cout << accumulate(d + a, d + b, 0) << endl;
     return 0;
+}
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    int arr[n-1];
+    for(int i=0;i<n-1;i++)
+    {
+        cin>>arr[i];
+    }
+    int a,b;
+    cin>>a>>b;
+    int ans=0;
+    for(int i=a-1;i<b-1;i++)
+    {
+        ans+=arr[i];
+    }
+    cout<<ans<<endl;
 }
 using namespace std;
 int main(){
@@ -5101,6 +5197,23 @@ int main() {
     return 0;
 }
 using namespace std;
+bool integer(double k)
+    {
+        if( k == (int) k) 
+        return true;
+        return false;
+    }
+int main()
+{
+    int n;
+    cin>>n;
+    double x=sqrt(1-(4*1*-(2*n)));
+    if(integer(-1+x) || integer(-1-x))
+    cout<<"YES"<<endl;
+    else
+    cout<<"NO"<<endl;    
+}
+using namespace std;
 bool isTriangular(int num){
     if (num < 0)    return false;
     int sum = 0;
@@ -5248,6 +5361,32 @@ int main() {
         }
     }
     cout << (isVowel(lastAlpha) ? "YES" : "NO") << endl;
+}
+using namespace std;
+int main()
+{
+    char s[110];
+    cin.getline(s, sizeof(s) / sizeof(s[0]), '\n');
+    bool vowel(true);
+    char* p = s;
+    while (*p != '\0')
+    {
+        if (*p >= 'a' && *p <= 'z' || *p >= 'A' && *p <= 'Z')
+        {
+            if (*p == 'a' ||*p == 'e' ||*p == 'i' ||*p == 'o' ||*p == 'u' ||*p == 'y' ||
+                *p == 'A' ||*p == 'E' ||*p == 'I' ||*p == 'O' ||*p == 'U' ||*p == 'Y')
+            {
+                vowel = true;
+            }
+            else
+            {
+                vowel = false;
+            }
+        }
+        ++p;
+    }
+    cout << (vowel ? "YES" : "NO") << endl;
+    return 0;
 }
 #include <bits/stdc++.h>
 using namespace std;
@@ -5550,6 +5689,32 @@ int main(){
     while (pos < s.length() && s[pos] != 'o')
         ++pos;
     cout << (pos < s.length())? "YES" : "NO";
+}
+using namespace std;
+#define ll long long
+bool solve(string s)
+{
+    int n = s.size();
+    string hello = "hello";
+    int j =  0, c = 0;
+    for(int i=0; i<n; i++)
+    {
+        if(s[i] == hello[j])
+        {
+            j++;
+            c++;
+        }
+    }
+    if(c==5)
+    return 1;
+    return 0;
+}
+int main()
+{
+    string s;
+    cin>>s;
+    cout<<(solve(s)?"YES" : "NO")<<endl;
+    return 0;
 }
 using namespace std;
 int main() {
@@ -5863,7 +6028,33 @@ int main(){
         transform(s.begin(), s.end(), s.begin(), ::toupper);
     cout << s;
 }
-
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    cin>>s;
+    int u=0,l=0;
+    string upper=s;
+    string lower=s;
+    for(int i=0;i<s.size();i++)
+    {
+        if(s[i]>=65 && s[i]<=90)
+        {
+            lower[i]=lower[i]+32;
+            u++;
+        }
+        else
+        {
+            upper[i]=upper[i]-32;
+            l++;
+        }
+    }
+    if(l>=u)
+    cout<<lower<<endl;
+    else
+    cout<<upper<<endl;
+}
 using namespace std;
 int main(){
     char t[100]; cin >> t;
@@ -6053,6 +6244,19 @@ int main() {
     for (size_t i = 0; i < a.length(); ++i)
         result += (a[i] == b[i]) ? '0' : '1';
     cout << result << '\n';
+}
+using namespace std;
+int main()
+{
+    string m,n;
+    cin>>m>>n;
+    int l=m.size();
+    string ans;
+    for(int i=0;i<l;i++)
+    {
+        ans+=((m[i]-'0') ^ (n[i]-'0')) + '0'; 
+     }
+    cout<<ans<<endl;
 }
 https://codeforces.com/problemset/problem/61/A
 // Ultra-Fast Mathematician.
@@ -6440,6 +6644,26 @@ int main()
     }
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+// Code Written By: Vikash Patel
+
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        string word;
+        cin>>word;
+        int l=word.size();
+        if(l>10)
+        cout<<word[0]+to_string(l-2)+word[l-1]<<endl;
+        else
+        cout<<word<<endl;
+    }
+}
 https://codeforces.com/problemset/problem/73/A
 A. The Elder Trolls IV: Oblivon
 using namespace std;
@@ -6658,6 +6882,25 @@ int main()
     int C = remove0(c);
     cout << (A + B == C ? "YES" : "NO") << endl;
     return 0;
+}
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    long long a,b;
+    cin>>a>>b;
+    long long c = a+b;
+    string as = to_string(a);
+    string bs = to_string(b);
+    string cs = to_string(c);
+    as.erase(remove(as.begin(), as.end(), '0'), as.end());
+    bs.erase(remove(bs.begin(), bs.end(), '0'), bs.end());
+    cs.erase(remove(cs.begin(), cs.end(), '0'), cs.end());
+    long long ans = stoll(as)+stoll(bs);
+    if(ans == stoll(cs))
+    cout<<"YES"<<endl;
+    else
+    cout<<"NO"<<endl;
 }
 using namespace std;
 int removezeros(int num){
@@ -7028,7 +7271,45 @@ int main() {
 
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
 
+// Code Written By: Vikash Patel
+
+bool checkPrime(int x)
+{
+    if(x<=1)
+    {
+        return false;
+    }
+    for(int i=2;i<x;i++)
+    {
+        if(x%i==0)
+        return false;
+    }
+    return true;
+}
+
+int nextPrime(int n , int m)
+{
+    for(int i=n+1;i<=m;i++)
+    {
+        if(checkPrime(i))
+        return i;
+    }
+    return 0;
+}
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    if(!checkPrime(m))
+    cout<<"NO"<<endl;
+    else if(nextPrime(n,m)==m)
+    cout<<"YES"<<endl;
+    else
+    cout<<"NO"<<endl;
+}
 #include <iostream>
 
 using namespace std;
