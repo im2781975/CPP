@@ -1876,6 +1876,280 @@ int main() {
     cout << left << " " << n - left << endl;
     return 0;
 }
+https://codeforces.com/problemset/problem/6/D
+// D. Lizards and Basements 2
+using namespace std;
+const int maxn=20;
+const int inf=1e9;
+int dp[maxn][maxn][maxn];
+int vis[maxn][maxn][maxn];
+int path[maxn][maxn][maxn];
+int n,a,b;
+int h[maxn];
+int dfs(int i,int cur,int pre)
+{
+	cur=cur<0?0:cur;
+	pre=pre<0?0:pre;
+	if(i==n)
+	{
+		if(cur==0) return 0;
+		else return inf;
+	}
+	if(vis[i][cur][pre]) return dp[i][cur][pre];
+	vis[i][cur][pre]=1;
+	int &ans=dp[i][cur][pre];
+	ans=inf;
+	int lb=(pre+b-1)/b,hb=max(lb,max((cur+a-1)/a,(h[i+1]+b)/b));
+	int p;
+	for(int j=lb;j<=hb;j++)
+	{
+		int tmp=j+dfs(i+1,h[i+1]+1-j*b,cur-j*a);
+		if(ans>tmp)
+		{
+			ans=tmp;
+			path[i][cur][pre]=j;
+		}
+	}
+	return ans;
+}
+void print(int i,int cur,int pre)
+{
+	cur=cur<0?0:cur;
+	pre=pre<0?0:pre;
+	if(i==n) return;
+	int tmp=path[i][cur][pre],cnt=tmp;
+	while(cnt--) printf("%d ",i);
+	print(i+1,h[i+1]+1-tmp*b,cur-tmp*a);
+}
+int main()
+{
+	cin>>n>>a>>b;
+	for(int i=1;i<=n;i++) cin>>h[i];
+	memset(vis,0,sizeof(vis));
+	int ans=dfs(2,h[2]+1,h[1]+1);
+	cout<<ans<<"\n";
+	print(2,h[2]+1,h[1]+1);
+	puts("");
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int INF = 1e9;
+
+int n, a, b;
+vector<int> h; // heights
+int dp[20][20][20];
+bool visited[20][20][20];
+int pathChoice[20][20][20];
+
+// Recursive DP
+int dfs(int i, int cur, int pre) {
+    cur = max(cur, 0);
+    pre = max(pre, 0);
+
+    // Base case: reached end
+    if (i == n) {
+        return (cur == 0) ? 0 : INF;
+    }
+
+    if (visited[i][cur][pre]) return dp[i][cur][pre];
+    visited[i][cur][pre] = true;
+
+    int &ans = dp[i][cur][pre];
+    ans = INF;
+
+    // Lower bound of hits for this stage
+    int lb = (pre + b - 1) / b;
+    // Upper bound: max hits needed considering both current and next
+    int hb = max(lb, max((cur + a - 1) / a, (h[i + 1] + b) / b));
+
+    for (int j = lb; j <= hb; j++) {
+        int temp = j + dfs(i + 1, h[i + 1] + 1 - j * b, cur - j * a);
+        if (temp < ans) {
+            ans = temp;
+            pathChoice[i][cur][pre] = j; // store choice
+        }
+    }
+    return ans;
+}
+
+// Print path of chosen hits
+void printPath(int i, int cur, int pre) {
+    cur = max(cur, 0);
+    pre = max(pre, 0);
+    if (i == n) return;
+
+    int hits = pathChoice[i][cur][pre];
+    for (int k = 0; k < hits; k++) {
+        cout << i << " ";
+    }
+    printPath(i + 1, h[i + 1] + 1 - hits * b, cur - hits * a);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n >> a >> b;
+    h.resize(n + 1);
+    for (int i = 1; i <= n; i++) {
+        cin >> h[i];
+    }
+
+    memset(visited, false, sizeof(visited));
+
+    int ans = dfs(2, h[2] + 1, h[1] + 1);
+    cout << ans << "\n";
+    printPath(2, h[2] + 1, h[1] + 1);
+    cout << "\n";
+
+    return 0;
+}
+https://codeforces.com/problemset/problem/6/E
+// E. Exposition
+using namespace std;
+typedef pair<int,int> pii;
+const int maxn=100010;
+int h[maxn];
+int d1[maxn][20],d2[maxn][20];
+void RMQ_init(int* A,int n)
+{
+	for(int i=0;i<n;i++) d1[i][0]=d2[i][0]=A[i];
+	for(int j=1;(1<<j)<=n;j++)
+		for(int i=0;i+(1<<j)-1<n;i++)
+		{
+			d1[i][j]=min(d1[i][j-1],d1[i+(1<<(j-1))][j-1]);
+			d2[i][j]=max(d2[i][j-1],d2[i+(1<<(j-1))][j-1]);
+		}
+}
+int RMQ1(int L,int R)
+{
+	int k=0;
+	while((1<<(k+1))<=R-L+1) k++;
+	return min(d1[L][k],d1[R-(1<<k)+1][k]);
+}
+int RMQ2(int L,int R)
+{
+	int k=0;
+	while((1<<(k+1))<=R-L+1) k++;
+	return max(d2[L][k],d2[R-(1<<k)+1][k]);
+}
+int main()
+{
+	int n,k;
+	scanf("%d%d",&n,&k);
+	for(int i=0;i<n;i++) scanf("%d",&h[i]);
+	int f=0,r=0,maxl=0;
+	vector<pii> v;
+	RMQ_init(h,n);
+	while(r<n)
+	{
+		while(r<n)
+		{
+			int minh=RMQ1(f,r),maxh=RMQ2(f,r);
+			if(maxh-minh>k) break;
+			if(r-f+1>maxl)
+			{
+				maxl=r-f+1;
+				v.clear();
+				v.push_back(make_pair(f,r));
+			}
+			else if(r-f+1==maxl)
+				v.push_back(make_pair(f,r));
+			r++;
+		}
+		while(f<r)
+		{
+			int minh=RMQ1(f,r),maxh=RMQ2(f,r);
+			if(maxh-minh<=k) break;
+			f++;
+		}
+	}
+	printf("%d %d\n",maxl,(int)v.size());
+	for(int i=0;i<v.size();i++) printf("%d %d\n",v[i].first+1,v[i].second+1);
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+using pii = pair<int, int>;
+
+vector<vector<int>> minTable, maxTable;
+vector<int> h;
+int n, k;
+
+void buildSparseTable(const vector<int> &A) {
+    int logn = __lg(A.size()) + 1;
+    minTable.assign(A.size(), vector<int>(logn));
+    maxTable.assign(A.size(), vector<int>(logn));
+
+    for (int i = 0; i < (int)A.size(); i++) {
+        minTable[i][0] = A[i];
+        maxTable[i][0] = A[i];
+    }
+
+    for (int j = 1; (1 << j) <= (int)A.size(); j++) {
+        for (int i = 0; i + (1 << j) - 1 < (int)A.size(); i++) {
+            minTable[i][j] = min(minTable[i][j - 1], minTable[i + (1 << (j - 1))][j - 1]);
+            maxTable[i][j] = max(maxTable[i][j - 1], maxTable[i + (1 << (j - 1))][j - 1]);
+        }
+    }
+}
+
+int queryMin(int L, int R) {
+    int k = __lg(R - L + 1);
+    return min(minTable[L][k], minTable[R - (1 << k) + 1][k]);
+}
+
+int queryMax(int L, int R) {
+    int k = __lg(R - L + 1);
+    return max(maxTable[L][k], maxTable[R - (1 << k) + 1][k]);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n >> k;
+    h.resize(n);
+    for (int &x : h) cin >> x;
+
+    buildSparseTable(h);
+
+    int f = 0, r = 0, maxLen = 0;
+    vector<pii> segments;
+
+    while (r < n) {
+        while (r < n) {
+            int minh = queryMin(f, r);
+            int maxh = queryMax(f, r);
+            if (maxh - minh > k) break;
+
+            if (r - f + 1 > maxLen) {
+                maxLen = r - f + 1;
+                segments.clear();
+                segments.emplace_back(f, r);
+            } else if (r - f + 1 == maxLen) {
+                segments.emplace_back(f, r);
+            }
+            r++;
+        }
+        while (f < r) {
+            int minh = queryMin(f, r);
+            int maxh = queryMax(f, r);
+            if (maxh - minh <= k) break;
+            f++;
+        }
+    }
+
+    cout << maxLen << " " << segments.size() << "\n";
+    for (auto &p : segments) {
+        cout << p.first + 1 << " " << p.second + 1 << "\n";
+    }
+
+    return 0;
+}
 
 #include <iostream>
 #include <vector>
