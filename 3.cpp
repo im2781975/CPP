@@ -1002,6 +1002,131 @@ int main() {
     cout << totalLength << endl;
     return 0;
 }
+https://codeforces.com/problemset/problem/5/B
+// B. Center Alignment
+typedef long long int ll;
+#define dbg printf("in\n");
+#define nl printf("\n");
+#define inf 1000000000
+#define pp pair<ll,ll>
+
+using namespace std;
+int main(){
+	int n;
+	string str;
+	vector <string> s;
+	int m = 0;
+	while (getline(cin,str)){
+		s.push_back(str);
+		k = str.length();
+		m = max(m, k);
+	}
+	n = s.size();
+	int a[n], b[n];
+	int flag = 0;
+	for (i = 0; i < s.size(); i++){ 
+		k = m - s[i].length();
+		if (k % 2 == 0)
+			a[i] = k / 2;
+		else
+			a[i] = (k / 2) +flag,flag=1-flag;
+		b[i] = k - a[i];
+	}
+
+	for (i = 0; i < m + 2; i++)
+		cout << '*';
+
+	cout << endl;
+	for (i = 0; i < s.size(); i++){
+		cout << '*';
+		for (j = 0; j < a[i]; j++)
+			cout << ' ';
+		cout << s[i];
+		for (j = 0; j < b[i]; j++)
+			cout << ' ';
+		cout <<'*'<<endl;
+	}
+	for (i = 0; i < m + 2; i++)
+		cout << '*';
+	cout << endl;
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<string> lines;
+    string str;
+    size_t maxLen = 0;
+    while (getline(cin, str)) {
+        lines.push_back(str);
+        maxLen = max(maxLen, str.length());
+    }
+    int n = lines.size();
+    vector<int> leftPadding(n), rightPadding(n);
+    int flag = 0;
+    for (int i = 0; i < n; i++) {
+        int extraSpaces = maxLen - lines[i].length();
+        if (extraSpaces % 2 == 0) {
+            leftPadding[i] = extraSpaces / 2;
+        } else {
+            leftPadding[i] = (extraSpaces / 2) + flag;
+            flag = 1 - flag; // alternate when odd spaces
+        }
+        rightPadding[i] = extraSpaces - leftPadding[i];
+    }
+    cout << string(maxLen + 2, '*') << "\n";
+    for (int i = 0; i < n; i++) {
+        cout << '*'
+             << string(leftPadding[i], ' ')
+             << lines[i]
+             << string(rightPadding[i], ' ')
+             << '*'
+             << "\n";
+    }
+    cout << string(maxLen + 2, '*') << "\n";
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+#define PB push_back
+#define SZ(x) ((int)(x).size())
+vector<string> v;
+string s;
+int main() {
+    int mx = 0;
+    while (getline(cin, s)) {
+        v.PB(s);
+        mx = max(SZ(s), mx); 
+    }
+    int fl = 1; 
+    for (int i = 0; i < mx + 2; i++) {
+        cout << '*';
+    }
+    cout << endl;
+    for (int i = 0; i < SZ(v); i++) {
+        cout << '*';
+        int d = mx - SZ(v[i]), l, r;
+        r = d / 2;
+        l = (d + 1) / 2;
+        if (d & 1) {
+            if (fl) {
+                swap(l, r);
+                fl = 0;
+            } else {
+                fl = 1;
+            }
+        }
+        for (int j = 0; j < l; j++) cout << ' ';
+        cout << v[i];
+        for (int j = 0; j < r; j++) cout << ' ';
+        cout << '*' << endl;
+    }
+    for (int i = 0; i < mx + 2; i++) {
+        cout << '*';
+    }
+    cout << endl;
+}
 
 https://codeforces.com/problemset/problem/6/A
 // A. Triangle
@@ -1242,6 +1367,213 @@ int main()
 
     cout << ans.first << " " << ans.second << endl;
 
+    return 0;
+}
+https://codeforces.com/problemset/problem/5/D
+D. Follow Traffic Rules
+const double EPS = 1e-8;
+
+int cmpDouble(double x) {
+    if (fabs(x) < EPS) return 0;
+    return x < 0 ? -1 : 1;
+}
+
+int main() {
+    double acceleration, maxSpeed, totalDistance, slowZoneDistance, slowZoneSpeed;
+    cin >> acceleration >> maxSpeed >> totalDistance >> slowZoneDistance >> slowZoneSpeed;
+
+    double timeToSlowZone, timeAfterSlowZone;
+    double speedAtEndOfSlowZone;
+    double extraDistance = totalDistance - slowZoneDistance;
+
+    // Speed possible if accelerating all the way from start in slow zone
+    double possibleSpeedInSlowZone = sqrt(slowZoneSpeed * slowZoneSpeed / 2 + acceleration * slowZoneDistance);
+
+    // CASE 1: Slow zone too short to reach max speed and required slow speed
+    if (cmpDouble(slowZoneDistance - maxSpeed * maxSpeed / (2 * acceleration)) <= 0 &&
+        cmpDouble(sqrt(2 * acceleration * slowZoneDistance) - slowZoneSpeed) <= 0) 
+    {
+        timeToSlowZone = sqrt(2 * slowZoneDistance / acceleration);
+        speedAtEndOfSlowZone = sqrt(2 * acceleration * slowZoneDistance);
+    }
+    // CASE 2: Can reach max speed before slow zone ends
+    else if (cmpDouble(slowZoneDistance - maxSpeed * maxSpeed / (2 * acceleration)) >= 0 &&
+             cmpDouble(slowZoneSpeed - maxSpeed) >= 0) 
+    {
+        timeToSlowZone = slowZoneDistance / maxSpeed + maxSpeed / (2 * acceleration);
+        speedAtEndOfSlowZone = maxSpeed;
+    }
+    // CASE 3: Can reach intermediate speed and slow to required slow speed
+    else if (cmpDouble(maxSpeed - possibleSpeedInSlowZone) >= 0 &&
+             cmpDouble(possibleSpeedInSlowZone - slowZoneSpeed) >= 0) 
+    {
+        timeToSlowZone = (2 * possibleSpeedInSlowZone - slowZoneSpeed) / acceleration;
+        speedAtEndOfSlowZone = slowZoneSpeed;
+    }
+    // CASE 4: Need to adjust speed to meet slow zone speed
+    else {
+        timeToSlowZone = slowZoneDistance / maxSpeed -
+                         (2 * maxSpeed * maxSpeed - slowZoneSpeed * slowZoneSpeed) / (2 * acceleration * maxSpeed) +
+                         (2 * maxSpeed - slowZoneSpeed) / acceleration;
+        speedAtEndOfSlowZone = slowZoneSpeed;
+    }
+
+    // Time after the slow zone
+    if (cmpDouble(extraDistance - (maxSpeed * maxSpeed - speedAtEndOfSlowZone * speedAtEndOfSlowZone) / (2 * acceleration)) >= 0) {
+        timeAfterSlowZone = extraDistance / maxSpeed -
+                            (maxSpeed * maxSpeed - speedAtEndOfSlowZone * speedAtEndOfSlowZone) / (2 * acceleration * maxSpeed) +
+                            (maxSpeed - speedAtEndOfSlowZone) / acceleration;
+    } 
+    else {
+        timeAfterSlowZone = (sqrt(2 * acceleration * extraDistance + speedAtEndOfSlowZone * speedAtEndOfSlowZone) - speedAtEndOfSlowZone) / acceleration;
+    }
+
+    cout << fixed << setprecision(10) << timeToSlowZone + timeAfterSlowZone << endl;
+    return 0;
+}
+
+using namespace std;
+const double eps=1e-8;
+int dcmp(double x)
+{
+	if(fabs(x)<eps) return 0;
+	else return x<0?-1:1;
+}
+int main()
+{
+	double a,v,l,d,w;
+	cin>>a>>v>>l>>d>>w;
+	double t1,t2,v0;
+	double u=sqrt(w*w/2+a*d);
+	double r=l-d;
+	if(dcmp(d-v*v/2/a)<=0 && dcmp(sqrt(2*a*d)-w)<=0)
+		t1=sqrt(2*d/a),v0=sqrt(2*a*d);
+	else if(dcmp(d-v*v/2/a)>=0 && dcmp(w-v)>=0)
+		t1=d/v+v/2/a,v0=v;
+	else if(dcmp(v-u)>=0 && dcmp(u-w)>=0)
+		t1=(2*u-w)/a,v0=w;
+	else
+		t1=d/v-(2*v*v-w*w)/(2*a*v)+(2*v-w)/a,v0=w;
+
+	if(dcmp(r-(v*v-v0*v0)/(2*a))>=0)
+		t2=r/v-(v*v-v0*v0)/(2*a*v)+(v-v0)/a;
+	else t2=(sqrt(2*a*r+v0*v0)-v0)/a;
+
+	printf("%.10f\n",t1+t2);
+	return 0;
+}
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+https://codeforces.com/problemset/problem/5/E
+// E. Bindian Signalizing
+using namespace std;
+const int maxn=1000010;
+int a[maxn];
+int b[maxn];
+int l[maxn],r[maxn],c[maxn];
+int main()
+{
+	int n;
+	scanf("%d",&n);
+	int maxv=0,maxp;
+	for(int i=0;i<n;i++)
+	{
+		scanf("%d",&a[i]);
+		if(a[i]>maxv)
+		{
+			maxv=a[i];
+			maxp=i;
+		}
+	}
+	for(int i=maxp;i<n;i++) b[i-maxp]=a[i];
+	for(int i=0;i<=maxp;i++) b[i+n-maxp]=a[i];
+	c[n]=0;
+	for(int i=n-1;i>=0;i--)
+	{
+		r[i]=i+1;
+		while(r[i]<n && b[i]>b[r[i]]) r[i]=r[r[i]];
+		if(r[i]<n && b[i]==b[r[i]]) 
+		{
+			c[i]=c[r[i]]+1;
+			r[i]=r[r[i]];
+		}
+	}
+	for(int i=1;i<n;i++)
+	{
+		l[i]=i-1;
+		while(l[i]>0 && b[i]>=b[l[i]]) l[i]=l[l[i]];
+	}
+	long long ans=0;
+	for(int i=1;i<n;i++)
+	{
+		ans+=c[i];
+		if(l[i]==0 && r[i]==n) ans++;
+		else ans+=2;
+	}
+	cout<<ans<<"\n";
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<int> a(n), b(2 * n), leftIdx(n), rightIdx(n), countEqual(n + 1);
+    int maxValue = 0, maxPos = 0;
+
+    // Read input & find the maximum element and its index
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        if (a[i] > maxValue) {
+            maxValue = a[i];
+            maxPos = i;
+        }
+    }
+
+    // Rotate array so that max element starts at position 0 in 'b'
+    for (int i = maxPos; i < n; i++) b[i - maxPos] = a[i];
+    for (int i = 0; i <= maxPos; i++) b[i + n - maxPos] = a[i];
+
+    countEqual[n] = 0;
+
+    // Compute 'right' array: the next greater element to the right
+    for (int i = n - 1; i >= 0; i--) {
+        rightIdx[i] = i + 1;
+        while (rightIdx[i] < n && b[i] > b[rightIdx[i]]) {
+            rightIdx[i] = rightIdx[rightIdx[i]];
+        }
+        if (rightIdx[i] < n && b[i] == b[rightIdx[i]]) {
+            countEqual[i] = countEqual[rightIdx[i]] + 1;
+            rightIdx[i] = rightIdx[rightIdx[i]];
+        }
+    }
+
+    // Compute 'left' array: previous greater or equal element
+    for (int i = 1; i < n; i++) {
+        leftIdx[i] = i - 1;
+        while (leftIdx[i] > 0 && b[i] >= b[leftIdx[i]]) {
+            leftIdx[i] = leftIdx[leftIdx[i]];
+        }
+    }
+
+    long long ans = 0;
+    // Calculate answer based on the problem logic
+    for (int i = 1; i < n; i++) {
+        ans += countEqual[i];
+        if (leftIdx[i] == 0 && rightIdx[i] == n) {
+            ans++;
+        } else {
+            ans += 2;
+        }
+    }
+
+    cout << ans << "\n";
     return 0;
 }
 
