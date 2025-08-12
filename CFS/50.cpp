@@ -405,7 +405,7 @@ int main(){
     cout << '\n';
 }
 https://codeforces.com/problemset/problem/3/A
-// A. Shortest path of the king
+// 3A. Shortest path of the king
 using namespace std;
 int main(){
     string start, end; cin >> start >> end;
@@ -467,6 +467,59 @@ int main(){
     cout << res.size() << "\n";
     for(auto it = res.begin(); it!= res.end(); ++it)
         cout << *it << "\n";
+}
+https://codeforces.com/problemset/problem/3/B
+// 3B. Lorry
+using namespace std;
+int main(){
+    // v -> volume of the lorry
+    int n, v; cin >> n >> v;
+    vector <pair <int, int> >kayak, catamaran;
+    for(int i = 0; i < n; i++){
+        int type, cap; cin >> type >> cap;
+        if(type == 1) kayak.emplace_back(cap, i + 1);
+        else catamaran.emplace_back(cap, i + 1);
+    }
+    sort(kayak.rbegin(), keyak.rend());
+    sort(catamaran.rbegin(), catamaran.rend());
+    int cur = 0, best = 0, kayak_peak = 0, catamaran_peak = 0;
+    int k = min((int)kayak.size(), v);
+    for(int i = 0; i < k; i++)    cur += kayak[i].first;
+    int c = min((int)catamaran.size(), (v - k) / 2);
+    for(int i = 0; i < c; i++) cur += catamaran[i].first;
+    best = cur;
+    kayak_peak = k; catamaran_peak = c;
+    while(k > 0 && c < (int)catamaran.size()){
+        --k;
+        cur -= kaya[k].first;
+        if(k + (c + 1) * 2 <= v){
+            ++c;
+            cur += catamaran[c].first;
+        }
+        if(cur > best){
+            best = cur;
+            kayak_peak = k; catamaran_peak = c;
+        }
+    } /*
+    vector <int> sumkayak(kayak.size() + 1, 0), sumcatamaran(catamaran.size() + 1, 0);
+    for(int i = 1; i <= (int)kayak.size(); i++)
+        sumkayak[i] = sumkayak[i - 1] + kayak[i - 1].first;
+    for(int i = 1; i <= (int)catamaran.size(); i++)
+        sumcatamaran[i] = sumcatamaran[i - 1] + catamaran[i - 1].first;
+    for(int k = 0; k <= (int)kayak.size(); ++k){
+        if(k > v)    break;
+        int rem = v - k;
+        int c = min((int)catamaran.size(), rem / 2);
+        int val = sumkayak[k] + sumcatamaran[c];
+        if(val > best){
+            best = val;
+            kayak_peak = k;
+            catamaran_peak = c;
+        }
+    } */
+    cout << best << "\n";
+    for(int i = 0; i < kayak_peak; i++)    cout << kayak[i].second << "\n";
+    for(int i = 0; i < catamaran_peak; i++)    cout << catamaran[i].second << "\n";
 }
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
