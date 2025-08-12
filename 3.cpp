@@ -560,6 +560,51 @@ int main()
 
     return 0;
 }
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <string>
+using namespace std;
+typedef pair<int,int> pii;
+typedef long long LL;
+const int maxn=50010;
+int main()
+{
+	string str;
+	cin>>str;
+	int flag=0;
+	LL val=0;
+	priority_queue<pii> q;
+	for(int i=0;i<str.size();i++)
+	{
+		if(str[i]=='(') flag++;
+		else if(str[i]==')') flag--;
+		else
+		{
+			flag--;
+			int a,b;
+			cin>>a>>b;
+			val+=b;
+			str[i]=')';
+			q.push(make_pair(b-a,i));
+		}
+		if(flag<0)
+		{
+			if(q.empty()) break;
+			flag+=2;
+			pii tmp=q.top();q.pop();
+			val-=tmp.first;
+			str[tmp.second]='(';
+		}
+	}
+	if(flag!=0) puts("-1");
+	else
+	{
+		cout<<val<<"\n"<<str<<"\n";
+	}
+	return 0;
+}
 using namespace std;
 
 int main()
@@ -878,6 +923,75 @@ int main(){
         printf("\n");
     }
     return 0;
+}
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+struct env
+{
+	int w,h,id;
+	bool operator<(const env& tmp) const
+	{
+		return w<tmp.w;
+	}
+} e[5010];
+int dp[5010];
+int dir[5010];
+int vis[5010];
+int n,w,h,m=0;
+int dfs(int u)
+{
+	if(vis[u]) return dp[u];
+	vis[u]=1;
+	dp[u]=1;
+	dir[u]=-1;
+	for(int i=u+1;i<m;i++) if(e[i].w > e[u].w && e[i].h > e[u].h)
+	{
+		int tmp=dfs(i);
+		if(dp[u]<tmp+1)
+		{
+			dp[u]=tmp+1;
+			dir[u]=i;
+		}
+	}
+	return dp[u];
+}
+int main()
+{
+	scanf("%d%d%d",&n,&w,&h);
+	for(int i=0;i<n;i++)
+	{
+		scanf("%d%d",&e[m].w,&e[m].h);
+		e[m].id=i+1;
+		if(e[m].w <= w || e[m].h <= h) continue;
+		m++;
+	}
+	sort(e,e+m);
+	memset(vis,0,sizeof(vis));
+	int ans=0,p;
+	for(int i=0;i<m;i++)
+	{
+		int tmp=dfs(i);
+		if(ans<tmp)
+		{
+			ans=tmp;
+			p=i;
+		}
+	}
+	if(ans==0) puts("0");
+	else
+	{
+		printf("%d\n",ans);
+		while(p!=-1)
+		{
+			printf("%d ",e[p].id);
+			p=dir[p];
+		}
+		puts("");
+	}
+	return 0;
 }
 #include <iostream>
 #include <cstdio>
@@ -2204,6 +2318,310 @@ int main(){
     cout << answer;
     return 0;
 }
+https://codeforces.com/problemset/problem/7/D
+D. Palindrome Degree
+using namespace std;
+const int maxn=5000010;
+const int x=123;
+typedef long long unsigned ULL;
+typedef pair<int,int> pii;
+queue<pii> q;
+ULL H0[maxn],H1[maxn],xp[maxn];
+void hash_init(string s)
+{
+	int n=s.size();
+	H0[n]=H1[n]=0;
+	for(int i=n-1;i>=0;i--) H0[i]=H0[i+1]*x+(s[i]-'a');
+	for(int i=0;i<=n-1;i++) H1[n-i-1]=H1[n-i]*x+(s[i]-'a');
+	xp[0]=1;
+	for(int i=1;i<=n;i++) xp[i]=xp[i-1]*x;
+}
+int main()
+{
+	string s;
+	cin>>s;
+	hash_init(s);
+	int n=s.size();
+	int ans=1;
+	q.push(make_pair(1,1));
+	while(!q.empty())
+	{
+		pii t=q.front();q.pop();
+		int u=t.first,c=t.second;
+		//cout<<u<<" "<<c<<endl;
+		int v1=2*u,v2=2*u+1;
+		if(v1<=n)
+		{
+			if(H0[0]-H0[u]*xp[u]==H1[n-v1]-H1[n-v1+u]*xp[u])
+			{
+				q.push(make_pair(v1,c+1));
+				ans+=c+1;
+			}
+			else q.push(make_pair(v1,0));
+		}
+		if(v2<=n)
+		{
+			if(H0[0]-H0[u]*xp[u]==H1[n-v2]-H1[n-v2+u]*xp[u])
+			{
+				q.push(make_pair(v2,c+1));
+				ans+=c+1;
+			}
+			else q.push(make_pair(v2,0));
+		}
+	}
+	printf("%d\n",ans);
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+using ULL = unsigned long long;
+using pii = pair<int, int>;
+
+const int BASE = 123;  // hash base
+vector<ULL> H0, H1, xp;
+
+void hash_init(const string &s) {
+    int n = s.size();
+    H0.assign(n + 1, 0);
+    H1.assign(n + 1, 0);
+    xp.assign(n + 1, 1);
+
+    // Forward hash from end to start
+    for (int i = n - 1; i >= 0; i--)
+        H0[i] = H0[i + 1] * BASE + (s[i] - 'a');
+
+    // Reverse hash from start to end
+    for (int i = 0; i < n; i++)
+        H1[n - i - 1] = H1[n - i] * BASE + (s[i] - 'a');
+
+    // Precompute powers of BASE
+    for (int i = 1; i <= n; i++)
+        xp[i] = xp[i - 1] * BASE;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string s;
+    cin >> s;
+    int n = s.size();
+
+    hash_init(s);
+
+    queue<pii> q;
+    q.push({1, 1}); // (node index, chain length)
+    int ans = 1;
+
+    while (!q.empty()) {
+        auto [u, c] = q.front();
+        q.pop();
+
+        int left = 2 * u;
+        int right = left + 1;
+
+        // Process left child
+        if (left <= n) {
+            bool match = (H0[0] - H0[u] * xp[u]) ==
+                         (H1[n - left] - H1[n - left + u] * xp[u]);
+            if (match) {
+                q.push({left, c + 1});
+                ans += c + 1;
+            } else {
+                q.push({left, 0});
+            }
+        }
+
+        // Process right child
+        if (right <= n) {
+            bool match = (H0[0] - H0[u] * xp[u]) ==
+                         (H1[n - right] - H1[n - right + u] * xp[u]);
+            if (match) {
+                q.push({right, c + 1});
+                ans += c + 1;
+            } else {
+                q.push({right, 0});
+            }
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/8/C
+C. Looking for Order
+using namespace std;
+const int inf=0x3fffffff;
+typedef pair<int,int> pii;
+struct point
+{
+	int x,y;
+	point(int x=0,int y=0):x(x),y(y){}
+};
+int dp[1<<24],n;
+pii dir[1<<24];
+int all;
+point o,p[50];
+int dis(point a,point b){return (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y);}
+int dfs(int st)
+{
+	if(st==all) return 0;
+	if(dp[st]!=-1) return dp[st];
+	int& ans=dp[st];
+	ans=inf;
+	int u,st0;
+	for(int i=0;i<n;i++)
+		if(((1<<i)&st)==0)
+		{
+			u=i;
+			st0=st|(1<<i);
+			break;
+		}
+	for(int i=0;i<n;i++)
+		if(((1<<i)&st0)==0)
+		{
+			int tmp=dfs(st0|(1<<i))+dis(p[i],p[u]);
+			if(tmp<ans)
+			{
+				ans=tmp;
+				dir[st]=make_pair(u,i);
+			}
+		}
+	int tmp=dfs(st0)+dis(p[u],o);
+	if(tmp<ans)
+	{
+		ans=tmp;
+		dir[st]=make_pair(u,-1);
+	}
+	return ans;
+}
+void print(int st)
+{
+	if(st==all) return;
+	int u=dir[st].first,v=dir[st].second;
+	printf("%d %d ",u+1,v+1);
+	if(v+1!=0) printf("0 ");
+	st|=(1<<u);
+	if(v!=-1) st|=(1<<v);
+	print(st);
+}
+int main()
+{
+	memset(dp,-1,sizeof(dp));
+	scanf("%d%d",&o.x,&o.y);
+	scanf("%d",&n);
+	int ans=0;
+	for(int i=0;i<n;i++)
+	{
+		scanf("%d%d",&p[i].x,&p[i].y);
+		ans+=dis(o,p[i]);
+	}
+	all=(1<<n)-1;
+	ans+=dfs(0);
+	printf("%d\n",ans);
+	printf("0 ");
+	print(0);
+	puts("");
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Point {
+    int x, y;
+    Point(int x = 0, int y = 0) : x(x), y(y) {}
+};
+
+inline int distSq(const Point &a, const Point &b) {
+    int dx = a.x - b.x, dy = a.y - b.y;
+    return dx * dx + dy * dy;
+}
+
+int n;
+Point origin;
+vector<Point> p;
+vector<int> dp;
+vector<pair<int, int>> dirChoice;
+int allMask;
+
+int dfs(int mask) {
+    if (mask == allMask) return 0;
+    int &ans = dp[mask];
+    if (ans != -1) return ans;
+    ans = INT_MAX;
+
+    int u = -1;
+    int maskWithU = mask;
+    // Find first unvisited point
+    for (int i = 0; i < n; i++) {
+        if (!(mask & (1 << i))) {
+            u = i;
+            maskWithU = mask | (1 << i);
+            break;
+        }
+    }
+
+    // Try pairing u with another unvisited v
+    for (int v = 0; v < n; v++) {
+        if (!(maskWithU & (1 << v))) {
+            int cost = dfs(maskWithU | (1 << v)) + distSq(p[u], p[v]);
+            if (cost < ans) {
+                ans = cost;
+                dirChoice[mask] = {u, v};
+            }
+        }
+    }
+
+    // Try sending u alone back to origin
+    int cost = dfs(maskWithU) + distSq(p[u], origin);
+    if (cost < ans) {
+        ans = cost;
+        dirChoice[mask] = {u, -1};
+    }
+
+    return ans;
+}
+
+void printPath(int mask) {
+    if (mask == allMask) return;
+    auto [u, v] = dirChoice[mask];
+    cout << u + 1 << " ";
+    if (v != -1) cout << v + 1 << " ";
+    cout << 0 << " ";
+    mask |= (1 << u);
+    if (v != -1) mask |= (1 << v);
+    printPath(mask);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> origin.x >> origin.y;
+    cin >> n;
+    p.resize(n);
+    for (int i = 0; i < n; i++) {
+        cin >> p[i].x >> p[i].y;
+    }
+
+    allMask = (1 << n) - 1;
+    dp.assign(1 << n, -1);
+    dirChoice.assign(1 << n, {-1, -1});
+
+    // Base distance: sum of distances from origin to each point (like your original)
+    int baseDist = 0;
+    for (int i = 0; i < n; i++) {
+        baseDist += distSq(origin, p[i]);
+    }
+
+    int ans = baseDist + dfs(0);
+    cout << ans << "\n0 ";
+    printPath(0);
+    cout << "\n";
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/9/A
 // A. Die Roll
 using namespace std;
@@ -2340,6 +2758,593 @@ int main(){
         }
     }
     cout << operations << '\n';
+    return 0;
+}
+https://codeforces.com/problemset/problem/9/C
+C. Hexadecimal's Numbers
+using namespace std;
+int main()
+{
+	int n;
+	scanf("%d",&n);
+	int ans=1;
+	for(int i=1;i<10;i++)
+	{
+		int tmp;
+		for(int j=0;j<(1<<i);j++)
+		{
+			tmp=1;
+			for(int k=0;k<i;k++)
+				tmp=tmp*10+((j&(1<<k))?1:0);
+			if(tmp<=n) 
+				ans++;
+		}
+	}
+	printf("%d\n",ans);
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n;
+    cin >> n;
+    int ans = 1; // "1" itself
+
+    for (int len = 1; len < 10; ++len) { // length of remaining bits after first '1'
+        for (int mask = 0; mask < (1 << len); ++mask) {
+            long long num = 1; // leading '1'
+            for (int bit = 0; bit < len; ++bit) {
+                num = num * 10 + ((mask & (1 << bit)) ? 1 : 0);
+            }
+            if (num <= n) {
+                ans++;
+            }
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/9/D
+// D. How many trees?
+using namespace std;
+typedef long long LL;
+const int maxn=50;
+int n,h;
+LL dp[maxn][maxn];
+int vis[maxn][maxn];
+LL dfs(int c,int d)
+{
+	if(c<d) return 0;
+	if(c==0) return d==0?1:0;
+	if(d==0) return dfs(c,1);
+	if(vis[c][d]) return dp[c][d];
+	vis[c][d]=1;
+	LL &ans=dp[c][d];
+	ans=dfs(c,d+1);
+	for(int i=1;i<=c;i++)
+	{
+		ans+=(dfs(i-1,d-1)-dfs(i-1,d))*(dfs(c-i,0)-dfs(c-i,d-1));
+		ans+=(dfs(i-1,0)-dfs(i-1,d-1))*(dfs(c-i,d-1)-dfs(c-i,d));
+		ans+=(dfs(i-1,d-1)-dfs(i-1,d))*(dfs(c-i,d-1)-dfs(c-i,d));
+	}
+	return ans;
+}
+int main()
+{
+	scanf("%d%d",&n,&h);
+	memset(vis,0,sizeof(vis));
+	LL ans=dfs(n,h);
+	cout<<ans<<"\n";
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+using LL = long long;
+
+const int MAXN = 50;
+LL dp[MAXN][MAXN];
+bool vis[MAXN][MAXN];
+int n, h;
+
+LL dfs(int nodes, int minHeight) {
+    if (nodes < minHeight) return 0;
+    if (nodes == 0) return (minHeight == 0) ? 1 : 0;
+    if (minHeight == 0) return dfs(nodes, 1);
+
+    if (vis[nodes][minHeight]) return dp[nodes][minHeight];
+    vis[nodes][minHeight] = true;
+
+    LL &ans = dp[nodes][minHeight];
+    ans = dfs(nodes, minHeight + 1);
+
+    for (int i = 1; i <= nodes; i++) {
+        LL left_d1 = dfs(i - 1, minHeight - 1);
+        LL left_d2 = dfs(i - 1, minHeight);
+        LL left_0  = dfs(i - 1, 0);
+
+        LL right_d1 = dfs(nodes - i, minHeight - 1);
+        LL right_d2 = dfs(nodes - i, minHeight);
+        LL right_0  = dfs(nodes - i, 0);
+
+        ans += (left_d1 - left_d2) * (right_0 - right_d1);
+        ans += (left_0 - left_d1) * (right_d1 - right_d2);
+        ans += (left_d1 - left_d2) * (right_d1 - right_d2);
+    }
+
+    return ans;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n >> h;
+    memset(vis, 0, sizeof(vis));
+
+    LL ans = dfs(n, h);
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/10/C
+// C. Digital Root
+using namespace std;
+const int maxn=1000010;
+long long c[10];
+int f[maxn];
+int prime[maxn];
+int vis[maxn];
+int d(int x)
+{
+	int tmp=0;
+	while(x)
+	{
+		tmp+=x%10;
+		x/=10;
+	}
+	return tmp<10?tmp:d(tmp);
+}
+void init()
+{
+	memset(vis,0,sizeof(vis));
+	f[1]=1;
+	int tot=0;
+	for(int i=2;i<=1000000;i++)
+	{
+		if(!vis[i])
+		{
+			f[i]=2;
+			prime[tot++]=i;
+		}
+		for(int j=0;j<tot;j++)
+		{
+			if(i*prime[j]>1000000) break;
+			vis[i*prime[j]]=1;
+			if(i%prime[j]==0) 
+			{
+				int tmp=i;
+				while(tmp%prime[j]==0) tmp/=prime[j];
+				f[i*prime[j]]=(f[i/tmp]+1)*f[tmp];
+				break;
+			}
+			else f[i*prime[j]]=f[i]*f[prime[j]];
+		}
+	}
+}
+int main()
+{
+	init();
+	int n;
+	scanf("%d",&n);
+	long long res=0;
+	for(int i=1;i<=n;i++)
+	{
+		c[d(i)]++;
+		res+=f[i];
+	//	cout<<f[i]<<endl;
+	}
+	long long ans=0;
+	for(int i=0;i<10;i++)
+		for(int j=0;j<10;j++)
+		{
+			long long k=d(i*j),tmp;
+			if(i==j) tmp=c[i]*c[i];
+			else tmp=c[i]*c[j];
+			ans+=tmp*c[k];
+		}
+	//cout<<res<<" "<<ans<<endl;
+	cout<<ans-res<<endl;
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 1000000;
+long long c[10]; // count of numbers with given digital root
+int f[MAXN + 1]; // number of divisors
+int prime[MAXN / 10];
+bool vis[MAXN + 1];
+
+// Compute digital root
+inline int d(int x) {
+    int sum = 0;
+    while (x) {
+        sum += x % 10;
+        x /= 10;
+    }
+    return (sum < 10) ? sum : d(sum);
+}
+
+// Precompute number of divisors for 1..MAXN
+void init() {
+    memset(vis, 0, sizeof(vis));
+    f[1] = 1;
+    int tot = 0;
+
+    for (int i = 2; i <= MAXN; i++) {
+        if (!vis[i]) {
+            f[i] = 2;
+            prime[tot++] = i;
+        }
+        for (int j = 0; j < tot; j++) {
+            long long mul = 1LL * i * prime[j];
+            if (mul > MAXN) break;
+            vis[mul] = true;
+            if (i % prime[j] == 0) {
+                int tmp = i;
+                int exp = 0;
+                while (tmp % prime[j] == 0) {
+                    tmp /= prime[j];
+                    exp++;
+                }
+                f[mul] = f[tmp] * (exp + 2);
+                break;
+            } else {
+                f[mul] = f[i] * f[prime[j]];
+            }
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    init();
+    int n;
+    cin >> n;
+
+    long long res = 0;
+    memset(c, 0, sizeof(c));
+
+    for (int i = 1; i <= n; i++) {
+        int dr = d(i);
+        c[dr]++;
+        res += f[i];
+    }
+
+    long long ans = 0;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            long long tmp = (i == j) ? c[i] * c[i] : c[i] * c[j];
+            ans += tmp * c[d(i * j)];
+        }
+    }
+
+    cout << (ans - res) << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/10/D
+// D. LCIS
+using namespace std;
+const int maxn = 510;
+int n,m;
+int a[maxn],b[maxn];
+int dp[maxn][maxn];
+int path[maxn][maxn];
+void print(int i,int j,int pre)
+{
+	if(path[i][j]==0) 
+	{
+		if(j!=pre) printf("%d ",b[j]);
+		return;
+	}
+	print(i-1,path[i][j],j);
+	if(j!=pre) printf("%d ",b[j]);
+}
+int main()
+{
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++) scanf("%d",&a[i]);
+	scanf("%d",&m);
+	for(int i=1;i<=m;i++) scanf("%d",&b[i]);
+	memset(dp,0,sizeof(dp));
+	memset(path,0,sizeof(path));
+	for(int i=1;i<=n;i++)
+	{
+		int tmp=0,k=0;
+		for(int j=1;j<=m;j++)
+		{
+			dp[i][j]=dp[i-1][j];
+			path[i][j]=j;
+			if(a[i]>b[j] && tmp<dp[i-1][j]) 
+			{
+				tmp=dp[i-1][j];
+				k=j;
+			}
+			if(a[i]==b[j]) 
+			{
+				dp[i][j]=tmp+1;
+				path[i][j]=k;
+			}
+		}
+	}
+	int ans=0,p=0;
+	for(int i=1;i<=m;i++)
+		if(ans<dp[n][i])
+		{
+			ans=dp[n][i];
+			p=i;
+		}
+	printf("%d\n",ans);
+	print(n,p,0);
+	puts("");
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 510;
+int n, m;
+int a[MAXN], b[MAXN];
+int dp[MAXN][MAXN], path[MAXN][MAXN];
+
+// Recursive function to print LCIS
+void printPath(int i, int j, int prev) {
+    if (i == 0 || j == 0) return;
+    if (path[i][j] == 0) {
+        if (j != prev) cout << b[j] << " ";
+        return;
+    }
+    printPath(i - 1, path[i][j], j);
+    if (j != prev) cout << b[j] << " ";
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+
+    cin >> m;
+    for (int i = 1; i <= m; i++) cin >> b[i];
+
+    memset(dp, 0, sizeof(dp));
+    memset(path, 0, sizeof(path));
+
+    for (int i = 1; i <= n; i++) {
+        int tmp = 0, k = 0;
+        for (int j = 1; j <= m; j++) {
+            dp[i][j] = dp[i - 1][j];
+            path[i][j] = j;
+
+            if (a[i] > b[j] && tmp < dp[i - 1][j]) {
+                tmp = dp[i - 1][j];
+                k = j;
+            }
+            if (a[i] == b[j]) {
+                dp[i][j] = tmp + 1;
+                path[i][j] = k;
+            }
+        }
+    }
+
+    // Find the max LCIS length and endpoint
+    int ans = 0, pos = 0;
+    for (int j = 1; j <= m; j++) {
+        if (dp[n][j] > ans) {
+            ans = dp[n][j];
+            pos = j;
+        }
+    }
+
+    cout << ans << "\n";
+    if (ans > 0) {
+        printPath(n, pos, 0);
+        cout << "\n";
+    }
+
+    return 0;
+}
+https://codeforces.com/problemset/problem/11/D
+// D. A Simple Task
+using namespace std;
+typedef long long LL;
+LL dp[1<<19][19];
+int vis[1<<19][19],n,m;
+int g[19][19];
+LL dfs(int st,int cur,int u)
+{
+	if(vis[st][u]) return dp[st][u];
+	vis[st][u]=1;
+	LL &ans=dp[st][u];
+	ans=0;
+	for(int v=cur;v<n;v++)
+		if(g[u][v])
+		{
+			if(v==cur && st!=((1<<v)|(1<<u))) ans++;
+			else if(v!=cur && ((st&(1<<v))==0)) ans+=dfs(st^(1<<v),cur,v);
+		}
+	return ans;
+}
+int main()
+{
+	freopen("in.txt","r",stdin);
+	scanf("%d%d",&n,&m);
+	while(m--)
+	{
+		int u,v;
+		scanf("%d%d",&u,&v);
+		u--;v--;
+		g[u][v]=g[v][u]=1;
+	}
+	LL ans=0;
+	for(int i=0;i<n;i++) ans+=dfs((1<<i),i,i);
+	cout<<ans/2<<"\n";
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+using LL = long long;
+const int MAXN = 19;
+LL dp[1 << MAXN][MAXN];
+bool visited[1 << MAXN][MAXN];
+int adj[MAXN][MAXN];
+int n, m;
+
+// Count cycles using bitmask DP
+LL dfs(int mask, int start, int u) {
+    if (visited[mask][u]) return dp[mask][u];
+    visited[mask][u] = true;
+
+    LL &ans = dp[mask][u];
+    ans = 0;
+
+    for (int v = start; v < n; v++) {
+        if (!adj[u][v]) continue;
+
+        // If we reached start and it's not just the edge start-u
+        if (v == start && mask != ((1 << v) | (1 << u))) {
+            ans++;
+        }
+        // Visit unvisited node
+        else if (v != start && !(mask & (1 << v))) {
+            ans += dfs(mask | (1 << v), start, v);
+        }
+    }
+    return ans;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n >> m;
+    memset(adj, 0, sizeof(adj));
+    memset(visited, 0, sizeof(visited));
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--;
+        adj[u][v] = adj[v][u] = 1;
+    }
+
+    LL totalCycles = 0;
+    for (int i = 0; i < n; i++) {
+        totalCycles += dfs(1 << i, i, i);
+    }
+
+    // Each cycle counted twice (once in each direction)
+    cout << totalCycles / 2 << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/12/D
+D. Ball 
+using namespace std;
+const int maxn = 500010;
+int n, h[maxn];
+struct lady
+{
+	int A, B, C;
+} l[maxn];
+int cmp(lady a, lady b)
+{
+	return (a.A == b.A && a.B < b.B) || (a.A > b.A);
+}
+int main()
+{
+	scanf("%d",&n);
+	for(int i=0;i<n;i++)
+		scanf("%d",&l[i].A);
+	for(int i=0;i<n;i++)
+		scanf("%d",&l[i].B), h[i] = l[i].B;
+	for(int i=0;i<n;i++)
+		scanf("%d",&l[i].C);
+	sort(l, l+n, cmp);
+	sort(h, h+n);
+	for(int i=0;i<n;i++)
+		l[i].B = n - (lower_bound(h,h+n,l[i].B) - h);
+	memset(h, 0, sizeof(h));
+	int ans = 0;
+	for(int i=0;i<n;i++)
+	{
+		int tmp = 0;
+		for(int j=l[i].B-1;j;j-=j&-j) tmp = max(tmp, h[j]);
+		if(tmp > l[i].C) ans++;
+		for(int j=l[i].B;j<=n;j+=j&-j) h[j] = max(h[j], l[i].C);
+	}
+	printf("%d\n", ans);
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int maxn = 500010;
+int n;
+int A[maxn], B[maxn], C[maxn];
+int h[maxn], idx[maxn];
+
+// Compare indices instead of struct
+bool cmp(int i, int j) {
+    return (A[i] == A[j] && B[i] < B[j]) || (A[i] > A[j]);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> A[i];
+    for (int i = 0; i < n; i++) {
+        cin >> B[i];
+        h[i] = B[i];
+    }
+    for (int i = 0; i < n; i++) cin >> C[i];
+
+    // Sort by A desc, then B asc, using indices
+    iota(idx, idx + n, 0);
+    sort(idx, idx + n, cmp);
+
+    // Coordinate compress B
+    sort(h, h + n);
+    for (int i = 0; i < n; i++) {
+        B[i] = n - (lower_bound(h, h + n, B[i]) - h);
+    }
+
+    // BIT array stored in h
+    memset(h, 0, sizeof(int) * (n + 1));
+
+    int ans = 0;
+    for (int t = 0; t < n; t++) {
+        int i = idx[t];
+        int tmp = 0;
+        for (int j = B[i] - 1; j; j -= j & -j) {
+            tmp = max(tmp, h[j]);
+        }
+        if (tmp > C[i]) ans++;
+        for (int j = B[i]; j <= n; j += j & -j) {
+            h[j] = max(h[j], C[i]);
+        }
+    }
+
+    cout << ans << "\n";
     return 0;
 }
 
