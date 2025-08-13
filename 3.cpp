@@ -9840,6 +9840,95 @@ int main() {
     }
     cout << sereja << " " << dima << endl;
 }
+https://codeforces.com/problemset/problem/381/A
+// A. Sereja and Dima
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int cards[n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>cards[i];
+    }
+    int Sereja, Dima;
+    Sereja = Dima = 0;
+    int c=0;
+    int l=0,r=n-1;
+    while(n--)
+    {
+        if(c%2==0)
+        {
+            if(cards[l]>cards[r])
+            {
+            Sereja+=cards[l];
+            l++;
+            }
+            else
+            {
+            Sereja+=cards[r];
+            r--;
+            }
+        }
+        else
+        {
+            if(cards[l]>cards[r])
+            {
+            Dima+=cards[l];
+            l++;
+            }
+            else
+            {
+            Dima+=cards[r];
+            r--;
+            }
+        }
+        c++;
+    }
+    cout<<Sereja<<" "<<Dima<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+// Code Written By: Vikash Patel
+// Codeforces Profile: https://codeforces.com/profile/vikashpatel
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    vector<int> cards(n);
+    for (int i = 0; i < n; i++) {
+        cin >> cards[i];
+    }
+
+    int Sereja = 0, Dima = 0;
+    int left = 0, right = n - 1;
+    bool isSerejaTurn = true;
+
+    while (left <= right) {
+        if (cards[left] > cards[right]) {
+            if (isSerejaTurn)
+                Sereja += cards[left];
+            else
+                Dima += cards[left];
+            left++;
+        } else {
+            if (isSerejaTurn)
+                Sereja += cards[right];
+            else
+                Dima += cards[right];
+            right--;
+        }
+        isSerejaTurn = !isSerejaTurn; // Alternate turns
+    }
+
+    cout << Sereja << " " << Dima << "\n";
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/contest/382/problem/A
 // A. Ksenia and Pan Scales
@@ -10194,6 +10283,7 @@ int main() {
     }
 }
 
+	
 using namespace std;
 http://codeforces.com/problemset/problem/439/A
 // A. Devu, the Singer and Churu, the Joker
@@ -10444,6 +10534,64 @@ int main() {
     cout << count << endl;
     return 0;
 }
+https://codeforces.com/problemset/problem/467/B
+// B. Fedor and New Game
+using namespace std;
+
+#define ll long long
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int n, m, k;
+    cin>>n>>m>>k;
+    int pa[m+1];  // Players Army
+    for(int i=1; i<=m+1; i++)
+    {
+        cin>>pa[i];
+    }
+    int fedor = pa[m+1];
+    int pf = 0; // Potential Friends
+    for(int i=1; i<=m; i++)
+    {
+        int check = pa[i] ^ fedor;
+        if(__builtin_popcount(check) <= k)
+        pf++;
+    }
+    cout<<pf<<endl;
+    return 0;
+}
+using namespace std;
+
+#define ll long long
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m, k;
+    cin >> n >> m >> k;
+
+    vector<int> pa(m + 1); // Players Army
+    for (int i = 0; i <= m; i++) {
+        cin >> pa[i];
+    }
+
+    int fedor = pa[m];
+    int pf = 0; // Potential Friends
+
+    for (int i = 0; i < m; i++) {
+        int diffBits = __builtin_popcount(pa[i] ^ fedor);
+        if (diffBits <= k)
+            pf++;
+    }
+
+    cout << pf << "\n";
+    return 0;
+}
 
 using namespace std;
 http://codeforces.com/contest/469/problem/A
@@ -10536,6 +10684,74 @@ int main() {
     else
         cout << "Oh, my keyboard!" << endl;
 }
+https://codeforces.com/problemset/problem/469/A
+// A. I Wanna Be the Guy
+using namespace std;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, p, q;
+    cin >> n >> p;
+
+    vector<int> levels;
+    levels.reserve(p + 100); // reserve some space
+
+    for (int i = 0; i < p; i++) {
+        int x;
+        cin >> x;
+        levels.push_back(x);
+    }
+
+    cin >> q;
+    for (int i = 0; i < q; i++) {
+        int x;
+        cin >> x;
+        levels.push_back(x);
+    }
+
+    // Remove duplicates
+    sort(levels.begin(), levels.end());
+    levels.erase(unique(levels.begin(), levels.end()), levels.end());
+
+    if ((int)levels.size() == n)
+        cout << "I become the guy.\n";
+    else
+        cout << "Oh, my keyboard!\n";
+
+    return 0;
+}
+using namespace std;
+#define pb push_back
+int main(){
+   int array[205];
+    int n , p , q;
+    cin >> n >> p;
+    int count = 0;
+    for(int i =  0 ; i < p ; i++)
+    {
+        cin >> array[i];
+    }
+    cin >> q;
+    for(int i = p ; i < p + q ; i++)
+    {
+        cin >> array[i];
+    }
+    sort(array , array+(p+q));
+    for(int i = 0 ; i < p+q ; i++)
+    {
+        if(array[i] != array[i+1])
+        {
+            count++;
+        }
+    }
+    if(n == (count))
+    cout << "I become the guy." <<endl;
+    else
+    cout << "Oh, my keyboard!" << endl;
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/472/A
 // A. Design Tutorial: Learn from Math
@@ -10582,6 +10798,72 @@ int main() {
         }
     }
 }
+https://codeforces.com/problemset/problem/472/A
+A. Design Tutorial: Learn from Math
+using namespace std;
+#define ll long long
+bool mark[1000001];
+void solv(){
+        for(ll i = 2; i <=1000000; i++ )
+        {
+            if( mark[i] == 0 )
+            {
+                for(ll j = 2 * i; j <=1000000; j += i )
+                    mark[j] = 1;
+            }
+        }
+}
+int main()
+{
+    long long i,x;
+    solv();
+    while(cin>>x)
+    {
+    	for(i=4;i<=x-4;i++){
+			if(mark[i]==1 && mark[x-i]==1)
+			{
+				cout<<i<<" "<<x-i<<endl;
+				break;
+			}
+    	}
+    }
+    return 0;
+}
+using namespace std;
+#define ll long long
+
+// mark[i] = true means i is composit
+bool mark[1000001];
+void sieve() {
+    mark[0] = mark[1] = true; // 0 and 1 are not prime, so mark as composite
+    for (ll i = 2; i * i <= 1000000; i++) {
+        if (!mark[i]) {
+            for (ll j = i * i; j <= 1000000; j += i) {
+                mark[j] = true; // mark as composite
+            }
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    sieve();
+
+    ll x;
+    while (cin >> x) {
+        for (ll i = 4; i <= x - 4; i++) {
+            if (mark[i] && mark[x - i]) { // both are composite
+                cout << i << " " << x - i << "\n";
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
+	
 using namespace std;
 https://codeforces.com/contest/474/problem/A
 // 474 A. Keyboard
@@ -10652,6 +10934,48 @@ int main() {
     });
     cout << result << endl;
 }
+https://codeforces.com/problemset/problem/479/A
+A. Expression
+using namespace std;
+#define ll long long
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int a, b, c;
+    cin>>a>>b>>c;
+    int ans = 0;
+    ans = max(ans, a+b+c);
+    ans = max(ans, a*b+c);
+    ans = max(ans, a*b*c);
+    ans = max(ans, a+b*c);
+    ans = max(ans, (a+b)*c);
+    ans = max(ans, a*(b+c));
+    cout<<ans<<endl;
+}
+using namespace std;
+#define ll long longint main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int a, b, c;
+    cin >> a >> b >> c;
+
+    // Calculate all possible values with parentheses
+    int ans1 = a + b + c;
+    int ans2 = a * b * c;
+    int ans3 = (a + b) * c;
+    int ans4 = a * (b + c);
+    int ans5 = a + b * c;
+    int ans6 = a * b + c;
+
+    int ans = max({ans1, ans2, ans3, ans4, ans5, ans6}); // C++11 initializer list
+    cout << ans << "\n";
+
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/486/A
 // CalculatingFunction.cpp
