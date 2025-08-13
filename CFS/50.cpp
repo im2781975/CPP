@@ -565,6 +565,88 @@ int main(){
     else    cout << "draw";
     cout << endl;
 }
+https://codeforces.com/problemset/problem/3/D
+// D. Least Cost Bracket Sequence
+using namespace std;
+int main(){
+    // '?' -> jokers
+    string pattern; cin >> pattern;
+    int m = count(pattern.begin(), pattern.end(), '?');
+    vector <pair <int, int> >jokers(m);
+    for(int i = 0; i < m; i++){
+        cin >> jokers[i].first >> jokers[i].second;
+        /* int open, close; cin >> open >> close;
+        jokers[i] = {open, close}; */
+    }
+    vector <bool> isjoker(patter.size(), false);
+    int sum = 0;// total cost so far (starting with all ')' replacements)
+    for(int i = 0, j = 0; i < pattern.size(); i++){
+        if(pattern[i] == '?'){
+            isjoker[i] = false;
+            sum += joker[j++].second;
+            pattern[i] = ')';
+        }
+    }
+    priority_queue <pair <int, int>, vector <pair <int, int> >, greater <>>Q;
+    // min-heap storing (diff, position) for each '?'
+    int st = 0; // balance counter for parentheses
+    for(int i = 0, k = 0; i < pattern.size(); i++){
+        if(isjoker[i]){
+            Q.push({joker[k].first - joker[k].second, i});
+            k++;
+        } /*
+        if (isjoker[i]) {
+            int diff = jokers[k].first - jokers[k].second;
+            pq.push({diff, i});
+            k++;
+        }*/
+        if(pattern[i] == '(')    ++st;
+        else    --st;
+        if(st < 0){
+            if(!Q.empty()){
+                auto [diff, pos] = Q.top();
+                Q.pop();
+                sum += diff; st += 2;
+                pattern[pos] = '(';
+            }/*
+            if(!Q.empty()){
+                pair <int, int> j = Q.top(); Q.pop();
+                sum += j.first;
+                patter[j.second] = '(';
+                st += 2;
+            } */
+            else    break;
+        }
+    }
+    if(st != 0)    cout << -1;
+    else    cout << sum << "\n" << pattern << "\n";
+}
+using namespace std;
+int main(){
+    string str; cin >> str;
+    int flag = 0, val = 0;
+    priority_queue <pair <int, int> >pq;
+    for(int i = 0; i < str.size(); i++){
+        if(str[i] == '(')    flag++;
+        else if(str[i] == ')')    flag--;
+        else{
+            flag--;
+            int a, b; cin >> a >> b;
+            val += b; str[i] = ')';
+            q.push(make_pair(b - a, i));
+        }
+        if(flag < 0){
+            if(q.empty())    break;
+            flag += 2;
+            pair <int, int> tmp = q.top();
+            q.pop();
+            val -= tmp.first;
+            str[tmp.second] = '(';
+        }
+    }
+    if(flag != 0)    cout << -1;
+    else    cout << val << "\n" << str << "\n";
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
