@@ -521,6 +521,50 @@ int main(){
     for(int i = 0; i < kayak_peak; i++)    cout << kayak[i].second << "\n";
     for(int i = 0; i < catamaran_peak; i++)    cout << catamaran[i].second << "\n";
 }
+https://codeforces.com/problemset/problem/3/C
+// C. Tic-tac-toe
+using namespace std;
+int main(){
+    vector <string> board(3);
+    int x = 0, o = 0, xwin= 0, owin = 0;
+    // x3, o3 represent winning lines
+    for(int i = 0; i < 3; i++){
+        cin >> board[i];
+        for(int j = 0; j < 3; j++){
+            if(board[i][j] == 'X')    x++;
+            else if(board[i][j] == '0') o++;
+        }
+    }
+    for(int i = 0; i < 3; i++){
+        if(board[i][0] == board[i][1] && board[i][1] == board[i][2]){
+            if(board[i][0] == 'X')    xwin++;
+            else if(board[i][0] = '0')    owin++;
+        }
+        if(board[0][i] == board[1][i] && board[1][i] == board[2][i]){
+            if(board[0][i] == 'X')    xwin++;
+            else if(board[0][i] == '0')    owin++;
+        }
+    }
+    if(board[0][0] == board[1][1] && board[1][1] == board[2][2]){
+        if(board[1][1] == 'X')    xwin++;
+        else if(board[1][1] == '0')    owin++;
+    }
+    if(board[0][2] == board[1][1] && board[1][1] == board[2][0]){
+        if(board[1][1] == 'X')    xwin++;
+        else if(board[1][1] == '0')    owin++;
+    }
+    //x < o -> 'X' move first.so diffrent should be minimum 1.if any of them win diffrent should be zero.
+    //x3 && o3 -> both win impossible
+    if((x < o || x - o > 1) || (xwin && owin) || (xwin && x - o != 1) || (owin && x != o)    cout << "illigel";
+    else if(xwin)    cout << "First player won";
+    else if(owin)    cout << "second player won";
+    //x - o -> next turn to the first player
+    else if(x == o)    cout << "first";
+    // x + o < 9 -> not finished the game
+    else if((x + o < 9) && (x - o) == 1)    cout << "second";
+    else    cout << "draw";
+    cout << endl;
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
