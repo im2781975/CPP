@@ -10866,6 +10866,54 @@ int main(){
             cout << i + 1;
     }
 }
+https://codeforces.com/problemset/problem/540/A
+A. Combination Lock
+using namespace std;
+#define ll long long
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+int main(){
+    int n;
+    cin>>n;
+    string org, pass;
+    cin>>org>>pass;
+    int minMoves = 0;
+    for(int i=0; i<n; i++)
+    {
+        int m = abs(org[i]-pass[i]);
+        minMoves += min(10-m, m);
+    }
+    cout<<minMoves<<endl;
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    string org, pass;
+    cin >> org >> pass;
+
+    int moves = 0;
+
+    for (int i = 0; i < n; i++) {
+        int from = org[i] - '0';
+        int to = pass[i] - '0';
+
+        int clockwise = (to - from + 10) % 10;      // rotate forward
+        int counterclockwise = (from - to + 10) % 10; // rotate backward
+
+        moves += min(clockwise, counterclockwise);
+    }
+
+    cout << moves << "\n";
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/546/A
 // Soldier_and_Bananas.cpp
@@ -10890,6 +10938,40 @@ int main() {
 		 cout << needed;
 	}
 }
+https://codeforces.com/problemset/problem/546/A
+// A. Soldier and Bananas
+using namespace std;
+int main()
+{
+    int k,n,w;
+    cin>>k>>n>>w;
+    int total = 0;
+    int i=1;
+    while(i<=w)
+    {
+        total+=i*k;
+        i++;
+    }
+    int p=total-n;
+    if(p>0)
+    cout<<p<<endl;
+    else
+    cout<<"0"<<endl;
+}
+using namespace std;
+int main() {
+    int k, n, w;
+    cin >> k >> n >> w;
+
+    // Total cost formula: k * (1 + 2 + ... + w) = k * w * (w + 1) / 2
+    int total = k * w * (w + 1) / 2;
+
+    // Amount he needs to borrow
+    cout << max(0, total - n) << "\n";
+
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/contest/556/problem/A
 // A. Case of the Zeros and Ones
@@ -11052,6 +11134,17 @@ int main(){
     int maxi = max(a,b);
     cout << mini << " " << (maxi - mini)/2 << endl;
 }
+https://codeforces.com/problemset/problem/581/A
+A. Vasya the Hipster
+using namespace std;
+int main(){
+    int a,b;
+    cin>>a>>b;
+    int diff=min(a,b);
+    int maxi=max(a,b);
+    int same=(maxi-diff)/2;
+    cout<<diff<<" "<<same<<endl;
+}
 using namespace std;
 http://codeforces.com/contest/584/problem/A
 // 584A - Olesya and Rodion
@@ -11114,6 +11207,48 @@ int main() {
         totalCost += minPrice * amount;
     }
     cout << totalCost << endl;
+    return 0;
+}
+
+https://codeforces.com/problemset/problem/595/A
+// A. Vitaly and Night
+using namespace std;
+int main() {
+    int n, m; cin >> n >> m;
+    vector<vector<int>> lights(n, vector<int>(2 * m));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < 2 * m; j++) {
+            cin >> lights[i][j];
+        }
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < 2 * m; j += 2) {
+            // If either of the two lights in a room is ON
+            if (lights[i][j] == 1 || lights[i][j + 1] == 1) {
+                ans++;
+            }
+        }
+    }
+    cout << ans << "\n";
+    return 0;
+}
+
+#include <bits/stdc++.h>
+using namespace std;
+https://codeforces.com/problemset/problem/599/A
+A. Patrick and Shopping
+int main() {
+    int d1, d2, d3;
+    cin >> d1 >> d2 >> d3;
+    // Possible total distances
+    int path1 = d1 + d2 + d3;       // Go in a straight chain visiting all
+    int path2 = 2 * (d1 + d2);      // Back and forth between 1st and 2nd point
+    int path3 = 2 * (d2 + d3);      // Back and forth between 2nd and 3rd point
+    int path4 = 2 * (d1 + d3);      // Direct back-and-forth between 1st and 3rd point
+    int answer = min({path1, path2, path3, path4});
+    // cout << min(path1, min(path2, min(path3, path4)));
+    cout << answer << "\n";
     return 0;
 }
 
