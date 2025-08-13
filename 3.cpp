@@ -10662,6 +10662,43 @@ int main() {
     // if(n & 1) cout << -((n + 1) >> 1);
 	// else cout << n >> 1; 
 }
+https://codeforces.com/problemset/problem/486/A
+// A. Calculating Function
+using namespace std;
+#define pb push_back
+int main()
+{
+    long long int n, sum;
+    cin>>n;
+    if(n % 2 == 0) 
+    sum = n / 2;
+    else 
+    sum = ((n + 1) / 2) * (-1);
+    cout<<sum<<endl;
+    return 0;
+}
+using namespace std;
+#define pb push_back
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long n;
+    cin >> n;
+    long long sum;
+
+    // If n is even, sum = n/2
+    // If n is odd, sum = -((n+1)/2)
+    if (n % 2 == 0) {
+        sum = n / 2;
+    } else {
+        sum = -((n + 1) / 2);
+    }
+
+    cout << sum << "\n";
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/contest/490/problem/A
 // A. Team Olympiad
@@ -10684,6 +10721,235 @@ int main() {
 	for(int i = 0; i < teams; i++)
 	    cout << one[i] << " " << two[i] << " " << three[i] << "\n";
 }
+https://codeforces.com/problemset/problem/490/A
+// A. Team Olympiad
+using namespace std;
+#define ll long long
+int main(){
+    int n;
+    cin>>n;
+    int t[n];
+    vector<int> t1; //Storing indexes based on talent t1, t2 nad t3
+    vector<int> t2;
+    vector<int> t3;
+    for(int i=0;i<n;i++)
+    {
+        cin>>t[i];
+        if(t[i]==1)
+        t1.push_back(i+1);
+        else if(t[i]==2)
+        t2.push_back(i+1);
+        else
+        t3.push_back(i+1);
+    }
+    if(t1.size()==0 || t2.size()==0 || t3.size()==0)
+    cout<<0<<endl;
+    else
+    {
+        int maxTeams = min(t1.size(),min(t2.size(),t3.size()));
+        cout<<maxTeams<<endl;
+        for(int i=0;i<maxTeams;i++)
+        {
+            cout<<t1[i]<<" "<<t2[i]<<" "<<t3[i]<<endl;
+        }
+    }
+    return 0;
+}
+using namespace std;
+#define ll long long
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    vector<int> t(n);
+    vector<int> t1, t2, t3; // indices of participants with talents 1, 2, and 3
+
+    for (int i = 0; i < n; i++) {
+        cin >> t[i];
+        if (t[i] == 1) t1.push_back(i + 1);
+        else if (t[i] == 2) t2.push_back(i + 1);
+        else t3.push_back(i + 1);
+    }
+
+    int maxTeams = min({(int)t1.size(), (int)t2.size(), (int)t3.size()});
+
+    if (maxTeams == 0) {
+        cout << 0 << "\n";
+    } else {
+        cout << maxTeams << "\n";
+        for (int i = 0; i < maxTeams; i++) {
+            cout << t1[i] << " " << t2[i] << " " << t3[i] << "\n";
+        }
+    }
+    return 0;
+}
+
+https://codeforces.com/problemset/problem/492/A
+A. Vanya and Cubes
+using namespace std;
+#define ll long long
+int main()
+{
+    int cubes;
+    cin>>cubes;
+    int sum=0,tsum=0;
+    int i;
+    for(i=1;i<=cubes;i++)
+    {
+        sum += i;
+        tsum += sum;
+        if(tsum>cubes)
+        {
+            i--;
+            break;
+        }
+        if(tsum==cubes)
+        {
+            break;
+        }
+    }
+    cout<<i<<endl;
+    return 0;
+}
+using namespace std;
+#define ll long long
+
+int main() {
+    int cubes;
+    cin >> cubes;
+
+    int layerSize = 0;  // cubes needed for current layer
+    int totalCubes = 0; // total cubes used so far
+    int height = 0;     // pyramid height
+
+    for (int i = 1; ; i++) {
+        layerSize += i;               // cubes needed for this layer
+        totalCubes += layerSize;      // add to total
+
+        if (totalCubes <= cubes) {
+            height++;
+        } else {
+            break;
+        }
+    }
+
+    cout << height << "\n";
+    return 0;
+}
+
+https://codeforces.com/problemset/problem/492/B
+// B. Vanya and Lanterns
+using namespace std;
+#define ll long long
+int main() {
+    int n, l;
+    cin >> n >> l;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    sort(a.begin(), a.end());
+
+    double maxGap = 0.0;
+    for (int i = 1; i < n; i++) {
+        maxGap = max(maxGap, (double)(a[i] - a[i - 1]));
+    }
+
+    double leftGap = a[0];
+    double rightGap = l - a[n - 1];
+
+    double radius = max({maxGap / 2.0, leftGap, rightGap});
+    cout << fixed << setprecision(10) << radius << "\n";
+
+    return 0;
+}
+
+using namespace std;
+#define ll long long
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+ double max(double a, double b)
+{
+    return a>b?a:b;
+}
+int main()
+{
+    int n, l;
+    cin>>n>>l;
+    vector<int> a(n);
+    for(int i=0; i<n; i++)
+    {
+        cin>>a[i];
+    }
+    sort(a.begin(), a.end());
+    double maxi = INT_MIN;
+    for(int i=1; i<n ; i++)
+    {
+        maxi = max(maxi , a[i]-a[i-1]);
+    }
+    double ld = a[0];
+    double rd = l - a[n-1];
+    if(a[0] != 0 && a[n-1] != l)
+    {
+        cout<<fixed<<setprecision(10)<<max(maxi/2.0, max(ld, rd));
+    }
+    else if(a[0] != 0)
+    {
+        cout<<fixed<<setprecision(10)<<max(maxi/2.0, ld)<<endl;
+    }
+    else if(a[n-1] != l)
+    {
+        cout<<fixed<<setprecision(10)<<max(maxi/2.0, rd)<<endl;
+    }
+    else
+    {
+        cout<<fixed<<setprecision(10)<<maxi/2.0<<endl;
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/509/A
+A. Maximum in Table
+using namespace std;
+int solve(int r, int c)
+{
+    if(r==1 || c==1)
+    return 1;
+    int sum=0;
+    int r1,c1;
+    r1=r-1;
+    c1=c-1;
+    return sum + solve(r1,c) + solve(r,c1);
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    cout<<solve(n,n)<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+// Count paths in an r x c grid moving only right or down
+int solve(int r, int c, vector<vector<int>> &dp) {
+    if (r == 1 || c == 1) return 1; // Base case: only one way
+    if (dp[r][c] != -1) return dp[r][c]; // Memoized result
+    
+    return dp[r][c] = solve(r - 1, c, dp) + solve(r, c - 1, dp);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+    cout << solve(n, n, dp) << endl;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/510/A
 // A. Fox And Snake
@@ -10723,6 +10989,69 @@ int main() {
     }
     return 0;
 }
+https://codeforces.com/problemset/problem/510/A
+A. Fox And Snake
+using namespace std;
+int main(){
+    int n, m;
+    cin>>n>>m;
+    int c=1;
+    for(int i=1;i<=n;i++)
+    {
+        if(i%2==0)
+        {
+            if(c%2==0)
+            {
+                cout<<"#";
+                for(int j=1;j<m;j++)
+                {
+                    cout<<".";
+                }
+            cout<<endl; 
+            }
+            else
+            {
+                for(int j=1;j<m;j++)
+                {
+                    cout<<".";
+                }
+                cout<<"#";
+                cout<<endl;
+            }
+            c++;
+        }
+        else
+        {
+            for(int j=1;j<=m;j++)
+            {
+                cout<<"#";
+            }
+            cout<<endl;
+        }
+    }
+}
+using namespace std;
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    for (int i = 1; i <= n; i++) {
+        if (i % 2 == 1) {
+            // Odd row: all '#'
+            cout << string(m, '#');
+        } 
+        else if (i % 4 == 0) {
+            // Every 4th row: '#' at start
+            cout << '#' << string(m - 1, '.');
+        } 
+        else {
+            // Every 2nd row but not 4th: '#' at end
+            cout << string(m - 1, '.') << '#';
+        }
+        cout << "\n";
+    }
+}
+
 using namespace std;
 https://codeforces.com/contest/514/problem/A
 // 514A. Chewbaсca and Number
@@ -10823,7 +11152,32 @@ int main() {
         se.insert(tolower(c));
     cout << (se.size() == 26 ? "YES" : "NO") << endl;
 }
+#include<bits/stdc++.h>
+using namespace std;
 
+// Code Written By: Vikash Patel
+
+int main()
+{
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    sort(s.begin(),s.end());
+    int count=0;
+    for(int i=0; i<n; i++)
+    {
+        if(s[i]!=s[i+1])
+        {
+            count++;
+        }
+    }
+    if(count==26)
+        cout<<"YES"<<endl;
+    else
+        cout<<"NO"<<endl;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/535/B
 // B.Tavas_and_SaDDas
