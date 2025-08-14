@@ -647,6 +647,65 @@ int main(){
     if(flag != 0)    cout << -1;
     else    cout << val << "\n" << str << "\n";
 }
+https://codeforces.com/problemset/problem/4/B
+// B. Before an Exam
+using namespace std;
+int main(){
+    int days, totaltime; cin >> days >> totaltime;
+    vector <int> mintime(days), maxtime(days);
+    for(int i = 0; i < days; i++)
+        cin >> mintime[i] >> maxtime[i];
+    int totalmintime = accumulate(mintime.begin(), mintime.end(), 0);
+    int totalmaxtime = accumulate(maxtime.begin(), maxtime.end(), 0);
+    if(totaltime < totalmintime || totaltime > totalmaxtime){
+        cout << "No"; return 0;
+    }
+    cout << "YES";
+    vector <int> res(days);
+    for(int i = 0; i < days; i++){
+        int extra = min(totaltime - totalmintime, maxtime[i] - mintime[i]);
+        res[i] = mintime[i] + extra;
+        totaltime -= extra;
+        totalmintime += extra;
+    }
+    for(int i = 0; i < res.size(); i++)
+        cout << res[i] << " ";
+    /*
+    if(totalmintime <= totaltime && totalmaxtime >= totaltime){
+        cout << "YES\n";
+        for(int i = 0; i < days; i++){
+            int t = min(mintime[i] + totaltime - totalmintime, maxtime[i])
+            cout << t << (i + 1 < days) ? ' ' : '\n';
+            totaltime -= (t - mintime[i]);
+        }
+    }
+    else    cout << "NO"; */
+}
+using namespace std;
+int main(){
+    int day, sum; cin >> day;
+    vector <pair <int, int> >vec(day);
+    vector <int> res(day);
+    int maxtime = 0, mintime = 0;
+    for(int i = 0; i < day; i++){
+        cin >> a[i].first >> a[i].second;
+        mintime += a[i].first;
+        maxtime += a[i].second;
+        res[i] = a[i].first;
+    }
+    if(sum < mintime || sum > maxtime){
+        cout << "NO";    return 0;
+    }
+    cout << "YES\n";
+    int extra = sum - mintime;
+    for(int i = 0; i < day && extra > 0; i++){
+        int add = min(a[i].second - a[i].first, extra);
+        res[i] += add;
+        extra -= add;
+    }
+    for(int i = 0; i < res.size(); i++)
+        cout << res[i] << " ";
+}
 https://codeforces.com/problemset/problem/4/C
 // 4C. Registration system
 using namespace std;
