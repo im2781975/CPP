@@ -8902,6 +8902,49 @@ int main() {
     cout << n;
     return 0;
 }
+	https://codeforces.com/problemset/problem/271/A
+A. Beautiful Year
+using namespace std;
+#define pb push_back
+int main()
+{
+    int y;
+    cin>>y;
+    int n=y+1;
+    while(true)
+    {
+        string s = to_string(n);
+        set<int> st;
+        for(auto i:s)
+        {
+            st.insert(i-'0');
+        }
+        if(st.size()==4)
+        break;
+        n++;
+    }
+    cout<<n<<endl;
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int y;
+    cin >> y;
+    int nextYear = y + 1;
+
+    while (true) {
+        string s = to_string(nextYear);
+        set<char> digits(s.begin(), s.end());
+        if (digits.size() == 4) break; // all digits are distinct
+        nextYear++;
+    }
+
+    cout << nextYear << "\n";
+    return 0;
+}
+
 	https://codeforces.com/problemset/problem/275/A
 // A. Lights Out
 using namespace std;
@@ -9186,6 +9229,48 @@ int main() {
     cout << moves << endl;
     return 0;
 }
+	using namespace std;
+int main{
+    int n, m; cin>>n>>m; int a[m]; 
+    for(int i=1; i<=m; i++)  cin>>a[i];  
+    long long time = a[1]-1;
+    for(int i=2; i<=m; i++) { 
+        if(a[i] < a[i-1])
+            time += (n-a[i-1] + a[i]);
+        if(a[i] > a[i-1]) 
+            time += (a[i]-a[i-1]);
+    } 
+    cout<<time<<endl;
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(m);
+    for (int i = 0; i < m; ++i) {
+        cin >> a[i];
+    }
+
+    long long time = a[0] - 1; // starting from 1 to a[0]
+
+    for (int i = 1; i < m; ++i) {
+        if (a[i] >= a[i - 1]) {
+            time += a[i] - a[i - 1];
+        } else {
+            time += n - a[i - 1] + a[i]; // wrap around
+        }
+    }
+
+    cout << time << "\n";
+    return 0;
+}
+
 http://codeforces.com/problemset/problem/344/A
 // A. Magnets
 using namespace std;
