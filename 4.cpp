@@ -380,35 +380,6 @@ int main() {
     }
     cout << endl;
 }
-
-https://codeforces.com/problemset/problem/6/A
-// A. Triangle
-using namespace std;
-
-int main() {
-    int length[4];
-    for (int i = 0; i < 4; ++i) {
-        cin >> length[i];
-    }
-    sort(length, length + 4);
-    bool triangle = false, segment = false;
-    for (int i = 0; i < 2; ++i) {
-        int a = length[i], b = length[i + 1], c = length[i + 2];
-        if (a + b > c) {
-            triangle = true;
-        } else if (a + b == c) {
-            segment = true;
-        }
-    }
-
-    if (triangle) {
-        cout << "TRIANGLE" << endl;
-    } else if (segment) {
-        cout << "SEGMENT" << endl;
-    } else {
-        cout << "IMPOSSIBLE" << endl;
-    }
-}
 https://codeforces.com/problemset/problem/5/B
 // B. Center Alignment
 using namespace std;
@@ -829,7 +800,34 @@ int main() {
     cout << ans << "\n";
     return 0;
 }
+https://codeforces.com/problemset/problem/6/A
+// A. Triangle
+using namespace std;
 
+int main() {
+    int length[4];
+    for (int i = 0; i < 4; ++i) {
+        cin >> length[i];
+    }
+    sort(length, length + 4);
+    bool triangle = false, segment = false;
+    for (int i = 0; i < 2; ++i) {
+        int a = length[i], b = length[i + 1], c = length[i + 2];
+        if (a + b > c) {
+            triangle = true;
+        } else if (a + b == c) {
+            segment = true;
+        }
+    }
+
+    if (triangle) {
+        cout << "TRIANGLE" << endl;
+    } else if (segment) {
+        cout << "SEGMENT" << endl;
+    } else {
+        cout << "IMPOSSIBLE" << endl;
+    }
+}
 https://codeforces.com/problemset/problem/6/A
 // A. Triangle
 using namespace std;
