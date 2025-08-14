@@ -522,7 +522,7 @@ int main(){
     for(int i = 0; i < catamaran_peak; i++)    cout << catamaran[i].second << "\n";
 }
 https://codeforces.com/problemset/problem/3/C
-// C. Tic-tac-toe
+// 3C. Tic-tac-toe
 using namespace std;
 int main(){
     vector <string> board(3);
@@ -566,7 +566,7 @@ int main(){
     cout << endl;
 }
 https://codeforces.com/problemset/problem/3/D
-// D. Least Cost Bracket Sequence
+// 3D. Least Cost Bracket Sequence
 using namespace std;
 int main(){
     // '?' -> jokers
@@ -648,7 +648,7 @@ int main(){
     else    cout << val << "\n" << str << "\n";
 }
 https://codeforces.com/problemset/problem/4/B
-// B. Before an Exam
+// 4B. Before an Exam
 using namespace std;
 int main(){
     int days, totaltime; cin >> days >> totaltime;
