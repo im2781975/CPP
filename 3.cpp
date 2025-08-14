@@ -1,11 +1,3 @@
-
-
-
-    
-    
-			
-
-
 https://codeforces.com/problemset/problem/4/D
 // D. Mysterious Present
 using namespace std;
