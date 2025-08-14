@@ -8767,6 +8767,7 @@ int main() {
     }
     cout << s;
 }
+	
 http://codeforces.com/contest/268/problem/A
 // Games.cpp
 using namespace std;
@@ -8828,6 +8829,56 @@ int main() {
     cout << n;
     return 0;
 }
+	https://codeforces.com/problemset/problem/275/A
+// A. Lights Out
+using namespace std;
+int main() { 
+    int n,m; cin>>n>>m; 
+    int lights[n][2*m]; 
+    for(int i=0;i<n;i++){ 
+        for(int j=0;j<2*m;j++) { 
+            cin>>lights[i][j]; 
+        } 
+    } 
+    int ans=0; 
+    for(int i=0;i<n;i++) { 
+        for(int j=0;j<2*m;j+=2) { 
+            if(lights[i][j]==1 || lights[i][j+1]==1) 
+                    ans++; 
+        }
+    } 
+        cout<<ans<<endl; 
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> lights(n, vector<int>(2 * m));
+    
+    // Input
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < 2 * m; j++) {
+            cin >> lights[i][j];
+        }
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < 2 * m; j += 2) {
+            // If either of the two lights in a room is ON
+            if (lights[i][j] == 1 || lights[i][j + 1] == 1) {
+                ans++;
+            }
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+
 using namespace std;
 // A. Word Capitalization
 // problemset/problem/281/A
@@ -9675,6 +9726,42 @@ int main() {
 	}
 	cout << calories;
 }
+https://codeforces.com/problemset/problem/431/A
+A. Black Square
+using namespace std;
+
+int main() {
+    vector<int> caloriesPerSquare(4);
+    for (int i = 0; i < 4; i++) {
+        cin >> caloriesPerSquare[i];
+    }
+
+    string s;
+    cin >> s;
+
+    int totalCalories = 0;
+    for (char ch : s) {
+        int index = ch - '1'; // convert '1' → 0, '2' → 1, etc.
+        totalCalories += caloriesPerSquare[index];
+    }
+
+    cout << totalCalories << "\n";
+    return 0;
+}
+
+using namespace std;
+int main() { 
+    int a1,a2,a3,a4; cin>>a1>>a2>>a3>>a4; 
+    string s; cin>>s;
+    int calories=0;
+    for(auto i : s) { 
+        if(i=='1') calories+=a1; 
+        else if(i=='2') calories+=a2;
+        else if(i=='3') calories+=a3; 
+        else calories+=a4; } 
+        cout<<calories<<endl; 
+}
+
 http://codeforces.com/problemset/problem/432/A
 // Choosing_Teams
 using namespace std;
@@ -9701,6 +9788,40 @@ int main() {
     int teams = eligibleCount / 3;
     cout << teams << endl;
 }
+	https://codeforces.com/problemset/problem/432/A
+A. Choosing Teams
+using namespace std;
+int main() { 
+    int n,k; cin>>n>>k;
+    int partcpts[n];
+    int Tmembers=0; 
+    for(int i=0;i<n;i++) { 
+        cin>>partcpts[i]; 
+        if(5-partcpts[i]>=k) 
+        Tmembers++; 
+    }
+    cout<<Tmembers/3<<endl; 
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> participants(n);
+    int eligibleCount = 0;
+
+    for (int i = 0; i < n; i++) {
+        cin >> participants[i];
+        if (5 - participants[i] >= k) {
+            eligibleCount++;
+        }
+    }
+
+    cout << eligibleCount / 3 << "\n";
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/contest/433/problem/B
 // 433B. Kuriyama Mirai's Stones
@@ -9843,6 +9964,34 @@ int main() {
     }
     cout << uniqueLetters.size() << endl;
 }
+https://codeforces.com/problemset/problem/443/A
+A. Anton and Letters
+using namespace std;
+int main() { 
+    string s; getline(cin,s); 
+    set<char> ans; 
+    for(int i=0;i<s.size();i++) { 
+        if(s[i]=='{' || s[i]==',' || s[i]==' ' || s[i]=='}') continue;
+        else ans.insert(s[i]); 
+        
+    } 
+    cout<<ans.size()<<endl; 
+}
+using namespace std;
+int main() {
+    string s;
+    getline(cin, s);
+
+    set<char> letters;
+    for (char c : s) {
+        if (isalpha(c)) { 
+            letters.insert(c);
+        }
+    }
+    cout << letters.size() << "\n";
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/451/A
 // 451A - Game With Sticks
@@ -11429,7 +11578,16 @@ int main() {
     cout << answer << "\n";
     return 0;
 }
-
+#include<bits/stdc++.h> 
+using namespace std; 
+int main() { 
+    int d1,d2,d3; cin>>d1>>d2>>d3;
+    int a=d1+d2+d3; 
+    int b=2*d1+2*d2;
+    int c=2*d2+2*d3;
+    int d=2*d1+2*d3; 
+    cout<<min(a,min(b,min(c,d)))<<endl;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/615/A
 // A. Bulbs
