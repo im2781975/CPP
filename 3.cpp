@@ -8768,6 +8768,40 @@ int main() {
     cout << s;
 }
 	
+using namespace std;
+int main() { 
+    int n, t; string s; cin >> n >> t >> s;
+    while (t--) { 
+        for (int i = 1; i < n; ++i) { 
+            if (s[i] == 'G' && s[i-1] == 'B') { 
+                s[i] = 'B'; s[i-1] = 'G'; ++i; 
+            } 
+        } 
+    } 
+    cout << s << endl; 
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n, t;
+    string s;
+    cin >> n >> t >> s;
+
+    while (t--) {
+        for (int i = 0; i < n - 1; ++i) {
+            if (s[i] == 'B' && s[i + 1] == 'G') {
+                swap(s[i], s[i + 1]);
+                i++; // skip the next index to avoid double swap
+            }
+        }
+    }
+
+    cout << s << "\n";
+    return 0;
+}
+
 http://codeforces.com/contest/268/problem/A
 // Games.cpp
 using namespace std;
@@ -8792,6 +8826,45 @@ int main() {
     }
     cout << gameCount << endl;
 }
+	
+using namespace std;
+int main(){
+    int n; cin>>n;
+    map<int,int>mp; int guest[n]; 
+    for(int i=0; i<n; i++) { 
+        int h,a; cin>>h>>a; mp[h]++; 
+        guest[i] = a;
+    } 
+    int ans = 0; 
+    for(int i=0; i<n; i++) 
+    { ans+=mp[guest[i]]; } 
+    cout<<ans<<endl; 
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> attack(n), defense(n);
+    map<int, int> countDefense;
+
+    for (int i = 0; i < n; ++i) {
+        cin >> attack[i] >> defense[i];
+        countDefense[defense[i]]++; // count how many players have each defense
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; ++i) {
+        ans += countDefense[attack[i]]; // count how many can attack player i
+        if (attack[i] == defense[i]) ans--; // subtract self-count if attack = defense
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+
 using namespace std;
 // A. Fancy Fence
 // contest/270/problem/A
@@ -9162,6 +9235,41 @@ int main() {
         prev = current;
     }
     cout << groupCount << endl;
+    return 0;
+}
+https://codeforces.com/problemset/problem/344/A
+A. Magnets
+using namespace std;
+int main() { 
+    int n; cin>>n; 
+    string mag[n]; 
+    for(int i = 0;i<n;i++) {
+        cin>>mag[i]; } 
+    int gp = 0; 
+    for(int i = 0;i<n;i++) { 
+        if(mag[i]!=mag[i+1]) gp++;
+    }
+    cout<<gp<<endl; 
+    return 0; 
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<string> mag(n);
+
+    for (auto &s : mag) cin >> s;
+
+    int groups = 1; // first magnet always forms a group
+    for (int i = 1; i < n; ++i) {
+        if (mag[i] != mag[i - 1]) {
+            groups++;
+        }
+    }
+
+    cout << groups << "\n";
     return 0;
 }
 
@@ -9663,6 +9771,56 @@ int main() {
     }
     cout << untreatedCrimes << endl;
 }
+	https://codeforces.com/problemset/problem/427/A
+A. Police Recruits
+using namespace std;
+int main() { 
+    int n; cin>>n;
+    int recrime[n]; 
+    for(int i=0;i<n;i++) {
+        cin>>recrime[i]; 
+    } 
+    int availoff=0; int untcrimes=0; 
+    for(int i=0;i<n;i++) { 
+        if(recrime[i]!=-1) { 
+            availoff+=recrime[i]; } 
+        else {
+            if(availoff>0)
+                availoff--; 
+            else untcrimes++;
+        }
+    }
+    cout<<untcrimes<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> recrime(n);
+
+    for (int &x : recrime) cin >> x;
+
+    int availableOfficers = 0;
+    int untreatedCrimes = 0;
+
+    for (int x : recrime) {
+        if (x >= 0) {
+            availableOfficers += x; // new officers recruited
+        } else {
+            if (availableOfficers > 0) {
+                availableOfficers--; // handle crime with available officer
+            } else {
+                untreatedCrimes++; // no officer available
+            }
+        }
+    }
+
+    cout << untreatedCrimes << "\n";
+    return 0;
+}
+
 http://codeforces.com/contest/427/problem/A
 // PoliceRecruits.cpp
 using namespace std;
@@ -10398,6 +10556,39 @@ int main(){
     cout << "I become the guy." <<endl;
     else
     cout << "Oh, my keyboard!" << endl;
+    return 0;
+}
+https://codeforces.com/problemset/problem/469/B
+B. Chat Online
+using namespace std;
+int main(){
+    string s, t; cin>>s>>t; 
+    int liss = 1; 
+    s = "0" + s;
+    for (int i = 0; i < t.size(); i++) {
+        if (t[i] == s[liss]) liss++;
+    }
+    cout<<liss<<endl; 
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string s, t;
+    cin >> s >> t;
+
+    int idx = 0; // pointer for s
+    for (char c : t) {
+        if (idx < s.size() && c == s[idx]) {
+            idx++;
+        }
+    }
+
+    cout << idx << "\n";
     return 0;
 }
 
