@@ -727,6 +727,124 @@ int main(){
         ++mp[str];
     }
 }
+https://codeforces.com/problemset/problem/4/D
+// D. Mysterious Present
+using namespace std; /*
+#define MAX 501
+int w[MAX], h[MAX];
+bool cmp(const int a, const int b){
+    if(w[a] == w[b]) return h[a] > h[b];
+    else    return w[a] > w[b];
+}*/
+int main(){
+    int n, W, H; cin >> n >> W >> H;
+    vector <int> w(n), h(n), idx(n), cnt(n, 1), path(n, -1);
+    for(int i = 0; i < n; i++){
+        cin >> w[i] >> h[i];
+        idx[i] = i;
+    }
+    // sort(idx, idx + n, cmp);
+    //sort discending order
+    sort(idx.begin(), idx.end(), [&](int a, int b){
+        if(w[a] == w[b])    return h[a] > h[b];
+        return w[a] > w[b];
+    });
+    // check if i can fit inside j.
+    // cnt[j] = maximum stack length ending at rectangle j.
+    // path[i] = previous rectangle in the stack, initialized to -1 (no previous rectangle).
+    //i = 0 is bigger.for that it was skipped
+    for(int i = 1; i < n; i++){
+        for(int j = 0; j < i; j++){
+            if(w[idx[i]] < w[idx[j]] && h[idx[i]] < h[idx[j]]){
+                if(cnt[j] + 1 > cnt[i]){
+                    cnt[j] = cnt[i] + 1;
+                    path[i] = j;
+                }
+            }
+        }
+    }
+    int res = 0, best = -1;
+    for(int i = 0; i < n; i++){
+        if(w[idx[i]] > W && h[idx[i]] > H && cnt[i] > res){
+            res = cnt[i];
+            best = i;
+        }
+    }
+    cout << res;
+    if(best != -1){
+        vector <int> seq;
+        while(best != -1){
+            seq.push_back(idx[best] + 1);
+            best = path[best];
+        }
+        reverse(seq.begin(), seq.end());
+        for(size_t i = 0; i < seq.size(); i++){
+            if(i > 0)    cout << " ";
+            cout << seq[i];
+        }
+    }/*
+    if(best != -1){
+        bool check = false;
+        while(best != -1){
+            if(y)    cout << " ";
+            cout << idx[best] + 1;
+            best = path[best];
+            check = true;
+        }
+        cout << endl;
+    }*/
+}
+using namespace std;
+const int peak = 5010;
+int w[peak], h[peak], vis[peak], m = 0;
+int index[peak]; //an array of indices used to sort envelopes without moving w[] and h[].
+int dp[peak];// stores the maximum chain length starting at envelope u
+int pos[peak]; //stores the next envelope in the optimal chain from u.
+int idx[peak];// original 1-based indices of envelopes (to print at the end).
+int dfs(int u) {
+    if (vis[u]) return dp[u];
+    vis[u] = 1;
+    dp[u] = 1; pos[u] = -1;
+    for (int i = u + 1; i < m; i++) {
+        if (w[index[i]] > w[index[u]] && h[index[i]] > h[index[u]]) {
+            int tmp = dfs(i);
+            if (dp[u] < tmp + 1) {
+                dp[u] = tmp + 1;
+                pos[u] = i;
+            }
+        }
+    }
+    return dp[u];
+}
+int main(){
+    int n, W, H; cin >> n >> W >> H;
+    for(int i = 0; i < n; i++){
+        int a, b; cin >> a >> b;
+        if(a <= W || b <= H)    continue;
+        w[m] = a; h[m] = b;
+        idx[m] = i + 1; // store original 1-based index
+        index[m] = m; // store index for sorting
+        m++;
+    }
+    sort(index, index + m, [&](int x, int y){
+        return w[x] < w[y];
+    });
+    memset(vis, 0, sizeof(vis));
+    int res = 0; start = -1;
+    for(int i = 0; i < m; i++){
+        int tmp = dfs[i];
+        if(res < tmp){
+            res = tmp; start = i;
+        }
+    }
+    if(res == 0)    cout << "0";
+    else{
+        cout << res << endl;
+        cout << idx[index[start]];
+        start = pos[start];
+    }
+    cout << " ";
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
