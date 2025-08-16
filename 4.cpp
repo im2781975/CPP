@@ -7670,7 +7670,28 @@ int main(){
 	else if(s > s2)    cout << 1;
 	else    cout << 0;
 }
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
 
+int main(){
+  string s1, s2;
+  cin>>s1;
+  cin>>s2;
+  transform(s1.begin(), s1.end(), s1.begin(), ::toupper);
+  transform(s2.begin(), s2.end(), s2.begin(), ::toupper);
+  if(s1 > s2){
+    cout<<"1"<<endl;
+  }
+  else if(s1 < s2){
+    cout<<"-1"<<endl;
+  }
+  else{
+    cout<<"0"<<endl;
+  }
+  return 0;
+}
 using namespace std;
 // problemset/problem/116/A
 // A. Tram
@@ -7685,7 +7706,24 @@ int main(){
     }
     cout << cap;
 }
+#include<iostream>
+using namespace std;
 
+int main(){
+  int n;
+  cin>>n;
+  int a, b, max = 0, tot = 0;
+  for(int i = 0; i < n; i++){
+    cin>>a;
+    cin>>b;
+    tot -= a;
+    tot += b;
+    max = tot > max ? tot : max;
+  }
+  cout<<max;
+  
+  return 0;
+}
 using namespace std;
 int main() {
     ios::sync_with_stdio(false);
@@ -7745,6 +7783,32 @@ int main(){
         }
     }
     cout << res;
+}
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  string s, r = "";
+  cin>>s;
+  transform(s.begin(), s.end(), s.begin(), ::tolower);
+  for(auto i : s){
+    if( i == 'a' || i == 'e' || i == 'i' || i == 'o' || i == 'y' || i == 'u'){
+      continue;
+    }
+    else{
+      r += ".";
+      r += i;
+    }
+  }
+  cout<<r<<endl;
 }
 https://codeforces.com/problemset/problem/118/A
 // A. String Task
@@ -7879,6 +7943,67 @@ int main() {
 	}
     return 0;
 }
+https://codeforces.com/problemset/problem/119/A
+using namespace std;
+int gcd(int a,int b){
+    return a?gcd(b%a,a):b;
+}
+int main() {
+    int a,b,n;
+    cin>>a>>b>>n;
+    int flag1=0;
+    int val;
+ //   cout<<gcd(3,9);
+    while(n>0){
+        if(flag1==0){
+            // this is for simon
+           val=gcd(a,n);
+           n-=val;
+           flag1=1;
+        }else{
+            // this is for the antisimon
+           val=gcd(b,n);
+           n-=val;
+           flag1=0;
+        }
+       // cout<<n<<" ";
+    }
+    if(flag1==1){
+        cout<<"0";
+    }else{
+        cout<<"1";
+    }
+	return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+// Euclidean algorithm for gcd
+int gcd(int a, int b) {
+    return (a == 0) ? b : gcd(b % a, a);
+}
+
+int main() {
+    int a, b, n;
+    cin >> a >> b >> n;
+
+    bool simonTurn = true;  // true = Simon's turn, false = Antisimon's turn
+
+    while (n > 0) {
+        if (simonTurn) {
+            n -= gcd(a, n);   // Simon takes his move
+        } else {
+            n -= gcd(b, n);   // Antisimon takes his move
+        }
+        simonTurn = !simonTurn; // switch turns
+    }
+
+    // If last move was Simon → Antisimon cannot play, so Simon wins (print 0)
+    // If last move was Antisimon → Simon cannot play, so Antisimon wins (print 1)
+    cout << (simonTurn ? 1 : 0) << endl;
+
+    return 0;
+}
 
 using namespace std;
 // problemset/problem/122/A
@@ -7892,6 +8017,31 @@ int main(){
             flag = 1;
     }
     (flag) ? cout << "YES" : cout << "NO";
+}
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int arr[] = {4, 7, 44, 47, 74, 77, 444, 447, 474, 477, 744, 747, 774, 777};
+  int n;
+  cin>>n;
+  for(auto i : arr){
+    if(n % i == 0){
+      cout<<"YES"<<endl;
+      return 0;
+    }
+  }
+  cout<<"NO"<<endl;
+
 }
 https://codeforces.com/problemset/problem/122/A
 // A. Lucky Division
@@ -7982,6 +8132,40 @@ int main(){
 	    cout<<s;
 	}
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  string s, r = "";
+  cin>>s;
+  bool check = true;
+  for(int i = 1; i < s.length(); i++){
+    if(s[i] >= 97){
+      check = false;
+      break;
+    }
+  }
+  if(s[0] <= 90 && check){
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+  }
+  else if(s[0] >= 97 && check){
+    s[0] = toupper(s[0]);
+    for(int i = 1; i < s.length(); i++){
+      s[i] = tolower(s[i]);
+    }
+  }
+  cout<<s<<endl;
+
+}
 http://codeforces.com/problemset/problem/133/A
 // A.HQ9+
 using namespace std;
@@ -7993,6 +8177,46 @@ int main() {
     int i = s.find_first_of("HQ9");
     cout << (i != -1) ? "YES" : "NO"; */
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  string s;
+  cin>>s;
+  for(auto i:s){
+    if(i == 'H' || i == 'Q' || i == '9'){
+      cout<<"YES\n";
+      return 0;
+    }
+  }
+  cout<<"NO\n";
+  return 0;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string s;
+    cin >> s;
+
+    // Check if any of 'H', 'Q', or '9' exists in the string
+    if (s.find('H') != string::npos || 
+        s.find('Q') != string::npos || 
+        s.find('9') != string::npos) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
+
+    return 0;
+}
 
 using namespace std;
 http://codeforces.com/contest/136/problem/A
@@ -8003,6 +8227,47 @@ int main() {
 	 else
 		cout << max(s1.length(),s2.length());q
 } 
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  int arr[n];
+  int parr[n];
+  for(int i = 0; i < n; i++){
+    cin>>arr[i];
+    parr[arr[i]-1] = i+1;
+  }
+  for(int i = 0; i < n; i++){
+    cout<<parr[i]<<" ";
+  }
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<int> arr(n), inv(n);
+
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+        inv[arr[i] - 1] = i + 1;  // store inverse mapping
+    }
+
+    for (int i = 0; i < n; i++) {
+        cout << inv[i] << " ";
+    }
+    cout << "\n";
+
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/136/A
 A. Presents
 using namespace std;
