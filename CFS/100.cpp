@@ -871,6 +871,97 @@ int main(){
     }
     cout << len;
 }
+https://codeforces.com/problemset/problem/5/B
+// 5B. Center Alignment
+using namespace std;
+int main(){
+    string str; vector <string> vec;
+    int maxlen = 0, k;
+    while(getline(cin, str)){
+        vec.push_back(str);
+        k = str.length();
+        maxlen = max(maxlen, k);
+    } /*
+    bool toggle = false;
+    for (const string& text : vec) {
+        int spaces = maxlen - text.size();
+        int left = (spaces + (toggle ? 1 : 0)) / 2;
+        int right = spaces - left;
+
+        cout << '*' << string(left, ' ') << text << string(right, ' ') << '*' << '\n';
+
+        if (!text.empty() && spaces % 2) {
+            toggle = !toggle;
+        }
+    }
+    cout << string(maxWidth + 2, '*') << '\n'; */
+    int len = vec.size();
+    int left[len], right[len];
+    int flag = 0;
+    for(int i = 0; i < vec.size(); i++){
+        k = maxlen - vec[i].length();
+        if(k % 2 == 0)    left[i] = k / 2;
+        else{
+            left[i] = (k / 2) + flag;
+            flag = 1 - flag;
+        }
+        right[i] = k - left[i];
+    }/*
+    cout << string(maxlen + 2, '*') << "\n";
+    for (int i = 0; i < vec.size(); i++) {
+        cout << '*' << string(left[i], ' ')
+        << vec[i] << string(right[i], ' ') << '*' << "\n";
+    }
+    cout << string(maxlen + 2, '*') << "\n";*/
+    for(int i = 0; i < maxlen + 2; i++)
+        cout << '*';
+    cout << endl;
+    for(int i = 0; i < vec.size(); i++){
+        cout << '*';
+        for(int j = 0; j < left[i]; j++)
+            cout << ' ';
+        cout << vec[i];
+        for(int j = 0; j < right[i]; j++)
+            cout << ' ';
+        cout << '*';
+    }
+    for(int i = 0; i < maxlen + 2; i++)
+        cout << '*';
+}
+using namespace std;
+int main(){
+    string str;
+    vector <string> vec;
+    int mexlength = 0;
+    while(getline(cin, str)){
+        vec.push_back(str);
+        maxlength = max(maxlength, (int)str.length());
+    }
+    int flag = 1;
+    for(int i = 0; i < maxlength + 2; i++)
+        cout << '*';
+    cout << endl;
+    for(int i = 0; i < vec.size(); i++){
+        cout << '*';
+        int k = maxlength - vec[i].size();
+        int left = k / 2;
+        int right = k - left;
+        if(k & 1){
+            if(flag){
+                swap(left, right);
+                flag = 0;
+            }
+            else    flag = 1;
+        }
+        for(int j = 0; j < left; j++)    cout << " ";
+        cout << vec[i];
+        for(int j = 0; j < right; j++)    cout << " ";
+        cout << "*";
+    }
+    for(int i = 0; i < maxlength + 2; i++)
+        cout << "*";
+    cout << endl;
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
