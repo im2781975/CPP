@@ -1001,8 +1001,8 @@ https://codeforces.com/problemset/problem/5/E
 // 5E. Bindian Signalizing
 using namespace std;
 int main(){
-    int n, cin >> n;
-    vector <int> a(n), b(2 *n), left(n), right(n), countequal(n + 1);
+    int n; cin >> n;
+    vector <int> a(n), b(n), left(n), right(n), countequal(n + 1);
     int maxval = 0, maxpos = 0;
     for(int i = 0; i < n; i++){
         cin >> a[i];
