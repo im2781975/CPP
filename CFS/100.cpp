@@ -1036,6 +1036,57 @@ int main(){
     }
     cout << res;
 }
+https://codeforces.com/problemset/problem/6/A
+// 6A. Triangle
+using namespace std;
+int main(){
+    int len[4];
+    bool segment = false, triangle = false;
+    for(int i = 0; i < 4; i++)    cin >> len[i];/*
+    sort(len, len + 4);
+    for(int i = 0; i < 2; i++){
+        int a = len[i], b = len[i + 1], len[i + 2];
+        if(a + b > c)    triangle = true;
+        else if(a + b == c)    segment = true;
+    } */
+    for(int i = 0; i < 4; i++){
+        for(int j = i + 1; j < 4; j++){
+            int low_bound = abs(len[i] - len[j]);
+            int upper_bound = len[i] + len[j];
+            for(int k = j + 1; k < 4; k++){
+                if(len[k] == low_bound || len[k] == upper_bound)    segment = true;
+                else if(len[k] > low_bound || len[k] < upper_bound)    triangle = true;
+            }
+        }
+    }
+    if(triangle)    cout << "TRIANGLE";
+    else if(segment)    cout << "SEGMENT";
+    else    cout << "IMMPOSSIBLE";
+}
+using namespace std;
+bool istriangle(int a, int b, int c){
+    return (a + b > c && b + c > a && c + a > b);
+}
+bool issegment(int a, int b, int c){
+    return ((a + b == c) || (b + c == a) || (c + a == b));
+}
+int main(){
+    int a, b, c, d; cin >> a >> b >> c >> d;
+    vector <int> len = {a, b, c, d};
+    bool triangle = false, segment = false;
+    for(int i = 0; i < 4; i++){
+        for(int j = i + 1; j < 4; j++){
+            for(int k = j + 1; k < 4; k++){
+                int x = len[i], y = len[j], z = len[k];
+                if(istriangle(x, y, z))    triangle = true;
+                else if(issegment(x, y, z))    segment = true;
+            }
+        }
+    }
+    if(triangle)    cout << "TRIANGLE";
+    else if(segment)    cout << "SEGMENT";
+    else    cout << "IMMPOSSIBLE";
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
