@@ -7927,6 +7927,33 @@ int main(){
     if(res == ng) cout << "Yes";
     else cout << "No";
 }
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main(){
+  string s1, s2, s3, s4;
+  cin>>s1>>s2>>s3;
+  s4 = s1 + s2;
+  if(s4.size() != s3.size()){
+    cout<<"NO";
+    return 0;
+  }
+  else{
+    sort(s3.begin(), s3.end());
+    sort(s4.begin(), s4.end());
+    if(s3 != s4){
+      cout<<"NO";
+      return 0;
+    }
+    else{
+      cout<<"YES";
+      return 0;
+    }
+  }
+
+}
 https://codeforces.com/problemset/problem/141/A
 A. Amusing Joke
 using namespace std;
@@ -8028,6 +8055,67 @@ int main() {
     int moves = maxIndex + (n - 1 - minIndex);
     cout << moves << endl;
 }
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  int x, minindex, maxindex, maxi = 0, mini = 1000;
+  for(int i = 0; i < n; i++){
+    cin>>x;
+    if(x > maxi){
+      maxindex = i;
+      maxi = x;
+    }
+    if(x <= mini){
+      minindex = i;
+      mini = x;
+    }
+  }
+
+  if(maxindex>minindex){
+	cout<<(maxindex-1)+(n-minindex)-1;
+}
+else{
+	cout<<(maxindex-1)+(n-minindex);
+
+}
+
+}
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+
+    int maxVal = -1, minVal = 101;
+    int maxIndex = -1, minIndex = -1;
+
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+
+        if (a[i] > maxVal) {         // leftmost maximum
+            maxVal = a[i];
+            maxIndex = i;
+        }
+        if (a[i] <= minVal) {        // rightmost minimum
+            minVal = a[i];
+            minIndex = i;
+        }
+    }
+
+    int swaps = maxIndex + (n - 1 - minIndex);
+    if (maxIndex > minIndex) swaps--; // adjust if overlap
+
+    cout << swaps;
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/146/A
 // A. Lucky Ticket
 using namespace std;
@@ -8131,7 +8219,26 @@ int main() {
     cout << suffer << endl;
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
 
+int main(){
+  int n, k, l, c, d, p, nl, np;
+  cin>>n>>k>>l>>c>>d>>p>>nl>>np;
+  int a = (k*l)/nl;
+  int b = c * d;
+  int s = p / np;
+  if( a <= b && a <= s){
+    cout<<(a/n)<<endl;
+    return 0;
+  }
+  if(b <= a && b <= s){
+    cout<<(b/n)<<endl;
+    return 0;
+  }
+  cout<<(s/n)<<endl;
+  return 0;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/151/A
 // A. Soft Drinking
@@ -8144,6 +8251,7 @@ int main() {
     int toasts = min({total_drink, total_slices, total_salt});
     cout << toasts / n << endl;
 }
+
 https://codeforces.com/problemset/problem/151/A
 // A. Soft Drinking
 using namespace std;
@@ -8332,6 +8440,82 @@ int main()
     Second();
     Third();
 }
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n;
+  int k;
+  int count;
+  cin>>n;
+  cin>>k;
+  int arr[n];
+  for(int i = 0; i < n; i++){
+    cout<<"i:"<<i<<" ";
+    cin>>arr[i];
+  }
+  int quali = 0, m;
+  if(arr[k-1] == 0){
+
+    for(m = k-2; m >= 0; m--){
+
+      if(arr[m] > 0){
+      
+        quali = arr[m];
+        count  = m+1;
+        cout<<count;
+        return 0;
+      }
+    }
+    if(quali == 0){
+      cout<<0;
+      return 0;
+    }
+  }
+  else{
+    quali = arr[k-1];
+    count = k;
+  }
+  cout<<endl;
+  int j = count-2;
+  while(true){
+    if(arr[j] == quali){
+      count++;
+    }
+    else{
+      break;
+    }
+    j--;
+  }
+  cout<<count;
+  return 0;
+}
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    int qualiScore = arr[k - 1];   // the score at k-th place
+    int count = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i] >= qualiScore && arr[i] > 0) {
+            count++;
+        }
+    }
+
+    cout << count;
+    return 0;
+}
+
 #include <iostream>
 using namespace std;
 
