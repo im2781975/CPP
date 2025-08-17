@@ -10154,6 +10154,55 @@ int main(){
     }
     cout<<abs(m-3)+abs(n-3)<<endl;
 }
+#include<iostream>
+using namespace std;
+
+int absol(int m){
+  if(m >= 0){
+    return m;
+  }
+  return (m * -1);
+}
+
+int main(){
+  int arr[5][5];
+  int m, n;
+  for(int i = 0; i < 5; i++){
+    for(int j = 0; j < 5; j++){
+      cin>>arr[i][j];
+      if(arr[i][j] == 1){
+        m = i; n = j;
+      }
+    }
+  }
+  int path = absol(m - 2) + absol(n - 2);
+  cout<<path;
+  return 0;
+}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    int matrix[5][5];
+    int row1 = 0, col1 = 0;
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            cin >> matrix[i][j];
+            if (matrix[i][j] == 1) {
+                row1 = i;
+                col1 = j;
+            }
+        }
+    }
+
+    int moves = abs(row1 - 2) + abs(col1 - 2);
+    cout << moves << '\n';
+
+    return 0;
+}
+
 http://codeforces.com/contest/265/problem/A
 // A. Colorful Stones (Simplified Edition)
 using namespace std;
@@ -10190,6 +10239,23 @@ int main(){
     }
     cout << cnt;
   	return 0;
+}
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main(){
+  int n, count = 0;
+  cin>>n;
+  string s;
+  cin>>s;
+  for(int i = 0; i < n-1; i++){
+    if(s[i] == s[i+1]){
+      count++;
+    }
+  }
+  cout<<count;
+  return 0;
 }
 using namespace std;
 http://codeforces.com/problemset/problem/266/A
@@ -10448,7 +10514,61 @@ int main() {
     cout << n;
     return 0;
 }
-	https://codeforces.com/problemset/problem/275/A
+	#include<iostream>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  int a, b, c, d;
+  while(true){
+    n++;
+    a = n/1000;
+    b = n / 100 % 10;
+    c = n/10 % 10;
+    d = n%10;
+    if(a != b && a != c && a != d && b != c && b != d && c != d){
+      break;
+    }
+
+  }
+
+  cout<<n;
+
+  return 0;
+}
+	#include <iostream>
+#include <set>
+using namespace std;
+
+// Function to check if all digits of a number are distinct
+bool allDistinctDigits(int year) {
+    set<int> digits;
+    while (year > 0) {
+        int digit = year % 10;
+        if (digits.count(digit)) return false;
+        digits.insert(digit);
+        year /= 10;
+    }
+    return true;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    while (true) {
+        n++;
+        if (allDistinctDigits(n)) {
+            break;
+        }
+    }
+
+    cout << n << '\n';
+    return 0;
+}
+
+https://codeforces.com/problemset/problem/275/A
 // A. Lights Out
 using namespace std;
 int main() { 
@@ -10526,6 +10646,36 @@ int main() {
     char word[1001]; cin >> word;
     word[0] = capitalize(word[0]);
     cout << word << endl;
+}
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main(){
+  string s;
+  cin>>s;
+  if(s[0] >= 97){
+
+    s[0] = s[0] - 32;
+  }
+  cout<<s<<endl;
+  return 0;
+}
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    if (!s.empty() && islower(s[0])) {
+        s[0] = toupper(s[0]);
+    }
+
+    cout << s << '\n';
+    return 0;
 }
 
 using namespace std;
@@ -10638,6 +10788,49 @@ int main() {
     for(int i = 0; i < n; i++)
         cout << arr[i] << '\n';
 }
+https://codeforces.com/problemset/problem/306/A
+using namespace std;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  int m, n;
+  cin>>m>>n;
+  int rem = m % n;
+  for(int i = 0; i < (n - rem); i++){
+    cout<<(m/n)<<" ";
+  }
+  for(int i = 0; i < rem; i++){
+    cout<<(m/n + 1)<<" ";
+  }
+  cout<<endl;
+  return 0;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int m, n;
+    cin >> m >> n;
+
+    int base = m / n;
+    int remainder = m % n;
+
+    for (int i = 0; i < n; i++) {
+        if (i < n - remainder)
+            cout << base << " ";
+        else
+            cout << base + 1 << " ";
+    }
+
+    cout << '\n';
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/318/A
 // A. Even Odds
