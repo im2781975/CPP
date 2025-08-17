@@ -1,4 +1,4 @@
-#include <io
+
 https://codeforces.com/problemset/problem/6/A
 // A. Triangle
 using namespace std;
