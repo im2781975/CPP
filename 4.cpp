@@ -9236,6 +9236,33 @@ int main()
 using namespace std;
 
 int main() {
+    string txt;
+    getline(cin, txt);  // read the full line
+
+    stringstream ss(txt);
+    string part;
+    string txtnew;
+
+    size_t pos = 0;
+    while ((pos = txt.find("WUB")) != string::npos) {
+        part = txt.substr(0, pos);
+        if (!part.empty()) {
+            txtnew += part + " ";
+        }
+        txt.erase(0, pos + 3); // remove "WUB" + everything before it
+    }
+    if (!txt.empty()) {
+        txtnew += txt; // add the last part
+    }
+
+    cout << txtnew << endl;
+    return 0;
+}
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
@@ -9422,6 +9449,69 @@ int main() {
     cout << "YES" << endl;
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int s, n;
+  cin>>s>>n;
+  multimap <int, int> mp;
+  int a, b;
+  for(int i = 0; i < n; i++){
+    cin>>a>>b;
+    mp.insert(pair <int, int> (a, b));
+  }
+  for(auto i = mp.begin(); i != mp.end(); i++){
+    if(s > i->first){
+      s += i->second;
+    }
+    else{
+      cout<<"NO"<<endl;
+      return 0;
+    }
+  }
+  cout<<"YES"<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int s, n;
+    cin >> s >> n;
+
+    vector<pair<int,int>> dragons(n);
+    for (int i = 0; i < n; i++) {
+        cin >> dragons[i].first >> dragons[i].second;
+    }
+
+    // Sort dragons by strength
+    sort(dragons.begin(), dragons.end());
+
+    for (auto &dragon : dragons) {
+        if (s > dragon.first) {
+            s += dragon.second;  // defeat dragon and gain bonus
+        } else {
+            cout << "NO\n";
+            return 0;
+        }
+    }
+
+    cout << "YES\n";
+}
+
 using namespace std;
 // problemset/problem/231/A
 // A. Team
@@ -9437,6 +9527,52 @@ int main(){
     }
     cout << solved;
 }
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  int surity = 0, count = 0, sure;
+
+  for(int i = 0; i < n; i++){
+    sure = 0;
+    for(int j = 0; j < 3; j++){
+      cin>>surity;
+      sure += surity;
+
+    }
+    if(sure >= 2){
+      count++;
+    }
+  }
+  cout<<count<<endl;
+  return 0;
+}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    int solvedProblems = 0;
+
+    for (int i = 0; i < n; i++) {
+        int votes = 0, vote;
+        for (int j = 0; j < 3; j++) {
+            cin >> vote;
+            votes += vote;
+        }
+        if (votes >= 2) {
+            solvedProblems++;
+        }
+    }
+
+    cout << solvedProblems << endl;
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/contest/231/problem/A
 // A.Team
@@ -9534,6 +9670,64 @@ int main() {
     }
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin >> n;
+  if (n % 2 == 1)
+  {
+      cout << -1 << endl;
+  }
+  else
+  {
+      cout << "2 1";
+      for (int i = 3; i < n; i += 2)
+      {
+          cout << " " << i + 1 << " " << i;
+      }
+      cout << endl;
+  }
+  return 0;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    if (n % 2 == 1) {
+        cout << -1 << '\n';
+    } else {
+        // Print first pair
+        cout << "2 1";
+
+        // Print remaining pairs
+        for (int i = 3; i <= n; i += 2) {
+            cout << " " << i + 1 << " " << i;
+        }
+
+        cout << '\n';
+    }
+
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/233/A
 A. Perfect Permutation
 using namespace std;
@@ -9610,6 +9804,49 @@ int main() {
     else
         cout << "IGNORE HIM!" << endl;
 }
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main(){
+  string s;
+  cin>>s;
+  int count = 1;
+  sort(s.begin(), s.end());
+  char elem = s[0];
+  for(int i = 0; i < s.size(); i++){
+    if(s[i] != elem){
+      elem = s[i];
+      count++;
+    }
+  }
+  if(count % 2 == 0){
+    cout<<"CHAT WITH HER!";
+  }
+  else{
+    cout<<"IGNORE HIM!";
+  }
+  return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+
+    set<char> distinctChars(s.begin(), s.end()); // store only unique characters
+
+    if (distinctChars.size() % 2 == 0) {
+        cout << "CHAT WITH HER!\n";
+    } else {
+        cout << "IGNORE HIM!\n";
+    }
+
+    return 0;
+}
+
 using namespace std;
 int main(){
   string s;
@@ -9651,6 +9888,87 @@ int main() {
     int minRightOperations = min(rightOpen, rightClosed);
     cout << (minLeftOperations + minRightOperations) << endl;
 }
+	https://codeforces.com/problemset/problem/252/C
+using namespace std;
+
+
+#define ll long long
+// #define endl "\n"
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int binary_search(ll arr[], int low, int high, ll target){
+  while(low < high){
+    int mid = (low + high)/2;
+    if(arr[mid] > target){
+      high = mid -1;
+    }
+    else{
+      if(mid == high){
+        return mid;
+      }
+      if(arr[mid+1] > target){
+        return mid;
+      }
+      low = mid +1;
+    }
+  }
+  return low;
+}
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll n, d;
+  cin>>n>>d;
+  ll arr[n];
+  for(int i = 0; i < n; i++){
+    cin>>arr[i];
+  }
+  ll ans = 0;
+  for(int i = 0; i < n; i++){
+    ll j = binary_search(arr, i, n-1, arr[i]+d);
+    if(j - i > 1){
+      ll cnt = j - i + 1;
+      ans += ((cnt-2)*(cnt-1))/2;
+    }
+  }
+  cout<<ans<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n, d;
+    cin >> n >> d;
+    vector<ll> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end()); // ensure array is sorted
+
+    ll ans = 0;
+    for (int i = 0; i < n; i++) {
+        // find the first element greater than arr[i] + d
+        auto it = upper_bound(arr.begin() + i, arr.end(), arr[i] + d);
+        ll j = it - arr.begin() - 1; // index of the largest element <= arr[i] + d
+
+        ll cnt = j - i + 1;
+        if (cnt >= 3) {
+            ans += (cnt - 1) * (cnt - 2) / 2; // number of triplets
+        }
+    }
+
+    cout << ans << '\n';
+}
+
 http://codeforces.com/problemset/problem/253/A
 // A. Boys and Girls
 using namespace std;
