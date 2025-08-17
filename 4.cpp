@@ -8676,6 +8676,74 @@ int main(){
  		}
     }
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+  int *arr;
+  arr = new int[n];
+  for(int i = 0; i < n; i++){
+    cin>>*(arr+i);
+  }
+  sort(arr, arr+n);
+
+  int sum1 = 0, sum2 = *(arr+n-1);
+  for(int j = 0; j < n-1; j++){
+    sum1 += *(arr+j);
+  }
+
+  int i = 1;
+  while(i <= n){
+    if(sum2 > sum1){
+      cout<<i;
+      return 0;
+    }
+    else{
+      i++;
+      sum2 += *(arr+n-i);
+      sum1 -= *(arr+n-i);
+    }
+  }
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end());
+
+    long long sum1 = accumulate(arr.begin(), arr.end() - 1, 0LL);
+    long long sum2 = arr.back();
+
+    int i = 1;
+    while (i <= n) {
+        if (sum2 > sum1) {
+            cout << i;
+            return 0;
+        } else {
+            i++;
+            sum2 += arr[n - i];
+            sum1 -= arr[n - i];
+        }
+    }
+}
+
 using namespace std;
 https://codeforces.com/problemset/problem/160/A
 // A.Twins
@@ -9013,6 +9081,20 @@ int main()
         tof+=p[i];
     }
     cout<<fixed<<setprecision(12)<<(tof/(n*100))*100<<endl;
+}
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  float x, sum = 0;
+  for(int i = 0; i < n; i++){
+    cin>>x;
+    sum += x;
+  }
+  float aver = sum / n;
+  cout<<aver;
 }
 https://codeforces.com/problemset/problem/202/A
 A. LLPS
