@@ -962,6 +962,41 @@ int main(){
         cout << "*";
     cout << endl;
 }
+https://codeforces.com/problemset/problem/5/C
+// 5C. Longest Regular Bracket Sequence
+using namespace std;
+int main(){
+    string str; getline(cin, str);
+    int res = 0;
+    // set <int> st; st.insert(-1); st.insert(str.size());
+    set <int> st{-1, static_cast <int> (str.size)};
+    for(int i = 0; i < str.size(); i++){
+        if(str[i] == '(')    res += 1;
+        else    res -= 1;
+        if(res < 0){
+            st.insert(i); res = 0;
+        }
+    }
+    res = 0;
+    for(int i = str.size(); i > 0; i--){
+        if(str[i] == ')')    res += 1;
+        else    res -= 1;
+        if(res < 0){
+            st.insert(i); res = 0;
+        }
+    }
+    int maxlen = 0, cnt = 0, lastcut = -1;
+    for(auto it = st.begin(); it!= st.end(); it++){
+        int len = *it - lastcut - 1;
+        if(len > maxlen){
+            maxlen = 1;
+            cnt = 1;
+        }
+        else if(len == maxlen && len > 0)    ++cnt;
+        lastcut = *it;
+    }
+    cout << maxlen << " " << (cnt > 0 ? cnt : 1);
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
