@@ -997,6 +997,45 @@ int main(){
     }
     cout << maxlen << " " << (cnt > 0 ? cnt : 1);
 }
+https://codeforces.com/problemset/problem/5/E
+// 5E. Bindian Signalizing
+using namespace std;
+int main(){
+    int n, cin >> n;
+    vector <int> a(n), b(2 *n), left(n), right(n), countequal(n + 1);
+    int maxval = 0, maxpos = 0;
+    for(int i = 0; i < n; i++){
+        cin >> a[i];
+        if(a[i] > maxval){
+            maxval = a[i]; maxpos = i;
+        }
+    }
+    // Rotate array so that max element starts at position 0 in 'b'
+    for(int i = maxpos; i < n; i++)    b[i - maxpos] = a[i];
+    for(int i = 0; i <= maxpos; i++)    b[i + n - maxpos] = a[i];
+    countequal[n] = 0;
+    for(int i = n - 1; i >= 0; i--){
+        right[i] = i + 1;
+        while(right[i] < n && b[i] > b[right[i]])
+            right[i] = right[right[i]];
+        if(right[i] < n && b[i] == b[right[i]]){
+            countequal[i] = countequal[right[i]] + 1;
+            right[i] = right[right[i]];
+        }
+    }
+    for(int i = 1; i < n; i++){
+        left[i] = i - 1;
+        while(left[i] > 0 && b[i] >= b[left[i]])
+            left[i] = left[left[i]];
+    }
+    int res = 0;
+    for(int i = 1; i < n; i++){
+        res += countequal[i];
+        if(left[i] == 0 && right[i] == n)    res++;
+        else    res += 2;
+    }
+    cout << res;
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
