@@ -751,7 +751,127 @@ int main()
     solve();
     return 0;
 }
+https://codeforces.com/problemset/problem/7/C
+C. Line
+using namespace std;
 
+#define ll long long
+#define faster ios::sync_with_stdio(false); cin.tie(nullptr);
+
+ll exgcd(ll a, ll b, ll &x, ll &y)
+{
+    if (b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    ll x1, y1;
+    ll g = exgcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
+}
+
+void solve()
+{
+    ll a, b, c, x, y;
+    cin >> a >> b >> c;
+
+    ll g = exgcd(a, b, x, y);
+    if (c % g != 0)
+    {
+        cout << -1 << "\n";  // no solution
+    }
+    else
+    {
+        // scale solution
+        x *= c / g;
+        y *= c / g;
+        cout << x << " " << y << "\n";
+    }
+}
+
+void init_code()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+}
+
+int main()
+{
+    faster;
+    // init_code();  // uncomment if using file I/O
+    solve();
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+ll gcdExtended(ll a, ll b, ll &x, ll &y) {
+    if (a == 0) {
+        x = 0;
+        y = 1;
+        return b;
+    }
+ 
+    ll x1, y1;
+    ll g = gcdExtended(b % a, a, x1, y1);
+ 
+    x = y1 - (b / a) * x1;
+    y = x1;
+ 
+    return g;
+}
+ 
+int main() {
+    // Example input: 2 5 3   (means 2x + 5y = 3)
+    ll a, b, c;
+    cin >> a >> b >> c;
+ 
+    ll x, y;
+    ll g = gcdExtended(a, b, x, y);
+ 
+    if (c % g != 0) {
+        cout << -1;  // No solution
+        return 0;
+    }
+ 
+    // Scale solution to match ax + by = c
+    ll k = c / g;
+    x *= k;
+    y *= k;
+ 
+    cout << x << " " << y << "\n";
+    return 0;
+}
+using namespace std;
+int exgcd(int a,int b,int &x,int &y){
+	if(b==0){
+		x=1,y=0;
+		return a;
+	}
+	int ans=exgcd(b,a%b,y,x);
+	y-=a/b*x;
+	return ans;
+}
+ 
+signed main()
+{
+	int a,b,c,x,y;
+	cin>>a>>b>>c;c=-c;
+	int gcd=exgcd(a,b,x,y);
+	x*=c/gcd;
+	y*=c/gcd;
+	if(a*x+b*y-c!=0)puts("-1");
+	else
+	printf("%lld %lld\n",x,y);
+    return 0;
+}
+ 
 https://codeforces.com/problemset/problem/7/D
 D. Palindrome Degree
 using namespace std;
