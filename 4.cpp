@@ -528,6 +528,230 @@ int main(){
     cout << answer;
     return 0;
 }
+https://codeforces.com/problemset/problem/7/B
+B. Memory Manager
+using namespace std;
+using ll = long long;
+
+void solve() {
+    ll t, m;
+    cin >> t >> m;
+    vector<ll> mem(m, 0);
+    ll token = 1;
+
+    while (t--) {
+        string cmd;
+        cin >> cmd;
+
+        if (cmd == "alloc") {
+            ll n; cin >> n;
+            ll free_cnt = 0, start = -1;
+
+            for (int i = 0; i < m; i++) {
+                if (mem[i] == 0) {
+                    if (free_cnt == 0) start = i;
+                    free_cnt++;
+                    if (free_cnt == n) {
+                        for (int j = start; j < start + n; j++)
+                            mem[j] = token;
+                        cout << token++ << "\n";
+                        start = -1;
+                        break;
+                    }
+                } else {
+                    free_cnt = 0;
+                }
+            }
+            if (start != -1 && free_cnt < n) cout << "NULL\n";
+        }
+        else if (cmd == "erase") {
+            ll x; cin >> x;
+            if (x <= 0) {
+                cout << "ILLEGAL_ERASE_ARGUMENT\n";
+                continue;
+            }
+            bool erased = false;
+            for (ll &slot : mem) {
+                if (slot == x) {
+                    slot = 0;
+                    erased = true;
+                }
+            }
+            if (!erased) cout << "ILLEGAL_ERASE_ARGUMENT\n";
+        }
+        else if (cmd == "defragment") {
+            int pos = 0;
+            for (int i = 0; i < m; i++) {
+                if (mem[i] != 0) {
+                    if (i != pos) {
+                        mem[pos] = mem[i];
+                        mem[i] = 0;
+                    }
+                    pos++;
+                }
+            }
+        }
+    }
+}
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    solve();
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int t, m;
+    cin >> t >> m;
+
+    vector<int> mem(m, -1);  // memory slots
+    int next_id = 1;         // allocation ID counter
+
+    while (t--) {
+        string cmd;
+        cin >> cmd;
+
+        if (cmd == "alloc") {
+            int x; cin >> x;
+            int free_count = 0, start = -1;
+            bool success = false;
+
+            for (int i = 0; i < m; i++) {
+                if (mem[i] == -1) {
+                    if (free_count == 0) start = i;
+                    free_count++;
+                    if (free_count == x) {
+                        cout << next_id << "\n";
+                        for (int j = start; j < start + x; j++)
+                            mem[j] = next_id;
+                        next_id++;
+                        success = true;
+                        break;
+                    }
+                } else {
+                    free_count = 0;
+                }
+            }
+
+            if (!success) cout << "NULL\n";
+        } 
+        else if (cmd == "erase") {
+            int id; cin >> id;
+            if (id < 1) {
+                cout << "ILLEGAL_ERASE_ARGUMENT\n";
+                continue;
+            }
+
+            bool erased = false;
+            for (int &slot : mem) {
+                if (slot == id) {
+                    slot = -1;
+                    erased = true;
+                }
+            }
+            if (!erased) cout << "ILLEGAL_ERASE_ARGUMENT\n";
+        } 
+        else if (cmd == "defragment") {
+            vector<int> compacted;
+            for (int x : mem) if (x != -1) compacted.push_back(x);
+            while ((int)compacted.size() < m) compacted.push_back(-1);
+            mem.swap(compacted);
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    solve();
+    return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve()
+{
+    int n, k; 
+    cin >> n >> k;
+    vector<int> v(k, 0);
+
+    int alloc = 1;
+    for (int i = 0; i < n; i++)
+    {
+        string command; 
+        cin >> command;
+
+        if (command == "alloc")
+        {
+            int m; cin >> m;
+            bool ok = false;
+            for (int j = 0; j < k; j++)
+            {
+                bool ok2 = true;
+                for (int l = j; l < j + m; l++)
+                {
+                    if (l >= k || v[l] != 0)
+                    {
+                        ok2 = false;
+                        break;
+                    }
+                }
+                if (ok2)
+                {
+                    ok = true;
+                    cout << alloc << endl;
+                    for (int l = j; l < j + m; l++)
+                        v[l] = alloc;
+                    alloc++;
+                    break;
+                }
+            }
+            if (!ok) cout << "NULL" << endl;
+        }
+        else if (command == "erase")
+        {
+            int m; cin >> m;
+            if (m < 1) {
+                cout << "ILLEGAL_ERASE_ARGUMENT" << endl;
+                continue;
+            }
+            bool ok = false;
+            for (int i = 0; i < k; i++)
+            {
+                if (v[i] == m)
+                {
+                    ok = true;
+                    v[i] = 0;
+                }
+            }
+            if (!ok) cout << "ILLEGAL_ERASE_ARGUMENT" << endl;
+        }
+        else if (command == "defragment")
+        {
+            vector<int> temp(k, 0);
+            int indx = 0;
+            for (int i = 0; i < k; i++)
+            {
+                if (v[i] != 0)
+                    temp[indx++] = v[i];
+            }
+            v = move(temp);
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    solve();
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/7/D
 D. Palindrome Degree
 using namespace std;
