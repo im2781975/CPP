@@ -10898,6 +10898,34 @@ int main() {
     else
         cout << 2 * (k - mid);
 }
+	using namespace std;
+int main(){
+  unsigned long long n, m;
+  cin>>n>>m;
+  if(n & 1){
+    (m <= (n/2 + 1)) ? cout<<(2 * m - 1)<<endl : cout<<(2*(m - (n/2 + 1)))<<endl;
+    return 0;
+  }
+  (m <= n/2) ? cout<<(2 * m - 1)<<endl : cout<<(2*(m - n/2))<<endl;
+  return 0;
+}
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n, m;
+    cin >> n >> m;
+
+    long long half = (n + 1) / 2; // count of odd numbers in sequence
+    if (m <= half) {
+        cout << 2 * m - 1 << "\n"; // m-th odd number
+    } else {
+        cout << 2 * (m - half) << "\n"; // (m-half)-th even number
+    }
+
+    return 0;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/337/A
 // 337A - Puzzles
@@ -10913,6 +10941,54 @@ int main() {
     cout << min_diff << endl;
     return 0;
 }
+using namespace std;
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n, m;
+  cin>>n>>m;
+  int arr[m];
+  for(int i = 0; i < m; i++){
+    cin>>arr[i];
+  }
+  sort(arr, arr+m);
+  int res = 1000000;
+  for(int i = 0; i <= m - n; i++){
+    if((arr[n + i - 1] - arr[i]) < res){
+      res = (arr[i+n-1] - arr[i]);
+    }
+  }
+  cout<<res<<endl;
+
+}
+using namespace std;
+#define ll long long
+#define endl '\n'
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> arr(m);
+
+    for (int i = 0; i < m; i++) {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end());
+
+    int res = INT_MAX;
+    for (int i = 0; i + n - 1 < m; i++) {
+        res = min(res, arr[i + n - 1] - arr[i]);
+    }
+
+    cout << res << endl;
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/337/A
 // 337A - Puzzles
@@ -10963,6 +11039,56 @@ int main() {
         cout << digits[i];
     }
 }
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main(){
+  string s1;
+  cin>>s1;
+  char arr[s1.size()-1];
+  int j = 0;
+  for(int i = 0; i < s1.size(); i += 2){
+    arr[j]= s1[i];
+    j++;
+  }
+  sort(arr, arr+j);
+  for(int k = 0; k < j; k++){
+    if(k == j-1){
+      cout<<arr[k];
+    }
+    else{
+      cout<<arr[k]<<"+";
+
+    }
+  }
+
+  return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+    
+    vector<char> nums;
+    for (int i = 0; i < s.size(); i += 2) { // take only digits
+        nums.push_back(s[i]);
+    }
+
+    sort(nums.begin(), nums.end());
+
+    for (size_t i = 0; i < nums.size(); i++) {
+        cout << nums[i];
+        if (i != nums.size() - 1) cout << "+";
+    }
+    cout << "\n";
+
+    return 0;
+}
+
 using namespace std;
 http://codeforces.com/problemset/problem/339/B
 // 339B - Xenia and Ringroad
@@ -10981,6 +11107,115 @@ int main() {
     cout << moves << endl;
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll n, m;
+  cin>>n>>m;
+
+  ll p1 = 1, p2, steps = 0;
+  while(m--){
+    cin>>p2;
+    if(p2 < p1){
+      steps += (n - p1 + p2);
+    }
+    else{
+      steps += (p2 - p1);
+    }
+    p1 = p2;
+  }
+  cout<<steps<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n, m;
+    cin >> n >> m;
+
+    long long current = 1, next, steps = 0;
+
+    for (long long i = 0; i < m; i++) {
+        cin >> next;
+        if (next >= current) {
+            steps += (next - current);
+        } else {
+            steps += (n - current + next);
+        }
+        current = next;
+    }
+
+    cout << steps << '\n';
+    return 0;
+}
+https://codeforces.com/problemset/problem/343/B
+// B. Alternating Current
+using namespace std;
+#define ll long long
+#define endl "\n"
+#define debug(n) cout<<(n)<<endl;
+#define pb push_back
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  stack<char> st;
+  string s;
+  cin>>s;
+
+  for(int i = 0; i < s.size(); i++){
+    if(!st.empty() && st.top() == s[i]){
+      st.pop();
+    }
+    else{
+      st.push(s[i]);
+    }
+  }
+  if(st.empty()){
+    cout<<"Yes"<<endl;
+  }
+  else{
+    cout<<"No"<<endl;
+  }
+
+}
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string s;
+    cin >> s;
+    stack<char> st;
+
+    for (char c : s) {
+        if (!st.empty() && st.top() == c) {
+            st.pop();  // remove adjacent pair
+        } else {
+            st.push(c);
+        }
+    }
+
+    cout << (st.empty() ? "Yes" : "No") << "\n";
+    return 0;
+}
+
 http://codeforces.com/problemset/problem/344/A
 // A. Magnets
 using namespace std;
@@ -11004,6 +11239,23 @@ int main() {
         prev = curr;
     }
     cout << groups << endl;
+}
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n, count = 1;
+  cin>>n;
+  int arr[n];
+  for(int i = 0; i < n; i++){
+    cin>>arr[i];
+  }
+  for(int i = 0; i < n-1; i++){
+    if(arr[i] != arr[i+1]){
+      count++;
+    }
+  }
+  cout<<count;
 }
 http://codeforces.com/contest/344/problem/A
 // Magnets.cpp
@@ -11214,6 +11466,47 @@ int main() {
     }
     cout << total << endl;
 }
+using namespace std;
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll a, b;
+  cin>>a>>b;
+  ll c = a;
+  while(a/b != 0){
+    ll temp = a;
+    c += a/b;
+    a /= b;
+    a += temp % b;
+  }
+  cout<<c<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long a, b;
+    cin >> a >> b;
+
+    long long total = a;
+
+    while (a >= b) {
+        long long extra = a / b;
+        total += extra;
+        a = extra + (a % b);
+    }
+
+    cout << total << "\n";
+    return 0;
+}
 
 using namespace std;
 http://codeforces.com/contest/381/problem/A
@@ -11238,6 +11531,85 @@ int main() {
     }
     cout << sscore << " " << dscore << endl;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+  int n;
+  cin>>n;
+  list <int> listn;
+  int x;
+  for(int i = 0; i < n; i++){
+    cin>>x;
+    listn.push_back(x);
+  }
+  int sereja = 0, dima = 0;
+  bool turn = true;
+  while(n--){
+    turn = !turn;
+    if(turn){
+      if(listn.front() >= listn.back()){
+        dima += listn.front();
+        listn.pop_front();
+        continue;
+      }
+      dima += listn.back();
+      listn.pop_back();
+      continue;
+    }
+    if(listn.front() >= listn.back()){
+      sereja += listn.front();
+      listn.pop_front();
+      continue;
+    }
+    sereja += listn.back();
+    listn.pop_back();
+    continue;
+  }
+  cout<<sereja<<" "<<dima<<endl;
+  return 0;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    deque<int> cards(n);
+    for (int i = 0; i < n; i++) {
+        cin >> cards[i];
+    }
+
+    int sereja = 0, dima = 0;
+    bool serejaTurn = true;
+
+    while (!cards.empty()) {
+        int pick;
+        if (cards.front() >= cards.back()) {
+            pick = cards.front();
+            cards.pop_front();
+        } else {
+            pick = cards.back();
+            cards.pop_back();
+        }
+
+        if (serejaTurn) {
+            sereja += pick;
+        } else {
+            dima += pick;
+        }
+
+        serejaTurn = !serejaTurn; // switch turn
+    }
+
+    cout << sereja << " " << dima << "\n";
+    return 0;
+}
+
 using namespace std;
 https://codeforces.com/problemset/problem/381/A
 // SerejaAndDima.cpp
@@ -11679,6 +12051,59 @@ int main() {
 	}
 	cout << calories;
 }
+	#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+  int a, b, c, d;
+  cin>>a>>b>>c>>d;
+  string s;
+  cin>>s;
+  int clry = 0;
+  for(int i = 0; i < s.size(); i++){
+    if(s[i] == '1'){
+      clry += a;
+      continue;
+    }
+    if(s[i] == '2'){
+      clry += b;
+      continue;
+    }
+    if(s[i] == '3'){
+      clry += c;
+      continue;
+    }
+    if(s[i] == '4'){
+      clry += d;
+      continue;
+    }
+  }
+  cout<<clry<<endl;
+  return 0;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    string s;
+    cin >> s;
+
+    int prices[5] = {0, a, b, c, d}; // index matches '1','2','3','4'
+    int total = 0;
+
+    for (char ch : s) {
+        total += prices[ch - '0'];
+    }
+
+    cout << total << "\n";
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/431/A
 A. Black Square
 using namespace std;
@@ -11917,6 +12342,56 @@ int main() {
     }
     cout << uniqueLetters.size() << endl;
 }
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main(){
+  const int MAX = 1000;
+  char d, c[MAX];
+  int i = 0;
+  while(d != '}'){
+    cin>>d;
+    if(d >= 97 && d <= 122){
+      c[i] = d;
+      i++;
+    }
+  }
+  c[i] = '\0';
+  sort(c, c+i);
+  char h = 'A';
+  int count = 0;
+  for(int j = 0; j < i; j++){
+    if(c[j] != h){
+      count++;
+      h = c[j];
+    }
+  }
+  cout<<count;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    char ch;
+    set<char> letters;
+
+    // Read characters until '}'
+    while (cin >> ch && ch != '}') {
+        if (ch >= 'a' && ch <= 'z') {
+            letters.insert(ch);
+        }
+    }
+
+    // Output the number of unique letters
+    cout << letters.size() << endl;
+
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/443/A
 A. Anton and Letters
 using namespace std;
@@ -11955,6 +12430,29 @@ int main() {
         cout << "Akshat" << endl;
     else
         cout << "Malvika" << endl;
+}
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int m, n;
+  cin>>m>>n;
+  int a = min(m, n);
+  if(a %2 == 0){
+    cout<<"Malvika"<<endl;
+  }
+  else{
+    cout<<"Akshat"<<endl;
+  }
+
+
 }
 using namespace std;
 http://codeforces.com/contest/451/problem/B
@@ -12053,6 +12551,55 @@ int main() {
     }
     cout << days << endl;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n, m;
+  cin>>n>>m;
+  int count = 0;
+  while(n != 0){
+    count++;
+    n--;
+    if(count % m == 0){
+      n++;
+    }
+  }
+  cout<<count<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+    int count = 0;
+
+    while (n > 0) {
+        count++;
+        n--;
+        if (count % m == 0) {
+            n++; // extra item added every m-th step
+        }
+    }
+
+    cout << count << '\n';
+    return 0;
+}
+
 using namespace std;
 int main(){
     int n, k; cin >> n >> k;
@@ -12107,6 +12654,22 @@ int main(){
         if(b - a >= 2) ++cnt;
     }
     cout << cnt;
+}
+#include<iostream>
+using namespace std;
+
+int main(){
+  int n, p, q, count = 0;
+  cin>>n;
+  for(int i = 0; i < n; i++){
+    cin>>p;
+    cin>>q;
+    if(q - p >= 2){
+      count++;
+    }
+  }
+  cout<<count;
+  return 0;
 }
 http://codeforces.com/problemset/problem/467/b
 // Fedor_and_New_Game.cpp
@@ -12555,6 +13118,33 @@ int main(){
     cout << res;
 }
 using namespace std;
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  string k = "qwertyuiopasdfghjkl;zxcvbnm,./";
+  char o;
+  cin>>o;
+  string s;
+  cin>>s;
+  if(o == 'R'){
+    for(int i = 0; i < s.length(); i++){
+      s[i] = k[k.find(s[i]) - 1];
+    }
+  }
+  else{
+    for(int i = 0; i < s.length(); i++){
+      s[i] = k[k.find(s[i]) + 1];
+    }
+  }
+  cout<<s<<endl;
+}
+using namespace std;
 http://codeforces.com/problemset/problem/479/A
 // 479A - Expression
 int main() {
@@ -12569,6 +13159,51 @@ int main() {
     });
     cout << result << endl;
 }
+	#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll a, b, c;
+  cin>>a>>b>>c;
+  ll max = -1;
+  ll arr[] = {(a*b*c), (a + b + c), (a + b * c), (a * b + c), ((a +b)*c), (a*(b + c))};
+  for(auto i : arr){
+    max = (i > max) ? i : max;
+  }
+  cout<<max<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long a, b, c;
+    cin >> a >> b >> c;
+
+    // Compute all possible expressions
+    long long res1 = a + b + c;
+    long long res2 = a * b * c;
+    long long res3 = (a + b) * c;
+    long long res4 = a * (b + c);
+    long long res5 = a + b * c;
+    long long res6 = a * b + c;
+
+    // Take maximum
+    long long ans = max({res1, res2, res3, res4, res5, res6});
+    cout << ans << '\n';
+}
+
 https://codeforces.com/problemset/problem/479/A
 A. Expression
 using namespace std;
@@ -12655,6 +13290,37 @@ int main() {
     }
 
     cout << sum << "\n";
+    return 0;
+}
+#include<iostream>
+using namespace std;
+
+int main(){
+  long long n;
+  cin>>n;
+  long long evn = n/2;
+  long long oddn = n%2 == 0 ? n/2 : (n/2 + 1);
+  long long sumevn = evn * (evn + 1);
+  long long sumoddn = oddn * oddn;
+  long long sum = sumevn - sumoddn;
+  cout<<sum;
+  return 0;
+}
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long n;
+    cin >> n;
+
+    long long evn = n / 2;                      // Number of even numbers
+    long long oddn = (n + 1) / 2;               // Number of odd numbers
+
+    long long sumevn = evn * (evn + 1);         // Sum of first 'evn' even numbers
+    long long sumoddn = oddn * oddn;            // Sum of first 'oddn' odd numbers
+
+    cout << sumevn - sumoddn << '\n';           // Difference
+
     return 0;
 }
 
@@ -12772,6 +13438,56 @@ int main()
     cout<<i<<endl;
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+
+  int count = 0;
+  int pre = 0;
+  int i = 1;
+  while(n >= pre + i){
+    count++;
+    n -= pre + i;
+    pre = pre + i;
+    i++;
+  }
+  cout<<count<<endl;
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    int count = 0;
+    int sum = 0;
+    int i = 1;
+
+    while (sum + i <= n) {
+        sum += i;
+        count++;
+        i++;
+    }
+
+    cout << count << '\n';
+}
+
 using namespace std;
 #define ll long long
 
@@ -12891,6 +13607,58 @@ int main()
     cin>>n;
     cout<<solve(n,n)<<endl;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+
+  int a[n][n];
+
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < n; j++){
+      if(i == 0 || j == 0){
+        a[i][j] = 1;
+      }
+      else{
+        a[i][j] = a[i-1][j] + a[i][j-1];
+      }
+    }
+  }
+  cout<<a[n-1][n-1];
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    // Use long long to avoid overflow for large n
+    vector<vector<long long>> a(n, vector<long long>(n, 1));
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < n; j++) {
+            a[i][j] = a[i - 1][j] + a[i][j - 1];
+        }
+    }
+
+    cout << a[n - 1][n - 1] << '\n';
+}
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -13226,6 +13994,149 @@ int main() {
     cout << moves << "\n";
     return 0;
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+  string s, t;
+  cin>>s>>t;
+  int count = 0;
+  for(int i = 0; i < n; i++){
+    int a = s[i] - '0';
+    int b = t[i] - '0';
+    int g = min(a, b);
+    int h = max(a, b);
+    int c = min(h - g, (g + 10 - h));
+    count += c;
+  }
+  cout<<count<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    string s, t;
+    cin >> s >> t;
+
+    int total_moves = 0;
+
+    for (int i = 0; i < n; i++) {
+        int a = s[i] - '0';
+        int b = t[i] - '0';
+
+        // Circular distance between digits
+        int diff = abs(a - b);
+        total_moves += min(diff, 10 - diff);
+    }
+
+    cout << total_moves << '\n';
+}
+https://codeforces.com/problemset/problem/545/A
+
+using namespace std;
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+
+  int arr[n][n];
+
+  map<int, bool> mp;
+
+  for(int i = 0; i< n; i++){
+    for(int j = 0; j< n; j++){
+      cin>>arr[i][j];
+    }
+  }
+
+  for(int i = 0; i < n; i++){
+    for(int j = i+1; j < n; j++){
+      if(arr[i][j] == 1){
+        mp[i] = true;
+        continue;
+      }
+      if(arr[i][j] == 2){
+        mp[j] = true;
+        continue;
+      }
+      if(arr[i][j] == 3){
+        mp[i] = mp[j] = true;
+      }
+
+    }
+  }
+
+  int arrb[n], k = 0;
+  for(int i = 0; i < n; i++){
+    if(!mp[i]){
+      arrb[k] = i + 1;
+      k++;
+    }
+  }
+  cout<<k<<'\n';
+  for(int i = 0; i < k; i++){
+    cout<<arrb[i]<<" ";
+  }
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+
+    vector<vector<int>> arr(n, vector<int>(n));
+    vector<bool> marked(n, false);
+
+    // Read matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> arr[i][j];
+        }
+    }
+
+    // Process upper triangle
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i][j] == 1) marked[i] = true;
+            else if (arr[i][j] == 2) marked[j] = true;
+            else if (arr[i][j] == 3) marked[i] = marked[j] = true;
+        }
+    }
+
+    // Collect unmarked indices
+    vector<int> safe_indices;
+    for (int i = 0; i < n; i++) {
+        if (!marked[i]) safe_indices.push_back(i + 1);
+    }
+
+    // Output
+    cout << safe_indices.size() << '\n';
+    for (int idx : safe_indices) cout << idx << " ";
+    cout << '\n';
+}
 
 using namespace std;
 http://codeforces.com/problemset/problem/546/A
@@ -13250,6 +14161,24 @@ int main() {
 		 needed = cost - n;
 		 cout << needed;
 	}
+}
+#include<iostream>
+using namespace std;
+
+int main(){
+  int k, n, w;
+  cin>>k;
+  cin>>n;
+  cin>>w;
+
+  int sum = 0;
+  for(int i = 1; i <= w; i++){
+    sum += i*k;
+  }
+  int b = (sum - n) > 0 ? (sum - n) : 0;
+  cout<<b;
+  return 0;
+
 }
 https://codeforces.com/problemset/problem/546/A
 // A. Soldier and Bananas
@@ -13298,6 +14227,30 @@ int main() {
 	// int ons = count(s.begin(), s.end(), '1');
 	// cout<< n - (2* min(zers, ons));
     return 0;
+}
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+  string s;
+  cin>>s;
+  int count1 = 0, count0 = 0;
+  for(auto i : s){
+    (i == '1') ? count1++ : count0++;
+  }
+  cout<<abs(count0 - count1)<<endl;
+
 }
 using namespace std;
 http://codeforces.com/contest/567/problem/A
@@ -13398,6 +14351,23 @@ int main() {
 		cout << mini << " " << maxi << "\n";
 	}
 }
+https://codeforces.com/problemset/problem/579/A
+using namespace std;
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+  int res = __builtin_popcount(n);
+  cout<<res<<endl;
+
+}
 using namespace std;
 http://codeforces.com/problemset/problem/580/A
 // A. Kefa and First Steps
@@ -13438,6 +14408,180 @@ int main() {
     if(!start && !end) cout << n;
     else cout << maxlength;
 }
+#include<bits/stdc++.h>
+#include<limits>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  cin>>n;
+
+  int arr[n+1];
+  for(int i = 0; i < n; i++){
+    cin>>arr[i];
+  }
+  arr[n] = std::numeric_limits<int>::max();
+  int max= 0, count = 0;
+  for(int i = 0; i < n; i++){
+    count++;
+    max = count > max ? count : max;
+    if(arr[i] > arr[i+1]){
+      count = 0;
+    }
+  }
+  cout<<max<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<int> arr(n + 1);
+
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    arr[n] = INT_MAX; // Sentinel to avoid extra checks
+
+    int max_len = 0, current_len = 0;
+
+    for (int i = 0; i < n; i++) {
+        current_len++;
+        max_len = max(max_len, current_len);
+
+        if (arr[i] > arr[i + 1]) {
+            current_len = 0;
+        }
+    }
+
+    cout << max_len << '\n';
+}
+https://codeforces.com/problemset/problem/580/B
+using namespace std;
+#define ll long long
+#define pb push_back
+#define endl "\n"
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+bool comp(pair<ll, ll>& a, pair<ll, ll>& b){
+  return a.first < b.first;
+}
+
+int binary_search(vector<pair<ll, ll>>& arr, int low, int high, ll target){
+  while(low <= high){
+    int mid = (low + high)/2;
+    if(arr[mid].first < target){
+      if(mid == high){
+        return high + 1;
+      }
+      low = mid + 1;
+    }
+    else{
+      if(mid == low){
+        return mid;
+      }
+      if(arr[mid-1].first < target){
+        return mid;
+      }
+      high = mid -1;
+    }
+  }
+}
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll n, d;
+  cin>>n>>d;
+
+  vector<pair<ll, ll>> friends;
+  ll a, b, s = 0;
+  vector<ll> suff;
+
+  for(int i = 0; i < n; i++){
+    cin>>a>>b;
+    friends.push_back(make_pair(a, b));
+    s += b;
+  }
+  sort(friends.begin(), friends.end(), comp);
+  for(int i = 0; i < n; i++){
+    suff.pb(s);
+    // cout<<friends[i].first<<" "<<suff[i]<<endl;
+    s -= friends[i].second;
+
+  }
+  suff.pb(0);
+  ll ans = -1;
+  int j;
+  for(int i = 0; i < n; i++){
+    j = binary_search(friends, i, n-1, friends[i].first + d);
+    // cout<<i<<" "<<j<<endl;
+    ans = max(ans, suff[i] - suff[j]);
+  }
+
+  cout<<ans<<endl;
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define pb push_back
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n, d;
+    cin >> n >> d;
+
+    vector<pair<ll, ll>> friends(n);
+    ll total_b = 0;
+
+    for (int i = 0; i < n; i++) {
+        cin >> friends[i].first >> friends[i].second;
+        total_b += friends[i].second;
+    }
+
+    // Sort friends by position
+    sort(friends.begin(), friends.end());
+
+    // Compute suffix sums of b-values
+    vector<ll> suff(n + 1);
+    suff[n] = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        suff[i] = suff[i + 1] + friends[i].second;
+    }
+
+    ll ans = 0;
+
+    // For each friend, find first friend outside the distance using upper_bound
+    for (int i = 0; i < n; i++) {
+        ll limit = friends[i].first + d;
+        int j = upper_bound(friends.begin(), friends.end(), make_pair(limit, LLONG_MAX)) - friends.begin();
+        ans = max(ans, suff[i] - suff[j]);
+    }
+
+    cout << ans << '\n';
+}
+
 using namespace std;
 https://codeforces.com/problemset/problem/581/A
 // 581A. Vasya the Hipster
@@ -13478,6 +14622,64 @@ int main() {
         cout << s;
     }
 }
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define ll long long
+#define endl '\n'
+#define debug(n) cout<<(n)<<endl;
+const ll INF = 2e18 + 99;
+
+int main(){
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  ll n, t;
+  cin>>n>>t;
+  if(n == 1 && t == 10){
+    cout<<-1<<endl;
+    return 0;
+  }
+  else if(n == 1){
+    cout<<t<<endl;
+    return 0;
+  }
+  if(t == 10){
+    t = 1;
+  }
+  cout<<t;
+  for(int i = 0; i < n-1; i++){
+    cout<<0;
+  }
+
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long n, t;
+    cin >> n >> t;
+
+    if (n == 1 && t == 10) {
+        cout << -1 << '\n';
+        return 0;
+    }
+
+    if (t == 10) {
+        cout << 1;  // First digit
+        for (int i = 1; i < n; i++) cout << 0;  // Remaining digits
+    } else {
+        cout << t;
+        for (int i = 1; i < n; i++) cout << 0;
+    }
+
+    cout << '\n';
+}
+
 using namespace std;
 int main() {
 	int n, d; cin >> n >> d;
