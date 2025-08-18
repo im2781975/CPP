@@ -1146,7 +1146,7 @@ int main(){
     cout << total_matches;
 }
 https://codeforces.com/problemset/problem/20/C
-// C. Dijkstra?
+// 20C. Dijkstra?
 using namespace std;
 int main(){
     // n, m -> vertex, edges
