@@ -1145,3 +1145,87 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/20/C
+// C. Dijkstra?
+using namespace std;
+int main(){
+    // n, m -> vertex, edges
+    int n, m, u, v, w; cin >> n >> m >> u >> v >> w;
+    vector <vector <pair <int, int> > >adj(n);
+    for(int i = 0; i < m; i++){
+        cin >> u >> v >> w;
+        adj[u - 1].emplace_back(v - 1, w);
+        adj[v - 1].emplace_back(u - 1, w);
+    }
+    vector <int> dst(n, INT_MAX), pred(n, -1);
+    //pred(n) -> for looking backtrack
+    dst[0] = 0;
+    priority_queue <pair <int, int>, vector <pair <int, int> >, greater<> >pq;
+    pq.push({0, 0});
+    while(!pq.empty()){
+        pair <int, int> top = pq.top();
+        pq.pop();
+        int d = top.first; // u
+        int from = top.second; // v
+        // Sometimes the same vertex can be pushed multiple times into the priority queue (if we later found a shorter path). Only the most recent shortest distance is valid.
+        if(d != dst[from])    continue;
+        for(size_t i = 0; i < adj[from].size(); i++){
+            int to = adj[from][i].first;
+            //weight
+            int len = adj[from][i].second;
+            if (dist[to] > dist[from] + len) {
+                dist[to] = dist[from] + len;
+                pred[to] = from;
+                pq.push(make_pair(dist[to], to));
+            }
+        }
+    }
+    if(dist[n - 1] == INT_MAX){
+        cout << -1 << "\n"; return 0;
+    }
+    for(int v = n - 1; v != -1; v = pred[v])
+        path.push_back(v + 1);
+    reverse(path.begin(), path.end());
+    for(auto x : path)    cout << x + 1;
+}
+using namespace std;
+#define x 100005
+int main(){
+    int u, v, w, n, m; cin >> n >> m;
+    int d[x], pred[x];
+    vector <pair <int, int> >adj[x];
+    priority_queue <pair <int, int>, vector <pair <int, int> >, greater <>> pq;
+    for(int i = 0; i < m; i++){
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    for(int i = 1; i <= n; i++){
+        d[i] = INT_MAX;    pred[i] = -1;
+    }
+    d[1] = 0; pq.push({0, 1});
+    while(!pq.empty()){
+        auto top = pq.top(); pq.pop();
+        int dist_u = top.first;
+        int u = top.second;
+        if(dist_u > d[u])    continue;
+        for(size_t i = 0; i < adj[u].size(); i++){
+            int v = adj[u].first;
+            int wt = adj[u].second;
+            if (d[u] + wt < d[v]) {
+                d[v] = d[u] + wt;
+                pred[v] = u;
+                pq.push({d[v], v});
+            }
+        }
+    }
+    vector <int> path;
+    if (d[n] == INF) cout << -1 << "\n";
+    else {
+        for (int v = node; v != -1; v = pred[v])
+            path.push_back(v);
+        reverse(path.begin(), path.end());
+        for (int v : path) cout << v << " ";
+        cout << "\n";
+    }
+}
