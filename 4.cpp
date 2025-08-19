@@ -9052,7 +9052,75 @@ int main() {
 
     cout << x4 << " " << y4 << "\n";
 }
+https://codeforces.com/problemset/problem/189/A
+using namespace std;
+void solve()
+{
 
+    ll ans = 0;
+    ll a, b, c, n, k;
+    cin >> n >> a >> b >> c;
+    ll rem;
+
+    for (ll i = 0; i * a <= n; ++i) // i times a
+    {
+        for (ll j = 0; i * a + j * b <= n; ++j) // j times b
+        {
+            rem = n - i * a - j * b;
+            if (rem % c == 0)
+            {
+                k = rem / c;               // k times c
+                ans = max(ans, i + j + k); // run through all combinations and find max
+            }
+        }
+    }
+
+    cout << ans;
+
+    return;
+}
+
+int main()
+{
+    fast_io();
+    ll t = 1;
+    //cin >> t;
+    while (t--)
+    {
+        solve();
+        cout << "\n";
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/189/B
+using namespace std;
+void solve()
+{
+
+    ll w, h;
+    cin >> w >> h;
+    ll cnt = 0;
+    for (ll i = 1; i <= w; i += 2)
+        for (ll j = 1; j <= h; j += 2)
+            cnt += (w - i) * (h - j);
+
+    cout << cnt;
+
+    return;
+}
+
+int main()
+{
+    fast_io();
+    ll t = 1;
+    //cin >> t;
+    while (t--)
+    {
+        solve();
+        cout << "\n";
+    }
+    return 0;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/200/B
 // B. Drinks
@@ -9201,6 +9269,52 @@ int main() {
     if (!result.empty() && result.front() == ' ')    result.erase(0, 1);
     if (!result.empty() && result.back() == ' ')    result.pop_back();
     cout << result << endl;
+}
+
+using namespace std;
+void solve()
+{
+    string s;
+    cin >> s;
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] != 'W' || s[i + 1] != 'U' || s[i + 2] != 'B')
+        {
+            cout << s[i];
+            if (s[i + 1] == 'W' && s[i + 2] == 'U' && s[i + 3] == 'B')
+                cout << " ";
+        }
+        else
+            i += 2;
+    }
+    /*
+    string s;
+    cin >> s;
+    while (true)
+    {
+        ll i = s.find("WUB");
+        if (i == string::npos)
+            break;
+        else if (i == 0)
+            s.replace(i, 3, "");
+        else
+            s.replace(i, 3, " "); //!ADDS UNNECESSARY SPACES
+    }
+    cout << s;
+*/
+    return;
+}
+
+int main()
+{
+    fast_io();
+    ll t = 1;
+    //cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
 }
 https://codeforces.com/problemset/problem/208/A
 A. Dubstep
