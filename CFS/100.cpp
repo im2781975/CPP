@@ -1145,6 +1145,67 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/19/E
+// 19E. Fairy
+using namespace std;
+int n, m;
+vector <vector <int> > graph;
+vector <int> visited, delta, depth, res;
+int cntevencycle = 0;
+// delta[] = contribution counter (used later to decide which edges are part of solutions).
+void dfs(int u, int parent){
+    visited[u] = 1;
+    // graph[u] is a vector<int> containing all neighbors of node u.
+    for(int v : graph[u]){
+        if(v == parent)    continue;
+        if(!visited[v]){
+            depth[v] = depth[u] + 1;
+            dfs(v, u);
+            delta[u] += delta[v];
+        }// odd cycle
+        if((depth[u] - depth[v]) % 2 != 0){
+            delta[u]--; delta[v]++;
+        }
+        else {
+            delta[u]++; delta[v]--;
+            cntevencycle++;
+        }
+    }
+}
+int main(){
+    cin >> n >> m;
+    graph.assing(n + 1, {});
+    depth.assing(n + 1, 0);
+    visited.assing(n + 1, 0);
+    delta.assing(n + 1, 0);
+    vector <pair <int, int >> edge(n + 1);
+    for(int i = 1; i <= m; i++){
+        int u, v; cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+        edge[i] = {u, v};
+    }
+    for(int i = 1; i <= n; i++){
+        if(!visited[i]){
+            depth[i] = 0;
+            dfs(i, -1);
+        }
+    }
+    // All edges valid
+    if(cntevencycle == 0){
+        cout << m << "\n";
+        for(int i = 1; i <= m; i++)    cout << i << " ";
+    }
+    else {
+        for(int i = 1; i <= m; i++){
+            u = edges[i].first; v = edges[i].second;
+            if(depth[u] > depth[v])    swap(u, v);
+            if(delta[v] == cntevencycle)    res.push_back(i);
+        }
+    }
+    cout << res.size() << '\n';
+    for(auto id : res) cout << id << " ;"
+}
 https://codeforces.com/problemset/problem/20/A
 // 20A.BerOS file system
 using namespace std;
