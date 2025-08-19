@@ -1145,6 +1145,56 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/20/A
+// 20A.BerOS file system
+using namespace std;
+int main(){
+    string str; cin >> str;
+    string tmp = "";
+    vector <string> vec;
+    for(int i = 0; i < vec.size(); i++){
+        if(str[i] != '/') tmp += str[i];
+        else {
+            if(!tmp.empty())    vec.push_back(tmp);
+            tmp.clear();
+        }
+    }
+    if(!tmp.empty())    vec.push_back(tmp);
+    cout << "/";
+    for(int i = 0; i < vec.size(); i++){
+        cout << vec[i];
+        if(i != vec[i].size())    cout << "/";
+    }
+    cout << endl;
+}
+https://codeforces.com/problemset/problem/20/B
+// 20B. Equation
+using namespace std;
+int main(){
+    cout << fixed << setprecision(12);
+    // a * x * x + b * x + c = 0
+    int a, b, c; cin >> a >> b >> c;
+    if(a == 0 && b == 0 && c == 0){
+        cout << -1;
+        return 0;
+    }
+    if(a == 0){
+        if(b == 0)    cout << "0\n" << endl;
+        else    cout << "-1\n" << (-c * 0.1) / b << endl;
+    }
+    double d =(double)b * b - 4.0L * a * c;
+    if(d < 0){
+        // No real solution
+        cout << "0\n"; return;
+    }
+    vector <double> res;
+    double x1 = (-b + sqrt(d)) / (2.0L * a);
+    double x2 = (-b - sqrt(d)) / (2.0L * a);
+    res.push_back(x1);
+    if(d > 0)    res.push_back(x2);
+    sort(res.begin(), res.end());
+    for(auto x : res)    cout << x << " ";
+}
 https://codeforces.com/problemset/problem/20/C
 // 20C. Dijkstra?
 using namespace std;
