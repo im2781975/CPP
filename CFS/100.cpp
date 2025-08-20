@@ -1145,6 +1145,116 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/19/D
+// 19D. Points
+using namespace std;
+const int ax = 0x3f3f3f3f;
+int n;
+vector <string> type;
+vector <int> x, y, coords;
+vector <set <pair <int, int> > >tree;
+void add(int idx, pair <int, int> val){
+    while(idx > 0){
+        tree[idx].insert(val);
+        idx -= idx & -idx; //go downwards
+    }
+}
+void cancel(int idx, pair <int, int> val){
+    while(idx > 0){
+        tree[idx].erase(val);
+        idx += idx & -idx; //go upwards
+    }
+}
+void findnext(int x, int y){
+    pair <int, int> best = {ax, ax};
+    for(int i = y + 1; i < (int)tree.size(); i += i && -i){
+        // find the immediate next point
+        auto it = tree[i].lower_bound({x + 1, y});
+        if(it != tree[i].end())    best = min(*it, best);
+    }
+    if(best.first == ax)    cout << -1;
+    else    cout << best.first << " " << coords[best.second];
+}
+int main(){
+    cin >> n;
+    type.resize(n + 1); 
+    x.resize(n + 1); y.resize(n + 1);
+    //assign based over y coordinates
+    for(int i = 1; i <= n; i++){
+        cin >> type[i] >> x[i] >> y[i];
+        coords.push_back(y[i]);
+    }
+    sort(coords.begin(), coords.end());
+    // remove duplicats
+    coords.erase(unique(coords.begin(), coords.end()), coords.end());
+    tree.assign(coords.size() + 5, {});
+    for(int i = 1; i <= n; i++){
+        if(op[i][0] == 'a')    add(y[i], {x[i], y[i]});
+        else if(op[i][0] == 'r')    cancel(y[i], {x[i], y[i]});
+        else    findnext(x[i], y[i]);
+    }
+}
+using namespace std;
+int n;
+vector <int> xs, tree;
+vector <set <int>>rel;
+void compress(vector<pair<string, pair<int,int>>> &ps){
+    for(int i = 0; i < n; i++)    xs.push_back(ps[i].second.first);
+    sort(xs.begin(), xs.end());
+    xs.erase(unique(xs.begin(), xs.end()), xs.end());
+    for(int i = 0; i < n; i++)
+        ps[i].second.first = lower_bound(xs.begin(), xs.end(), ps[i].second.first) - xs.begin();
+}
+void update(int node, int b, int e, int p, int val) {
+    if (b == e - 1) {
+        tree[node] = val;
+        return;
+    }
+    int mid = (b + e) >> 1;
+    if (p < mid) update(node << 1, b, mid, p, val);
+    else update(node << 1 | 1, mid, e, p, val);
+    tree[node] = max(tree[node << 1], tree[node << 1 | 1]);
+}
+// Segment tree query: find first index >= p with max y >= val
+int query(int node, int b, int e, int p, int val) {
+    if (e <= p || tree[node] < val) return -1;
+    if (b == e - 1) return b;
+    int mid = (b + e) >> 1;
+    int left = query(node << 1, b, mid, p, val);
+    if (left != -1) return left;
+    return query(node << 1 | 1, mid, e, p, val);
+}
+int main(){
+    cin >> n;
+    vector <pair <string, pair<int, int>>> ps(n);
+    for(int i = 0; i < n; i++)
+        cin >> ps[i].first >> ps[i].second.first >> ps[i].second.second;
+    compress(ps);
+    int sz = xs.size();
+    tree.assign(4 * sz, -1); rel.assign(sz, {});
+    for(int i = 0; i < n; i++){
+        string type = ps[i].first;
+        int x = ps[i].second.first;
+        int y = ps[i].second.second;
+        if (type == "add") {
+            rel[x].insert(y);
+            update(1, 0, sz, x, *rel[x].rbegin());
+        }
+        else if (type == "remove") {
+            rel[x].erase(y);
+            if (rel[x].empty()) update(1, 0, sz, x, -1);
+            else update(1, 0, sz, x, *rel[x].rbegin());
+        }
+        else if (type == "find") {
+            int pos = query(1, 0, sz, x + 1, y + 1);
+            if (pos == -1)    cout << "-1\n";
+            else {
+                if (it == rel[pos].end())    cout << "-1\n";
+                else    cout << xs[pos] << " " << *it << "\n";
+            }
+        }
+    }
+}
 https://codeforces.com/problemset/problem/19/E
 // 19E. Fairy
 using namespace std;
