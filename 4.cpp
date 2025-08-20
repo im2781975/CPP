@@ -7510,6 +7510,60 @@ int main() {
 	cout << result;
 	return 0;
 }
+https://codeforces.com/problemset/problem/118/D
+// D. Caesar's Legions
+using namespace std;
+using ll = long long;
+const ll MOD = 1e8;
+int dp[102][102][12][2];
+int main() {
+    int n1, n2, k1, k2; cin >> n1 >> n2 >> k1 >> k2;
+    memset(dp, -1, sizeof(dp));
+    function<int(int, int, int, int)> dfs = [&](int used_n1, int used_n2, int consec, int type) {
+        if (used_n1 > n1 || used_n2 > n2) return 0;
+        if (type == 0 && consec > k1) return 0;
+        if (type == 1 && consec > k2) return 0;
+        if (used_n1 == n1 && used_n2 == n2) return 1;
+        int &ans = dp[used_n1][used_n2][consec][type];
+        if (ans != -1) return ans;
+        int ans1 = 0, ans2 = 0;
+        // use type 0:
+        if (type == 0) ans1 = dfs(used_n1 + 1, used_n2, consec + 1, 0);
+        else ans1 = dfs(used_n1 + 1, used_n2, 1, 0);
+        if (type == 1) ans2 = dfs(used_n1, used_n2 + 1, consec + 1, 1);
+        else ans2 = dfs(used_n1, used_n2 + 1, 1, 1);
+        return ans = (ans1 + ans2) % MOD;
+    };
+    cout << dfs(0, 0, 0, 0) << '\n';
+}
+using namespace std;
+using ll = long long;
+const ll MOD = 1e8;
+int dp[102][102][12][2];
+int main() {
+    int n1, n2, k1, k2; cin >> n1 >> n2 >> k1 >> k2;
+    memset(dp, -1, sizeof(dp));
+    function<int(int,int,int,int)> dfs = [&](int used1, int used2, int consec, int type) -> int {
+        if (used1 > n1 || used2 > n2) return 0;
+        if (type == 0 && consec > k1) return 0;
+        if (type == 1 && consec > k2) return 0;
+        if (used1 == n1 && used2 == n2) return 1;
+        int &ans = dp[used1][used2][consec][type];
+        if (ans != -1) return ans;
+        int ans1 = 0, ans2 = 0;
+        // place a footman
+        if (type == 0) ans1 = dfs(used1 + 1, used2, consec + 1, 0);
+        else ans1 = dfs(used1 + 1, used2, 1, 0);
+        // place a horseman
+        if (type == 1) ans2 = dfs(used1, used2 + 1, consec + 1, 1);
+        else ans2 = dfs(used1, used2 + 1, 1, 1);
+        return ans = (ans1 + ans2) % MOD;
+    };
+    // Sum both possibilities for the first soldier: footman or horseman
+    int result = (dfs(1, 0, 1, 0) + dfs(0, 1, 1, 1)) % MOD;
+    cout << result << '\n';
+}
+
 https://codeforces.com/problemset/problem/119/A
 // A. Epic Game
 using namespace std;
