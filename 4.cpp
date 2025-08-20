@@ -6812,6 +6812,85 @@ int main() {
     }
     return 0;
 }
+https://codeforces.com/problemset/problem/106/A
+// 106A. Card Game
+using namespace std;
+int main() {
+    string s, s1, s2; cin >> s >> s1 >> s2;
+    string temp = "6789TJQKA"; 
+    if (s1[1] == s2[1]) {
+        if (temp.find(s1[0]) > temp.find(s2[0])) cout << "YES\n"; 
+        else cout << "NO\n"; 
+    } else {
+        if (s1[1] == s[0]) cout << "YES\n"; 
+        else cout << "NO\n";   
+    }
+}
+https://codeforces.com/problemset/problem/106/C
+C. Buns
+using namespace std;
+using ll = long long;
+const ll INF = 1e18;
+const ll MOD = 1e9 + 7;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    vector<ll> wt(m + 1), val(m + 1), lim(m + 1);
+    lim[m] = INF; 
+    cin >> wt[m] >> val[m];  
+    for (ll i = 0; i < m; ++i) {
+        ll a, b;
+        cin >> a >> b;      
+        lim[i] = a / b;    
+        cin >> wt[i] >> val[i];
+    }
+    vector<vector<ll>> dp(m + 2, vector<ll>(n + 1, -1));
+    function<ll(ll, ll)> dfs = [&](ll i, ll rem) -> ll {
+        if (i == 0) return 0;
+        ll &ans = dp[i][rem];
+        if (ans != -1) return ans;
+        ans = 0;
+        for (ll j = 0; j <= lim[i - 1] && j * wt[i - 1] <= rem; ++j) {
+            ans = max(ans, j * val[i - 1] + dfs(i - 1, rem - j * wt[i - 1]));
+        }
+        return ans;
+    };
+    cout << dfs(m + 1, n) << '\n';
+}
+using namespace std;
+using ll = long long;
+const ll INF = 1e18;
+
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    vector<ll> wt(m + 1), val(m + 1), lim(m + 1);
+    lim[m] = INF; 
+    cin >> wt[m] >> val[m]; 
+    for (ll i = 0; i < m; ++i) {
+        ll a, b;
+        cin >> a >> b;      
+        lim[i] = a / b;      // max quantity of this bun
+        cin >> wt[i] >> val[i];
+    }
+    vector<ll> dp(n + 1, 0);  // dp[j] = max value with j dough
+    for (ll i = 0; i <= m; ++i) {
+        if (lim[i] == INF) {  // unlimited item (last bun)
+            for (ll j = wt[i]; j <= n; ++j) {
+                dp[j] = max(dp[j], dp[j - wt[i]] + val[i]);
+            }
+        } else {  // bounded item
+            for (ll j = n; j >= 0; --j) {
+                for (ll k = 1; k <= lim[i] && k * wt[i] <= j; ++k) {
+                    dp[j] = max(dp[j], dp[j - k * wt[i]] + k * val[i]);
+                }
+            }
+        }
+    }
+    cout << dp[n] << "\n";
+    return 0;
+}
+
 using namespace std;
 // A. Nearly Lucky Number
 // problemset/problem/110/A
@@ -6820,6 +6899,22 @@ int main(){
     int x = count(str.begin(), str.end(), '4');
     int y = count(str.begin(), str.end(), '7')
     ((x + y) == 4) ? cout << "YES" : cout << "NO";
+}
+using namespace std;
+typedef long long ll;
+int main(){
+    ll t, c47 = 0, co = 0; cin >> t;
+    while (t){
+        int dig = t % 10;
+        if (dig == 4 || dig == 7)
+            c47++;
+        t /= 10;
+    }
+    if (c47 == 4 || c47 == 7)
+        cout << "YES\n";
+    else
+        cout << "NO\n";
+    return 0;
 }
 https://codeforces.com/problemset/problem/110/A
 // A. Nearly Lucky Number
@@ -6921,6 +7016,33 @@ int main(){
     }
     cout << 0;
 }
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s1, s2;
+    cin >> s1 >> s2;
+
+    // Convert both strings to lowercase for case-insensitive comparison
+    for (char &c : s1) c = tolower(c);
+    for (char &c : s2) c = tolower(c);
+
+    int n = s1.length();
+    for (int i = 0; i < n; i++) {
+        if (s1[i] > s2[i]) {
+            cout << "1\n";
+            return 0;
+        } else if (s1[i] < s2[i]) {
+            cout << "-1\n";
+            return 0;
+        }
+    }
+
+    // If all characters are equal
+    cout << "0\n";
+    return 0;
+}
+
 #include<bits/stdc++.h>
 using namespace std;
 int main()
@@ -7123,6 +7245,46 @@ int main(){
     }
     cout << cap;
 }
+
+using namespace std;
+using ll = long long;
+int main() {
+    ll n;
+    cin >> n;
+
+    ll exitPeople, enterPeople;
+    cin >> exitPeople >> enterPeople;
+
+    ll current = enterPeople;          // people currently in tram
+    ll maximum = max(current, exitPeople);
+
+    for (ll i = 1; i < n; i++) {
+        cin >> exitPeople >> enterPeople;
+        current = current - exitPeople + enterPeople;
+        maximum = max(maximum, current);
+    }
+
+    cout << maximum << "\n";
+}
+
+using namespace std;
+int main(){
+    ll n, maxi, enter1, exit1, enter, exit, in;
+    cin >> n;
+    n--;
+    cin >> exit1 >> enter1;
+    in = enter1;
+    maxi = max(enter1, exit1);
+    while (n--){
+        cin >> exit >> enter;
+        in -= exit;
+        in += enter;
+        maxi = max(maxi, in);
+    }
+    cout << maxi << "\n";
+    return;
+}
+
 #include<iostream>
 using namespace std;
 
@@ -7178,6 +7340,49 @@ int main(){
         j=i;
     }
     cout<<j<<endl;
+}
+https://codeforces.com/problemset/problem/116/B
+// B. Little Pigs and Wolves
+using namespace std;
+int main(){
+    int n, m; cin >> n >> m;
+    vector<vector<char>> mat(n + 2, vector<char>(m + 2, '.'));
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++)
+            cin >> mat[i][j];
+    }
+    int ans = 0;
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            if (mat[i][j] == 'W') {
+                if (mat[i + 1][j] == 'P' || mat[i - 1][j] == 'P' || mat[i][j - 1] == 'P' || mat[i][j + 1] == 'P') ans++;
+            }
+        }
+    }
+    cout << ans << "\n";
+}
+using namespace std;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    vector<vector<char>> mat(n + 2, vector<char>(m + 2, '.'));
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = 1; j <= m; j++) {
+            cin >> mat[i][j];
+        }
+    }
+    ll ans = 0;
+    for (ll i = 1; i <= n; i++) {
+        for (ll j = 1; j <= m; j++) {
+            if (mat[i][j] == 'W') {
+                if (mat[i + 1][j] == 'P' || mat[i - 1][j] == 'P' || 
+                    mat[i][j + 1] == 'P' || mat[i][j - 1] == 'P') {
+                    ans++;
+                }
+            }
+        }
+    }
+    cout << ans << "\n";
 }
 using namespace std;
 // A. String Task
