@@ -1145,6 +1145,54 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/19/B
+// 19B. Checkout Assistant
+using namespace std;
+int dp[2005][2005];
+void knapsack(int idx, int need, vector <int> &item, vector <int> &cost, int n){
+    if(need <= 0) return 0;
+    if(idx == n) return 1e18;
+    if(dp[idx][need] != -1) return dp[idx][need];
+    int take = knapsack(idx, need - item[idx], item, cost, n);
+    int nottake = knapsack(idx + 1, need, item, cost, n) + cost[idx];
+    return dp[idx][need] = min(take, nottake);
+}
+int main(){
+    memset(dp, -1, sizeof(dp));
+    int n; cin >> n;
+    vector <int> item(n), cost(n);
+    for(int i = 0; i < n; i++)    cin >> item[i] >> cost[i];
+    int res = knapsack(0, n, item, cost, n);
+    cout << res;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <pair <int, int>> vec(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i].first >> vec[i].second;
+    const int N = 2017, M = 4017;
+    vector <vector <int>>dp(N, vector <int> (M, INT_MAX));
+    for(int i = 0; i < M; i++){
+        if(i >= 2000)    dp[n][i] = 0;
+        else    dp[n][i] = INT_MAX;
+    }
+    for(int i = n - 1; i >= 0; i--){
+        for(int j = 0; j < M; j++){
+            int take = dp[i + 1][min(j + vec[i].first, M - 1)] + vec[i].second;
+            int nottake = dp[i + 1][j];
+            dp[i][j] = min(take, nottake);
+        }
+    }/*
+    for(int i = n - 1; i >= 0; i--) {
+        for(int j = 0; j < M; j++) {
+            ll cost_skip = (j > 0) ? dp[i + 1][j - 1] : INF;
+            ll cost_take = dp[i + 1][min(j + vec[i].first, M - 1)] + ves[i].second;
+            dp[i][j] = min(cost_skip, cost_take);
+        }
+    }*/
+    cout << dp[0][2000];
+}
 https://codeforces.com/problemset/problem/19/C
 // 19C. Deletion of Repeats
 using namespace std;
