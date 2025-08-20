@@ -1145,6 +1145,238 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/19/C
+// 19C. Deletion of Repeats
+using namespace std;
+const int N = 2e5 + 5;
+const int M = 20;
+typedef long long ll;
+void count_sort(vector<int>& p, vector<int>& c) {
+    int n = p.size();
+    vector<int> cnt(n);
+    for (auto x : c) cnt[x]++;
+    vector<int> p_new(n), pos(n);
+    pos[0] = 0;
+    for (int i = 1; i < n; ++i) pos[i] = pos[i - 1] + cnt[i - 1];
+    for (auto x : p) {
+        int i = c[x];
+        p_new[pos[i]] = x;
+        pos[i]++;
+    }
+    p = p_new;
+}
+vector<int> lcp_construction(vector<int>& s, vector<int>& p) {
+    int n = s.size();
+    vector<int> rank(n, 0);
+    for (int i = 0; i < n; i++) rank[p[i]] = i;
+
+    int k = 0;
+    vector<int> lcp(n - 1, 0);
+    for (int i = 0; i < n; i++) {
+        if (rank[i] == n - 1) {
+            k = 0;
+            continue;
+        }
+        int j = p[rank[i] + 1];
+        while (i + k < n && j + k < n && s[i + k] == s[j + k]) k++;
+        lcp[rank[i]] = k;
+        if (k) k--;
+    }
+    return lcp;
+}
+ll sp[N][M], lg[N];
+vector<ll> a;
+void buildSparse(ll n) { // zero based
+    lg[1] = 0;
+    for (ll i = 2; i <= n; i++) lg[i] = lg[i / 2] + 1;
+    for (ll i = 0; i < n; i++) sp[i][0] = a[i];
+    for (ll j = 1; (1 << j) <= n; j++) {
+        for (ll i = 0; i + (1 << j) <= n; i++) {
+            sp[i][j] = min(sp[i][j - 1], sp[i + (1 << (j - 1))][j - 1]);
+        }
+    }
+}
+
+ll queryMn(ll l, ll r) {
+    if (l > r) return 0;
+    ll j = lg[r - l + 1];
+    return min(sp[l][j], sp[r - (1 << j) + 1][j]);
+}
+int main() {
+    ll n_input;
+    cin >> n_input;
+    map<int, vector<int>> ma;
+    vector<int> s(n_input + 1);
+    for (int i = 0; i < n_input; i++) {
+        cin >> s[i];
+        ma[s[i]].push_back(i);
+    }
+    s[n_input] = -1; // sentinel
+    ll n = s.size();
+    vector<int> p(n), c(n);
+    vector<pair<int, int>> tmp(n);
+    for (int i = 0; i < n; i++) tmp[i] = {s[i], i};
+    sort(tmp.begin(), tmp.end());
+    for (int i = 0; i < n; i++) p[i] = tmp[i].second;
+    c[p[0]] = 0;
+    for (int i = 1; i < n; i++)
+        c[p[i]] = c[p[i - 1]] + (tmp[i].first != tmp[i - 1].first);
+    // Build suffix array
+    int k = 0;
+    while ((1 << k) < n) {
+        for (int i = 0; i < n; i++) p[i] = (p[i] - (1 << k) + n) % n;
+        count_sort(p, c);
+        vector<int> c_new(n);
+        c_new[p[0]] = 0;
+        for (int i = 1; i < n; i++) {
+            pair<int, int> prev = {c[p[i - 1]], c[(p[i - 1] + (1 << k)) % n]};
+            pair<int, int> now = {c[p[i]], c[(p[i] + (1 << k)) % n]};
+            c_new[p[i]] = c_new[p[i - 1]] + (now != prev);
+        }
+        c = c_new;
+        k++;
+    }
+    vector<int> rev(n);
+    for (int i = 0; i < n; i++) rev[p[i]] = i;
+    // Build LCP and Sparse Table
+    vector<int> lcp = lcp_construction(s, p);
+    a.assign(lcp.begin(), lcp.end());
+    buildSparse(a.size());
+    ll start = 0;
+    set<pair<int, int>> se;
+    for (auto &item : ma) {
+        auto &indices = item.second;
+        for (size_t i = 0; i < indices.size(); i++) {
+            for (size_t j = i + 1; j < indices.size(); j++) {
+                ll st = rev[indices[i]];
+                ll en = rev[indices[j]];
+                if (st > en) swap(st, en);
+                ll len = queryMn(st, en - 1);
+                if (len >= indices[j] - indices[i]) {
+                    se.insert({indices[j] - indices[i], indices[i]});
+                }
+            }
+        }
+    }
+    for (auto &item : se) {
+        if (item.second < start) continue;
+        start = item.second + item.first;
+    }
+    cout << n - 1 - start << '\n';
+    for (ll i = start; i < n - 1; i++) cout << s[i] << ' ';
+    cout << '\n';
+}
+using namespace std;
+int n;
+vector<int> suffix, order, neword, lcp, logs;
+vector<vector<int>> table;
+vector<int> vec;
+int getOrder(int idx) {
+    return idx < n ? order[idx] : -1;
+}
+void radix_sort(int len) {
+    vector<int> func(n + 1), newsuff(n);
+    for (int i = 0; i < n; i++) func[getOrder(suffix[i] + len) + 1]++;
+    for (int i = 1; i <= n; i++) func[i] += func[i - 1];
+    for (int i = n - 1; i >= 0; i--) {
+        newsuff[--func[getOrder(suffix[i] + len) + 1]] = suffix[i];
+    }
+    suffix = newsuff;
+}
+void buildsuffix(const vector<int> &v) {
+    vec = v;
+    n = vec.size() + 1;
+    vec.push_back(-1);
+
+    suffix = order = neword = vector<int>(n);
+    vector<pair<int, int>> tmp;
+    for (int i = 0; i < n; i++) tmp.emplace_back(vec[i], i);
+    sort(tmp.begin(), tmp.end());
+    for (int i = 0; i < n; i++) suffix[i] = tmp[i].second;
+    order[suffix[0]] = 0;
+    for (int i = 1; i < n; i++)
+        order[suffix[i]] = order[suffix[i - 1]] + (tmp[i].first != tmp[i - 1].first);
+
+    int len = 1;
+    while (order[suffix[n - 1]] != n - 1) {
+        for (int i = 0; i < n; i++) {
+            suffix[i] -= len;
+            if (suffix[i] < 0) suffix[i] += n;
+        }
+        radix_sort(len);
+        neword[suffix[0]] = 0;
+        for (int i = 1; i < n; i++) {
+            neword[suffix[i]] = neword[suffix[i - 1]] +
+                                (order[suffix[i - 1]] != order[suffix[i]] ||
+                                 getOrder(suffix[i - 1] + len) != getOrder(suffix[i] + len));
+        }
+        order = neword;
+        len <<= 1;
+    }
+}
+void buildLCP() {
+    lcp = vector<int>(n);
+    int k = 0;
+    for (int i = 0; i < n - 1; i++) {
+        int pos = order[i];
+        int j = suffix[pos - 1];
+        while (vec[i + k] == vec[j + k]) k++;
+        lcp[pos] = k;
+        k = max(0, k - 1);
+    }
+    int LOG = 32 - __builtin_clz(n);
+    table.assign(n, vector<int>(LOG + 1));
+    logs.assign(n + 1, 0);
+    for (int i = 2; i <= n; i++) logs[i] = logs[i / 2] + 1;
+
+    for (int i = 0; i < n; i++) table[i][0] = lcp[i];
+    for (int j = 1; j <= logs[n]; j++) {
+        for (int i = 0; i + (1 << j) <= n; i++)
+            table[i][j] = min(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
+    }
+}
+int LCP(int i, int j) {
+    if (i == j) return n - i - 1;
+    int l = order[i], r = order[j];
+    if (l > r) swap(l, r);
+    l++;
+    int len = logs[r - l + 1];
+    return min(table[l][len], table[r - (1 << len) + 1][len]);
+}
+int compare_substrings(int l1, int r1, int l2, int r2) {
+    int k = min({LCP(l1, l2), r1 - l1 + 1, r2 - l2 + 1});
+    l1 += k; l2 += k;
+    if (l1 > r1 && l2 > r2) return 0;
+    if (l1 > r1) return -1;
+    if (l2 > r2) return 1;
+    return (vec[l1] > vec[l2] ? 1 : -1);
+}
+int main() {
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    buildsuffix(a);
+    buildLCP();
+    map<int, vector<int>> idx;
+    priority_queue<array<int, 3>> pq;
+
+    for (int i = n - 2; i >= 0; i--) {
+        for (int j : idx[a[i]]) {
+            int l1 = i, r1 = j - 1, l2 = j, r2 = l2 + r1 - l1;
+            if (r2 >= n - 1 || compare_substrings(l1, r1, l2, r2) != 0) continue;
+            pq.push({l1 - r1, -l2, l1});
+        }
+        idx[a[i]].push_back(i);
+    }
+    int cur = 0;
+    while (!pq.empty()) {
+        auto [d, new_cur, start] = pq.top(); pq.pop();
+        if (start >= cur) cur = -new_cur;
+    }
+    cout << n - 1 - cur << '\n';
+    for (int i = cur; i < n - 1; i++)
+        cout << a[i] << " \n"[i == n - 2];
+}
 https://codeforces.com/problemset/problem/19/D
 // 19D. Points
 using namespace std;
