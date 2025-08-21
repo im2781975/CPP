@@ -157,7 +157,7 @@ int main(){
     double ang2 = 2 * asin(b / (2 * R));
     double ang3 = 2 * asin(c / (2 * R));
     double mini = gcd(ang1, gcd(ang2, ang3));
-    int n = round(2 * round / mini);
+    int n = round(2 * PI / mini);
     double poligon = 0.5 * n * R * R * sin(2 * PI / n);
     cout << fixed << setprecision(10) << poligon;
 }
