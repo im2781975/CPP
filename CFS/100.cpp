@@ -134,6 +134,8 @@ int main(){
 https://codeforces.com/problemset/problem/1/C
 // 1C. Ancient Berland Circus
 using namespace std;
+// fabs = absolute value for doubles.
+// fmod(a, b) computes the floating-point remainder of a / b. Equivalent to a % b but for doubles.
 const double PI = acos(-1.0);
 const double EPS = 1e-8;
 double gcd(double a, double b){
