@@ -224,7 +224,6 @@ int main(){
     for(auto it = points.begin(); it != points.end(); it++){
         if(sign == it->second)
             candid[it->first] = 0;
-            // prepare for tie-break replay
     }
     for(auto it = rounds.begin(); it != rounds.end(); it++){
         const string &name = it->first;
