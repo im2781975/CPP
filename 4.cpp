@@ -7680,6 +7680,54 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/121/A
+// A. Lucky Sum
+using namespace std;
+#define ll long long
+ll NthLuckyNumber(ll n) {
+    string res = "";
+    while (n >= 1) {
+        if (n & 1) {
+            res += '4';
+            n = (n - 1) / 2;
+        } else {
+            res += '7';
+            n = (n - 2) / 2;
+        }
+    }
+    reverse(res.begin(), res.end());
+    return stoll(res);
+}
+vector<ll> lucky;
+void fillLucky(ll limit) {
+    ll i = 1;
+    while (true) {
+        ll num = NthLuckyNumber(i);
+        if (num > limit) break;
+        lucky.push_back(num);
+        i++;
+    }
+}
+void solve() {
+    ll l, r;
+    cin >> l >> r;
+    ll ans = 0;
+    for (int i = 0; i < (int)lucky.size() && l <= r; i++) {
+        if (l <= lucky[i]) {
+            ll right = min(r, lucky[i]);
+            ll cnt = right - l + 1;    // count of numbers mapped to lucky[i]
+            ans += lucky[i] * cnt;
+            l = right + 1;             // move to next range
+        }
+    }
+    cout << ans << "\n";
+}
+int main() {
+    ll limit = 1e12;   
+    fillLucky(limit);
+    solve();
+    return 0;
+}
 
 using namespace std;
 // problemset/problem/122/A
@@ -7718,6 +7766,45 @@ int main(){
   }
   cout<<"NO"<<endl;
 
+}
+
+using namespace std;
+typedef long long ll;
+bool isLucky(ll n)
+{
+    int flag = 1;
+    while (n)
+    {
+        int digit = n % 10;
+        if (digit != 4 && digit != 7)
+        {
+            flag = 0;
+            break;
+        }
+        n /= 10;
+    }
+    if (flag)
+        return true;
+    return false;
+}
+int main(){
+    ll n, temp = 0;
+    cin >> n;
+    if (isLucky(n) == 1){
+        cout << "YES\n";
+        return 0;
+    }
+    for(int i = 1; i < n; i++){
+        if (n % i == 0 && isLucky(i) == 1){
+            temp = 1;
+            break;
+        }
+    }
+    if (temp)
+        cout << "YES\n";
+    else
+        cout << "NO\n";
+    return 0;
 }
 https://codeforces.com/problemset/problem/122/A
 // A. Lucky Division
