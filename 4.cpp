@@ -8575,6 +8575,29 @@ int main(){
     else
     cout<<"NO"<<endl;
 }
+https://codeforces.com/problemset/problem/141/A
+// A. Amusing Joke
+using namespace std;
+int main(){
+    string snew, s1, s2, s;
+    cin >> s1 >> s2 >> s;
+    snew = s1 + s2;
+    ll count1[26]{0}, count2[26]{0};
+    for (ll i = 0; i < snew.length(); i++)
+        count1[snew[i] - 'A']++;
+    for (ll i = 0; i < s.length(); i++)
+        count2[s[i] - 'A']++;
+    ll flag = 0;
+    fo(i, 26) 
+    for(int i = 0; i < 26; i++){
+        if (count1[i] != count2[i]){
+            flag = 1; break;
+        }
+    }
+    if (flag) cout << "NO\n";
+    else cout << "YES\n";
+    return;
+}
 using namespace std;
 // http://codeforces.com/problemset/problem/144/A
 // A. Arrival of the General
@@ -8598,6 +8621,7 @@ int main(){
     else
         cout << (maxIdx - 1) + (n - minIdx);
 }
+
 https://codeforces.com/problemset/problem/144/A
 // A. Arrival of the General
 using namespace std;
@@ -8721,7 +8745,24 @@ int main() {
     cout << swaps;
     return 0;
 }
-
+https://codeforces.com/problemset/problem/145/A
+using namespace std;
+int main() {
+    ll four = 0, seven = 0;
+    str s, t;
+    cin >> s >> t;
+    ll n = sz(s);
+    for(int i = 0; i < n; i++) {
+        if (s[i] == '4' && s[i] != t[i])
+            four++;
+        else if (s[i] == '7' && s[i] != t[i])
+            seven++;
+    }
+    ll pairs = min(four, seven);
+    four -= pairs;
+    seven -= pairs;
+    cout << four + seven + pairs << ln;
+}
 https://codeforces.com/problemset/problem/146/A
 // A. Lucky Ticket
 using namespace std;
@@ -8787,7 +8828,29 @@ int main() {
     int moves = maxIndex + (n - 1 - minIndex);
     cout << moves << endl;
 }
-
+https://codeforces.com/problemset/problem/146/B
+using namespace std;
+ll mask(ll n) {
+    ll ans = 0;
+    while (n) {
+        ll dig = n % 10;
+        if (dig == 4 || dig == 7) ans = ans * 10 + dig;
+        n /= 10;
+    }
+    ll rev = 0;
+    while (ans) {
+        ll dig = ans % 10;
+        rev = rev * 10 + dig;
+        ans /= 10;
+    }
+    return rev;
+}
+int main() {
+    ll a, b; cin >> a >> b;
+    if (mask(a) == b) a++;
+    while (mask(a) != b) a++;
+    cout << a;
+}
 using namespace std
 http://codeforces.com/problemset/problem/148/A
 // A. Insomnia cure
@@ -8857,7 +8920,13 @@ int main() {
     int toasts = min({total_drink, total_slices, total_salt});
     cout << toasts / n << endl;
 }
-
+using namespace std;
+int main(){
+    ll n, k, l, c, d, p, nl, np;
+    cin >> n >> k >> l >> c >> d >> p >> nl >> np;
+    cout << min(k * l / nl, min(p / np, c * d)) / n;
+    return;
+}
 https://codeforces.com/problemset/problem/151/A
 // A. Soft Drinking
 using namespace std;
@@ -8891,7 +8960,112 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/151/B
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+#define pb push_back
+#define re return
+ll n, m, j, k, l, i;
+int main(){
+    cin >> n;
+    vector<ll> a(n);
+    vector<string> s(n);
 
+    ll MaxCountPhone = -1;
+    ll MaxCountTaxi = -1;
+    ll MaxCountGirl = -1;
+
+    vector<string> Phone;
+    vector<string> Taxi;
+    vector<string> Girl;
+
+    fo(i, n)
+    {
+        ll countPhone = 0;
+        ll countTaxi = 0;
+        ll countGirl = 0;
+        cin >> a[i] >> s[i];
+        fo(j, a[i])
+        {
+            string S;
+            cin >> S;
+
+            // Check Taxi: all digits same -> format xx-xx-xx but given as xxxxxx (with hyphens)
+            if (S[0] == S[1] && S[1] == S[3] && S[3] == S[4] && S[4] == S[6] && S[6] == S[7])
+                countTaxi++;
+
+            // Check Phone: strictly decreasing digits
+            else if (S[0] > S[1] && S[1] > S[3] && S[3] > S[4] && S[4] > S[6] && S[6] > S[7])
+                countPhone++;
+
+            // Otherwise, it's for Girl
+            else
+                countGirl++;
+        }
+
+        // Update max for Girl
+        if (MaxCountGirl < countGirl)
+        {
+            MaxCountGirl = countGirl;
+            Girl.clear();
+            Girl.pb(s[i]);
+        }
+        else if (MaxCountGirl == countGirl)
+        {
+            Girl.pb(s[i]);
+        }
+
+        // Update max for Taxi
+        if (MaxCountTaxi < countTaxi)
+        {
+            MaxCountTaxi = countTaxi;
+            Taxi.clear();
+            Taxi.pb(s[i]);
+        }
+        else if (MaxCountTaxi == countTaxi)
+        {
+            Taxi.pb(s[i]);
+        }
+
+        // Update max for Phone
+        if (MaxCountPhone < countPhone)
+        {
+            MaxCountPhone = countPhone;
+            Phone.clear();
+            Phone.pb(s[i]);
+        }
+        else if (MaxCountPhone == countPhone)
+        {
+            Phone.pb(s[i]);
+        }
+    }
+
+    cout << "If you want to call a taxi, you should call: ";
+    cout << Taxi[0];
+    for (i = 1; i < (ll)Taxi.size(); i++)
+    {
+        cout << ", " << Taxi[i];
+    }
+    cout << ".\n";
+
+    cout << "If you want to order a pizza, you should call: ";
+    cout << Phone[0];
+    for (i = 1; i < (ll)Phone.size(); i++)
+    {
+        cout << ", " << Phone[i];
+    }
+    cout << ".\n";
+
+    cout << "If you want to go to a cafe with a wonderful girl, you should call: ";
+    cout << Girl[0];
+    for (i = 1; i < (ll)Girl.size(); i++)
+    {
+        cout << ", " << Girl[i];
+    }
+    cout << ".\n";
+    return 0;
+}
 using namespace std;
 http://codeforces.com/contest/155/problem/A
 // A. I_love_%username%
@@ -8910,6 +9084,31 @@ int main(){
         }
     }
     cout << cnt;
+}
+using namespace std;
+int main(){
+    ll n;
+    cin >> n;
+    ll amazing = 0, max, min, num;
+    for(int i = 0; i < n; i++){
+        cin >> num;
+        if (i == 0){
+            max = num;
+            min = num;
+        }
+        else{
+            if (num < min){
+                min = num;
+                amazing++;
+            }
+            else if (num > max){
+                max = num;
+                amazing++;
+            }
+        }
+    }
+    cout << amazing;
+    return 0;
 }
 https://codeforces.com/problemset/problem/155/A
 A. I_love_%username%
@@ -8966,7 +9165,33 @@ int main() {
     cout << amazing << endl;
     return 0;
 }
-
+https://codeforces.com/problemset/problem/155/B
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+#define fo(i, n) for (ll i = 0; i < n; i++)
+int main(){
+    vl v;
+    ll n, s = 0, c = 1;
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        ll a, b;
+        cin >> a >> b;
+        if (b > 0){
+            s += a;
+            c += b - 1;
+        }
+        else
+            v.push_back(a); 
+    }
+    sort(v.begin(), v.end(), greater<ll>());
+    for(int i = 0; i < v.size(); i++){
+        if (c == 0) break;
+        s += v[i];
+        c--;
+    }
+    cout << s << "\n";
+}
 using namespace std;
 // A. Next Round
 // problemset/problem/158/A
@@ -9189,6 +9414,61 @@ int main() {
         taxicount += arr[i];
 	cout << taxicount;
 }
+
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+int main(){
+    ll n; cin >> n;
+    vector<ll> count(5, 0); 
+    for(int i = 0; i < n; i++){
+        int num;
+        cin >> num;
+        count[num]++;
+    }
+    ll ans = count[4]; 
+    ans += count[3];
+    count[1] = max(0LL, count[1] - count[3]);
+    ans += count[2] / 2;
+    if (count[2] % 2){
+        ans++; 
+        count[1] = max(0LL, count[1] - 2);
+    }
+    if (count[1] > 0)
+        ans += (count[1] + 3) / 4; 
+    cout << ans << "\n";
+}
+using namespace std;
+int main(){
+    ll n, num, ans;
+    cin >> n;
+    ll arr[n], count[5]{0};    
+    for(int i = 0; i < n; i++){           
+        cin >> num;              
+        count[num]++;              
+    }                                 
+    ans = count[4];                      
+    ans += count[3];                      
+    count[1] = max(count[1] - count[3], 0LL); 
+    ans += count[2] / 2;                  
+    count[2] %= 2;                        
+    if (count[2]){                         
+        ++ans;                      
+        if (count[1])                    
+            --count[1];                   
+        if (count[1])                     
+            --count[1];              
+    }                                   
+    ans += count[1] / 4;                
+    count[1] %= 4;                        
+    ans += count[1] / 3;                  
+    count[1] %= 3;                        
+    ans += count[1] / 2;                  
+    count[1] %= 2;                         
+    ans += count[1];                       
+    cout << ans << endl;
+    return 0;
+}
 using namespace std;
 int main() {
     int n; cin >> n;
@@ -9259,6 +9539,167 @@ int main(){
         if(arr[i] >= arr[k - 1] && arr[i] != 0)    counter += 1;
     }
     cout << counter;
+}
+https://codeforces.com/problemset/problem/158/C
+using namespace std;
+#define ll long long
+#define sz(x) ((ll)(x).size())
+vector<string> split(const string &s, const string &delims = "/") {
+    vector<string> res;
+    string token = "";
+    for (char ch : s) {
+        if (delims.find(ch) != string::npos) {
+            if (!token.empty()) {
+                res.push_back(token);
+                token.clear();
+            }
+        } else {
+            token += ch;
+        }
+    }
+    if (!token.empty()) res.push_back(token);
+    return res;
+}
+int main() {
+    ll q;
+    cin >> q;
+    string cmd, s;
+    vector<string> curr_path;
+
+    while (q--) {
+        cin >> cmd;
+        if (cmd == "pwd") {
+            cout << "/";
+            for (auto &x : curr_path) cout << x << '/';
+            cout << "\n";
+        } else if (cmd == "cd") {
+            cin >> s;
+            vector<string> tokens = split(s, "/");
+
+            // If path is absolute (starts with '/'), clear current path
+            if (!s.empty() && s[0] == '/') {
+                curr_path.clear();
+            }
+
+            // Process tokens
+            for (auto &t : tokens) {
+                if (t == "..") {
+                    if (!curr_path.empty()) curr_path.pop_back(); // Move one directory up
+                } else {
+                    curr_path.push_back(t); // Move into directory
+                }
+            }
+        }
+    }
+}
+using namespace std;
+vector<string> split(const string &s, const string &delims = " ") {
+    vector<string> res;
+    string token = "";
+    ll n = s.size();
+    for (ll i = 0; i < n; ++i) {
+        while (delims.find(s[i]) != string::npos) {
+            res.push_back(token);
+            token = "";
+            ++i;
+        }
+        token += s[i];
+    }
+    if (token != "") res.push_back(token);
+    return res;
+}
+int main() {
+    ll q;
+    cin >> q;
+    string cmd, s;
+    vector<string> curr_path;
+    while (q--) {
+        cin >> cmd;
+        if (cmd == "pwd"s) {
+            cout << "/"s;
+            for (auto &x : curr_path) cout << x << '/';
+            cout << '\n';
+        } else {
+            cin >> s;
+            vector<string> tokens = split(s, "/"s);
+            if (tokens[0] == ""s) {
+                curr_path.clear();
+                for (ll i = 1; i < sz(tokens); ++i) {
+                    if (tokens[i] == ".."s)
+                        curr_path.pop_back();
+                    else
+                        curr_path.push_back(tokens[i]);
+                }
+            } else {
+                for (ll i = 0; i < sz(tokens); ++i) {
+                    if (tokens[i] == ".."s)
+                        curr_path.pop_back();
+                    else
+                        curr_path.push_back(tokens[i]);
+                }
+            }
+        }
+    }
+}
+https://codeforces.com/problemset/problem/159/C
+using namespace std;
+int main() {
+    ll k, q, i;
+    string s1, s = "";
+    char c;
+    cin >> k >> s1;
+    for (i = 0; i < k; ++i) s += s1;
+    k = sz(s);
+    vector<o_set<ll>> idx(26);
+    vector<bool> mark(k, true);
+    for (i = 0; char &x : s) idx[x - 'a'].insert(i++);
+    cin >> q;
+    while (q--) {
+        cin >> i >> c;
+        ll id = *idx[c - 'a'].find_by_order(i - 1);
+        mark[id] = false;
+        idx[c - 'a'].erase(id);
+    }
+    for (i = 0; i < k; ++i)
+        if (mark[i]) cout << s[i];
+    cout << '\n';
+}
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+#define ll long long
+#define sz(x) ((ll)(x).size())
+template <typename T>
+using o_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+int main() {
+    ll k, q;
+    string s1, s = "";
+    char c;
+    cin >> k >> s1;
+    // Repeat string s1 'k' times to form s
+    for (ll i = 0; i < k; ++i) s += s1;
+    k = sz(s);
+    vector<o_set<ll>> idx(26);  
+    vector<bool> mark(k, true);
+    // Populate idx with positions of each character
+    ll pos = 0;
+    for (char &x : s) {
+        idx[x - 'a'].insert(pos++);
+    }
+    cin >> q;
+    while (q--) {
+        ll i;
+        cin >> i >> c;  // i-th occurrence of char c
+        ll id = *idx[c - 'a'].find_by_order(i - 1); // find i-th index of c
+        mark[id] = false;                            // mark for removal
+        idx[c - 'a'].erase(id);                      // remove from ordered set
+    }
+    for (ll i = 0; i < k; ++i) {
+        if (mark[i]) cout << s[i];
+    }
+    cout << '\n';
 }
 using namespace std;
 http://codeforces.com/contest/160/problem/A
@@ -9447,6 +9888,253 @@ int main() {
 
     cout << count << '\n';
     return 0;
+}
+https://codeforces.com/problemset/problem/165/B
+using namespace std;
+using ll = int64_t;
+ll k;
+ll time_taken(ll v) {
+    ll cnt = 0, den = 1;
+    while (v / den != 0) {
+        cnt += (v / den);
+        den = den * k;
+    }
+    return cnt;
+}
+int main() {
+    ll n;
+    cin >> n >> k;
+    ll l = 1, r = 1e12;
+    while (r >= l) {
+        ll m = l + (r - l) / 2;
+        if (time_taken(m) >= n)
+            r = m - 1;
+        else
+            l = m + 1;
+    }
+    cout << r + 1 << '\n';
+}
+using namespace std;
+using ll = int64_t;
+ll k;
+// Function to calculate how many elements are contributed by powers of k
+ll time_taken(ll v) {
+    ll cnt = 0, den = 1;
+    while (den <= v) {  // Avoid division when den > v
+        cnt += v / den;
+        if (den > v / k) break; // Prevent overflow
+        den *= k;
+    }
+    return cnt;
+}
+int main() {
+    ll n;
+    cin >> n >> k;
+
+    ll low = 1, high = 1'000'000'000'000LL; // 1e12 as upper bound
+    while (low <= high) {
+        ll mid = low + (high - low) / 2;
+        if (time_taken(mid) >= n)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+
+    cout << low << '\n'; 
+}
+https://codeforces.com/problemset/problem/165/C
+using namespace std;
+using ll = int64_t;
+int main() {
+    ll k; cin >> k;
+    string s; cin >> s;
+    vector<ll> pref(s.length() + 1);
+    pref[0] = 0;
+    for (ll i = 1; i < s.length() + 1; ++i) pref[i] = (s[i - 1] == '1' ? 1 : 0) + pref[i - 1];
+    ll ans = 0;
+    map <ll, ll> cnt;
+    for (ll i = 0; i < s.length() + 1; ++i) {
+        ++cnt[pref[i]];
+        ans += cnt[pref[i] - k];
+    }
+    if (k == 0) {
+        ans = 0;
+        for (auto [x, y] : cnt) {
+            ans += (y * (y - 1)) / 2;
+        }
+    }
+    cout << ans << '\n';
+}
+using namespace std;
+using ll = int64_t;
+int main() {
+    ll k;
+    string s;
+    cin >> k >> s;
+
+    ll n = s.size();
+    vector<ll> pref(n + 1, 0);
+
+    // Compute prefix sums of '1's
+    for (ll i = 1; i <= n; ++i)
+        pref[i] = pref[i - 1] + (s[i - 1] == '1');
+
+    ll ans = 0;
+    unordered_map<ll, ll> cnt;
+
+    // Count subarrays with exactly k ones
+    for (ll i = 0; i <= n; ++i) {
+        ans += cnt[pref[i] - k]; // subarrays ending at i with k ones
+        cnt[pref[i]]++;
+    }
+
+    // Special case when k = 0
+    if (k == 0) {
+        ans = 0;
+        for (auto [value, frequency] : cnt) {
+            ans += frequency * (frequency - 1) / 2;
+        }
+    }
+
+    cout << ans << '\n';
+}
+https://codeforces.com/problemset/problem/166/A
+using namespace std;
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<pair<int,int>> contestants(n);
+    for (int i = 0; i < n; i++) {
+        cin >> contestants[i].first >> contestants[i].second; // questions, penalty
+    }
+    // Sort by questions descending, then penalty ascending
+    sort(contestants.begin(), contestants.end(), [](const auto &a, const auto &b){
+        if (a.first != b.first) return a.first > b.first;
+        return a.second < b.second;
+    });
+    int kth_questions = contestants[k-1].first;
+    int kth_penalty = contestants[k-1].second;
+    // Count how many contestants have the same questions and penalty as k-th
+    int count_same = 0;
+    for (auto &[q,p] : contestants) {
+        if (q == kth_questions && p == kth_penalty) count_same++;
+    }
+    cout << count_same << "\n";
+}
+using namespace std;
+int same_place(int *a, int p, int s, int e)
+{
+    int temp = 0;
+    for (int i = s; i <= e; i++)
+    {
+        if (a[i] == p)
+        {
+            temp++;
+        }
+    }
+    return temp;
+}
+
+void custom_sort(int *a, int *b, int n)
+{
+    int flag;
+    int temp;
+    for (int i = 0; i < n; i++)
+    {
+        flag = 1;
+        for (int j = n - 1; j > i; j--)
+        {
+            if (a[j] > a[j - 1])
+            {
+                flag = 0;
+                temp = a[j];
+                a[j] = a[j - 1];
+                a[j - 1] = temp;
+                temp = b[j];
+                b[j] = b[j - 1];
+                b[j - 1] = temp;
+            }
+        }
+
+        if (flag)
+        {
+            return;
+        }
+    }
+}
+
+int starting_index(int *a, int q, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] == q)
+        {
+            return i;
+        }
+    }
+    return n-1;
+}
+int ending_index(int *a, int starting, int value, int n)
+{
+    for (int i = starting; i < n; i++)
+    {
+        if (a[i] != value)
+        {
+            return i-1;
+        }
+    }
+    return n-1 ;
+}
+int finding_penalty(int *a, int s, int e, int k)
+{
+    if (s==e)
+    {
+        return a[s];
+    }
+    
+    sort(a + s, a + (e+1));
+    return a[k - 1];
+}
+int main(){
+    int n, k;
+    int questions, penalty;
+    int starting, ending;
+    cin >> n >> k;
+    int *question_solve = new int[n];
+    int *penalty_time = new int[n];
+    for (int i = 0; i < n; i++){
+        cin >> question_solve[i] >> penalty_time[i];
+    }
+    custom_sort(question_solve, penalty_time, n); //checked
+    questions = question_solve[k - 1];            //checked
+    starting = starting_index(question_solve, questions, n);
+    ending = ending_index(question_solve, starting, questions, n);
+    penalty = finding_penalty(penalty_time, starting, ending, k);
+    cout << same_place(penalty_time, penalty, starting, ending) << endl;
+    delete [] question_solve;
+    delete [] penalty_time;
+    return 0;
+} 
+https://codeforces.com/problemset/problem/171/A
+using namespace std;
+int main() {
+    string a, b;
+    cin >> a >> b;
+    reverse(b.begin(), b.end());
+    cout << stoll(a) + stoll(b) << '\n';
+}
+https://codeforces.com/problemset/problem/171/B
+using namespace std;
+int main() {
+    int n; cin >> n;
+    cout << 6 * n * (n - 1) + 1;
+}
+https://codeforces.com/problemset/problem/171/D
+using namespace std;
+int main() {
+    int n; cin >> n;
+    cout << (n % 5) % 3 + 1;
 }
 https://codeforces.com/problemset/problem/177/A1
 // A1. Good Matrix Elements
