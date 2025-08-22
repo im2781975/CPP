@@ -7841,6 +7841,94 @@ int main() {
     cout << checkAlmostLucky(n) << "\n";
     return 0;
 }
+https://codeforces.com/problemset/problem/122/B
+using namespace std;
+#define ll long long
+#define all(x) (x).begin(), (x).end()
+#define str string
+int main() {
+    str s; cin >> s;
+    ll c4 = count(all(s), '4');
+    ll c7 = count(all(s), '7');
+    if (c4 == 0 && c7 == 0) cout << -1;
+    else if (c4 >= c7) cout << 4;
+    else cout << 7;
+}
+https://codeforces.com/problemset/problem/122/C
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+#define all(x) (x).begin(), (x).end()
+const ll mod = 1e10; 
+vl lucky;
+ll NthLuckyNumber(ll n) {
+    string res = "";
+    while (n >= 1) {
+        if (n & 1) {  // odd
+            res.push_back('4');
+            n = (n - 1) / 2;
+        } else {  // even
+            res.push_back('7');
+            n = (n - 2) / 2;
+        }
+    }
+    reverse(all(res));
+    stringstream ss(res);
+    ll ret = 0;
+    ss >> ret;
+    return ret;
+}
+void generateLuckyNumbers() {
+    ll i = 1;
+    while (true) {
+        ll num = NthLuckyNumber(i);
+        if (num > mod) break;
+        lucky.push_back(num);
+        i++;
+    }
+    sort(all(lucky)); 
+}
+int main() {
+    ll l, r;
+    cin >> l >> r;
+    ll sum = 0;
+    while (l <= r) {
+        ll it = *lower_bound(all(lucky), l);
+        sum += (min(it, r) - l + 1) * it;
+        l = it + 1;
+    }
+    cout << sum;
+}
+https://codeforces.com/problemset/problem/124/A
+using namespace std;
+int main(){
+    long long int n,a,b;
+    cin>>n>>a>>b;
+    cout<<n+1-max(a+1,n-b);
+    return 0;
+}
+https://codeforces.com/problemset/problem/127/B
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+#define fo(i, n) for (ll i = 0; i < (n); i++)
+#define ln "\n"
+int main() {
+    ll n;
+    cin >> n;
+    vl arr(n);
+    map<ll, ll> cnt;
+
+    fo(i, n) {
+        cin >> arr[i];
+        ++cnt[arr[i]];
+    }
+    ll ans = 0;
+    for (auto &it : cnt) {
+        ans += it.second / 2;  
+    }
+    cout << ans / 2 << ln; 
+}
 using namespace std;
 http://codeforces.com/problemset/problem/131/A
 // 131A - cAPS lOCK
@@ -7865,6 +7953,31 @@ int main() {
         }
     }
     cout << s << endl;
+    return 0;
+}
+using namespace std;
+#define rep(i, a, b) for (int i = a; i < b; i++)
+typedef long long ll;
+int main(){
+    string s;
+    cin >> s;
+    ll flag = 0;
+    rep(i, 1, s.length()){
+        if (isupper(s[i]) == 0)
+        {
+            flag = 1;
+            break;
+        }
+    }
+    if (flag == 0)
+        rep(i, 0, s.length())
+        {
+            if (isupper(s[i]) != 0)
+                s[i] = tolower(s[i]);
+            else
+                s[i] = toupper(s[i]);
+        }
+    cout << s;
     return 0;
 }
 using namespace std;
@@ -7940,6 +8053,19 @@ int main() {
     int i = s.find_first_of("HQ9");
     cout << (i != -1) ? "YES" : "NO"; */
 }
+using namespace std;
+int main(){
+    string s; cin >> s;
+    for(int i = 0; i < s.length(); i++){
+        if (s[i] == 'H' || s[i] == 'Q' || s[i] == '9'){
+            cout << "YES\n";
+            return;
+        }
+    }
+    cout << "NO\n";
+
+    return;
+}
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -7980,7 +8106,93 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/133/B
+using namespace std;
+int main() {
+    map<char, str> mp;
+    mp['<'] = "1001"; mp['>'] = "1000";
+    mp['+'] = "1010"; mp['-'] = "1011";
+    mp['.'] = "1100"; mp[','] = "1101";
+    mp['['] = "1110"; mp[']'] = "1111";
+    str s; cin >> s;
+    str output = "";
+    for(int i = 0; i < str.size(); i++) output += mp[s[i]];
+    ll modulo = 1000003;
+    ll result = 0, a = 1;
+    for (ll i = sz(output) - 1; i >= 0; --i) {
+        if (output[i] - '0' == 1) {
+            result = ((result % modulo) + (a % modulo)) % modulo;
+        }
+        a = 2 * a % modulo;
+    }
+    cout << result;
+}
+https://codeforces.com/problemset/problem/135/B
+using namespace std;
+#define ll long long
+#define all(x) (x).begin(), (x).end()
+struct pt {
+    ll x, y;
+};
+int main() {
+    auto dist = [](pt p1, pt p2) {
+        return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+    };
+    // Check if angle abc is a right angle (dot product = 0)
+    auto isOrthogonal = [&](pt a, pt b, pt c) -> bool {
+        return ((b.x - a.x) * (b.x - c.x) + (b.y - a.y) * (b.y - c.y) == 0);
+    };
 
+    auto isRectangle = [&](pt p1, pt p2, pt p3, pt p4) {
+        // All angles should be 90 degrees in some order
+        bool c1 = isOrthogonal(p1, p2, p3) && isOrthogonal(p2, p3, p4) && isOrthogonal(p3, p4, p1);
+        bool c2 = isOrthogonal(p2, p3, p1) && isOrthogonal(p3, p1, p4) && isOrthogonal(p1, p4, p2);
+        bool c3 = isOrthogonal(p3, p1, p2) && isOrthogonal(p1, p2, p4) && isOrthogonal(p2, p4, p3);
+        return (c1 || c2 || c3);
+    };
+
+    auto isSquare = [&](pt p1, pt p2, pt p3, pt p4) {
+        // Check for orthogonality and equal distances in some order
+        if (isOrthogonal(p1, p2, p3) && isOrthogonal(p2, p3, p4) && isOrthogonal(p3, p4, p1)) {
+            if (dist(p1, p2) == dist(p2, p3) &&
+                dist(p2, p3) == dist(p3, p4) &&
+                dist(p3, p4) == dist(p4, p1))
+                return true;
+        }
+        if (isOrthogonal(p2, p3, p1) && isOrthogonal(p3, p1, p4) && isOrthogonal(p1, p4, p2)) {
+            if (dist(p2, p3) == dist(p3, p1) &&
+                dist(p3, p1) == dist(p1, p4) &&
+                dist(p1, p4) == dist(p4, p2))
+                return true;
+        }
+        if (isOrthogonal(p3, p1, p2) && isOrthogonal(p1, p2, p4) && isOrthogonal(p2, p4, p3)) {
+            if (dist(p3, p1) == dist(p1, p2) &&
+                dist(p1, p2) == dist(p2, p4) &&
+                dist(p2, p4) == dist(p4, p3))
+                return true;
+        }
+        return false;
+    };
+
+    vector<pt> a(8);
+    for (auto &[x, y] : a) cin >> x >> y;
+
+    vector<ll> P(8);
+    iota(all(P), 0); // Fill P with 0..7
+
+    do {
+        if (isSquare(a[P[0]], a[P[1]], a[P[2]], a[P[3]]) &&
+            isRectangle(a[P[4]], a[P[5]], a[P[6]], a[P[7]])) {
+            cout << "YES\n";
+            for (ll i = 0; i < 4; ++i) cout << P[i] + 1 << ' ';
+            cout << '\n';
+            for (ll i = 4; i < 8; ++i) cout << P[i] + 1 << ' ';
+            return;
+        }
+    } while (next_permutation(all(P)));
+
+    cout << "NO\n";
+}
 using namespace std;
 http://codeforces.com/contest/136/problem/A
 // A. Presents
@@ -7990,6 +8202,18 @@ int main() {
 	 else
 		cout << max(s1.length(),s2.length());q
 } 
+using namespace std;
+int main(){
+    ll n, num;
+    cin >> n;
+    ll arr[n];
+    for(int i = 0; i < n; i++){
+        cin >> num;
+        arr[num - 1] = i + 1;
+    }
+    for(int i = 0; i < n; i++)    cin >> arr[i] << " ";
+    return 0;
+}
 #include<iostream>
 using namespace std;
 
@@ -8070,7 +8294,32 @@ int main() {
 
     return 0;
 }
-
+https://codeforces.com/problemset/problem/137/B
+using namespace std;
+int main() {
+    long long n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    long long present = 0;
+    set<int> s(arr.begin(), arr.end());
+    for (int i = 1; i <= n; i++) {
+        if (s.count(i)) present++;
+    }
+    cout << n - present << "\n"; 
+}
+using namespace std;
+ll n;
+int main() {
+    cin >> n;
+    vector <int> arr(n);
+    for(int i = 0; i < n; i++) cin >> arr[i];
+    ll present = 0;
+    for(int i = 0; i < n; i++)
+        if (count(arr.begin(), arr.end()), i + 1) != 0) present++;
+    cout << n - present;
+    return;
+}
 http://codeforces.com/contest/339/problem/A
 // A.HelpfulMaths
 using namespace std;
