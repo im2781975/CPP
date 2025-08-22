@@ -1146,6 +1146,62 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/19/A
+// 19A. World Football Cup
+/*
+map <string, int> goals, points, diffgoal;
+bool cmp(const string &a, const string &b){
+    if(points[a] != points[b])    return points[a] > points[b];
+    else if(goals[a] != goals[b])    return goals[a] > goals[b];
+    else    return diffgoal[a] > diffgoal[b];
+} */
+using namespace std;
+int main(){
+    int n; cin >> n;
+    /*
+    int team[2 * n];
+    for(int i = 0; i < n; i++)    cin >> team[i]; */
+    vector <string> team(n);
+    unordered_map <string, int> points, goals, diffgoal;
+    for(int i = 0; i < n; i++){
+        cin >> team[i];
+        points[team[i]] = 0;
+        goals[team[i]] = 0;
+        diffgoal[team[i]] = 0;
+    }
+    int totalmatches = n * (n - 1) / 2;
+    for(int i = 0; i < totalmatches; i++){
+        string match; int goal1, goal2;
+        char ch; cin >> match >> goal1 >> ch >> goal2;
+        string str = match.substr(0, match.find('-'));
+        string ing = match.substr(match.find('-') + 1);
+        if(goal1 == goal2){
+            points[str]++; points[ing]++;
+        }
+        else if(goal1 > goal2)    points[str] += 3;
+        else    points[ing] += 3;
+        goals[str] += goal1;
+        goals[ing] += goal2;
+        diffgoal[str] += (goal1 - goal2);
+        diffgoal[ing] += (goal2 - goal1);
+        // sort(team, team + n, cmp);
+        sort(team.begin(), team.end(), [&](const string &a, const string &b){
+            if(points[a] != points[b])    return points[a] > points[b];
+            if(diffgoal[a] != diffgoal[b])    return diffgoal[a] > diffgoal[b];
+            return goals[a] > goals[b];
+        });
+    }
+    /*
+    vector <string> qualified(team, team + n / 2);
+    sort(qualified.begin(), qualified.end());
+    for(int i = 0; i < qualified.size(); i++)
+        cout << qualified[i] << " "; */
+    vector <string> qualified(team.begin(), team.begin() + n / 2);
+    sort(qualified.begin(), qualified.end());
+    for (int i = 0; i < (int)qualified.size(); i++)
+        cout << qualified[i] << " ";
+    cout << endl;
+}
 https://codeforces.com/problemset/problem/19/B
 // 19B. Checkout Assistant
 using namespace std;
