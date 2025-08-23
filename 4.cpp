@@ -2288,154 +2288,8 @@ int main() {
     }
     cout << ans << '\n';
 }
-https://codeforces.com/problemset/problem/20/A
-A. BerOS file system
-using namespace std;
-using ll = long long;
-int main() {
-    string temp = "", a;
-    vector<string> vv;
-    cin >> a;
-    // Split string by '/'
-    for (ll i = 0; i < (ll)a.size(); ++i) {
-        if (a[i] != '/')
-            temp += a[i];
-        else {
-            if (!temp.empty()) vv.push_back(temp);
-            temp.clear();
-        }
-    }
-    if (!temp.empty()) vv.push_back(temp);
-    cout << "/";
-    for (ll i = 0; i < (ll)vv.size(); ++i) {
-        cout << vv[i];
-        if (i != (ll)vv.size() - 1) cout << "/";
-    }
-    cout << "\n";
-}
-https://codeforces.com/problemset/problem/20/B
-// B. Equation
-using namespace std;
-using ll = long long;
-int main() {
-    cout << fixed << setprecision(12);
-    ll a, b, c; cin >> a >> b >> c;
-    if (a == 0 && b == 0 && c == 0) {
-        cout << "-1\n";
-        return;
-    }
-    // Linear equation: bx + c = 0
-    if (a == 0) {
-        if (b != 0) {
-            cout << "1\n";
-            cout << (-c + 0.0) / (b + 0.0) << '\n';
-        } else {
-            cout << "0\n"; // No solution if b == 0 and c != 0
-        }
-        return;
-    }
-    ll d = b * b - 4 * a * c;
-    if (d < 0) { 
-        cout << "0\n";
-        return;
-    }
-    vector<double> ans;
-    ans.push_back((-b + sqrt(d + 0.0)) / (2.0 * a));
-    if (d > 0) ans.push_back((-b - sqrt(d + 0.0)) / (2.0 * a));
 
-    sort(ans.begin(), ans.end());
-    cout << ans.size() << '\n';
-    for (auto x : ans) cout << x << '\n';
-}
-https://codeforces.com/problemset/problem/20/C
-// C. Dijkstra?
-using namespace std;
-using ll = long long;
-const ll INF = 1e18;
-int main() {
-    ll n, m, u, v, w;
-    cin >> n >> m;
-    vector<vector<pair<ll, ll>>> adj(n);
-    for (ll i = 0; i < m; ++i) {
-        cin >> u >> v >> w;
-        adj[u - 1].emplace_back(v - 1, w);
-        adj[v - 1].emplace_back(u - 1, w);
-    }
-    vector<ll> dist(n, INF), pred(n, -1);
-    dist[0] = 0;
-
-    set<pair<ll, ll>> s;
-    s.insert({0, 0});
-    while (!s.empty()) {
-        ll from = s.begin()->second;
-        s.erase(s.begin());
-        for (auto &[to, len] : adj[from]) {
-            if (dist[to] > dist[from] + len) {
-                s.erase({dist[to], to});
-                dist[to] = dist[from] + len;
-                pred[to] = from;
-                s.insert({dist[to], to});
-            }
-        }
-    }
-    if (dist[n - 1] == INF) {
-        cout << -1 << '\n';
-        return;
-    }
-    vector<ll> path;
-    for (ll X = n - 1; X != -1; X = pred[X]) {
-        path.push_back(X);
-    }
-    reverse(path.begin(), path.end());
-    for (ll x : path) cout << x + 1 << ' ';
-    cout << '\n';
-}
-using namespace std;
-typedef long long ll;
-const ll INF = 1e18;
-int n, m;
-ll d[100005], p[100005];
-map<pair<int, int>, ll> mp;
-vector<int> adj[100005];
-priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<>> pq;
-void printPath(int node) {
-    if (node != 1)
-        printPath(p[node]);
-    cout << node << ' ';
-}
-int main() {
-    cin >> n >> m;
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        ll w;
-        cin >> a >> b >> w;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
-        mp[{a, b}] = w;
-        mp[{b, a}] = w;
-    }
-    for (int i = 2; i <= n; i++)
-        d[i] = INF;
-    d[1] = 0;
-    pq.push({0, 1});
-    while (!pq.empty()) {
-        auto [dist_u, u] = pq.top();
-        pq.pop();
-        if (dist_u > d[u]) continue;
-        for (int v : adj[u]) {
-            ll weight = mp[{u, v}];
-            if (d[u] + weight < d[v]) {
-                d[v] = d[u] + weight;
-                p[v] = u;
-                pq.push({d[v], v});
-            }
-        }
-    }
-    if (d[n] == INF)
-        cout << -1 << endl;
-    else
-        printPath(n);
-}
+......
 #include <cstdio>
 #include <algorithm>
 https://codeforces.com/problemset/problem/22/A
@@ -10734,7 +10588,95 @@ int main() {
 
     cout << answer << "\n";
     return 0;
-{
+}
+https://codeforces.com/problemset/problem/215/B
+using namespace std;
+int main(){
+    int n; cin >> n;
+    double x[n];
+    for(int i = 0; i < n; i++) cin >> x[i];
+    int m; cin >> m;
+    double y[m];
+    for(int i = 0; i < m; i++) cin >> y[i];
+    int k; cin >> k;
+    double z[k];
+    for(int i = 0; i < k; i++) cin >> z[i];
+    double A, B; cin >> A >> B;
+
+    double R1 = *max_element(x, x + n);
+    double P1 = *max_element(y, y + m);
+    double P2 = *min_element(z, z + k);
+    cout << ps(R1 / sqrt(1 + (A * P2) / (B * P1)), 12) << "\n";
+}
+using namespace std;
+int main() {
+    int n, m, k;
+    cin >> n;
+    vector<double> x(n);
+    for (int i = 0; i < n; i++) cin >> x[i];
+    cin >> m;
+    vector<double> y(m);
+    for (int i = 0; i < m; i++) cin >> y[i];
+    cin >> k;
+    vector<double> z(k);
+    for (int i = 0; i < k; i++) cin >> z[i];
+    double A, B; cin >> A >> B;
+    double R1 = *max_element(x.begin(), x.end());
+    double P1 = *max_element(y.begin(), y.end());
+    double P2 = *min_element(z.begin(), z.end());
+
+    double result = R1 / sqrt(1.0 + (A * P2) / (B * P1));
+    cout << fixed << setprecision(12) << result << "\n";
+}
+https://codeforces.com/problemset/problem/217/A
+using namespace std;
+const int MAXN = 200005; 
+vector<int> parent(MAXN), siz(MAXN);
+int components;
+int root(int x) {
+    if (parent[x] != x) parent[x] = root(parent[x]);
+    return parent[x];
+}
+bool same(int x, int y) {
+    return root(x) == root(y);
+}
+void unite(int x, int y) {
+    x = root(x);
+    y = root(y);
+    if (x == y) return;
+    if (siz[y] < siz[x]) swap(x, y);
+    parent[x] = y;
+    siz[y] += siz[x];
+    siz[x] = 0;
+    components--;
+}
+int get_size(int x) {
+    return siz[root(x)];
+}
+void init_dsu(int n) {
+    components = n;
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+        siz[i] = 1;
+    }
+}
+int main() {
+    int n;
+    cin >> n;
+    init_dsu(n);
+
+    vector<array<int, 2>> a(n);
+    for (auto &[x, y] : a) cin >> x >> y;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            if (a[i][0] == a[j][0] || a[i][1] == a[j][1]) {
+                unite(i, j);
+            }
+        }
+    }
+    cout << components - 1 << '\n';
+}
 
 using namespace std;
 // A. Mountain Scenery
@@ -10755,6 +10697,145 @@ int main(){
     for (int i = 0; i < total; ++i)
         cout << height[i] << " ";
     cout << "\n";
+}
+https://codeforces.com/problemset/problem/218/C
+using namespace std;
+const int MAXN = 200005; 
+vector<int> parent(MAXN), siz(MAXN);
+int components;
+int root(int x) {
+    if (parent[x] != x) parent[x] = root(parent[x]);
+    return parent[x];
+}
+bool same(int x, int y) {
+    return root(x) == root(y);
+}
+void unite(int x, int y) {
+    x = root(x);
+    y = root(y);
+    if (x == y) return;
+    if (siz[y] < siz[x]) swap(x, y);
+    parent[x] = y;
+    siz[y] += siz[x];
+    siz[x] = 0;
+    components--;
+}
+int get_size(int x) {
+    return siz[root(x)];
+}
+void init_dsu(int n) {
+    components = n;
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+        siz[i] = 1;
+    }
+}
+int main() {
+    int n;
+    cin >> n;
+    init_dsu(n);
+
+    vector<array<int, 2>> a(n);
+    for (auto &[x, y] : a) cin >> x >> y;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            if (a[i][0] == a[j][0] || a[i][1] == a[j][1]) {
+                unite(i, j);
+            }
+        }
+    }
+    cout << components - 1 << '\n';
+}
+https://codeforces.com/problemset/problem/219/D
+using namespace std;
+int main() {
+    ll n;
+    cin >> n;
+    vector<vector<pair<ll, bool>>> g(n);
+    for (ll i = 0; i < n - 1; ++i) {
+        ll u, v;
+        cin >> u >> v;
+        --u, --v;
+        g[u].push_back({v, true});   // true means "down" edge. -> real
+        g[v].push_back({u, false});  // false means "up" edge -> fake
+    }
+    /* When we dfs from one root to some vertex i, 
+    then number of inversions needed 
+    = Count of down from root to i + Count of OTHER UP 
+    = Count of down from root to i + count of all ups - count of up from root to i */
+    ll UP = 0;
+    vector<ll> up_c(n, 0), down_c(n, 0);
+    function<void(ll, ll)> dfs = [&](ll node, ll parent) {  // as tree
+        for (auto &child : g[node]) {
+            if (child.first == parent) continue;
+            if (child.second) {
+                down_c[child.first] = down_c[node] + 1;  // node -> child is down
+                up_c[child.first] = up_c[node];
+            } else {
+                up_c[child.first] = up_c[node] + 1;  // node -> child is up
+                down_c[child.first] = down_c[node];
+                ++UP;
+            }
+            dfs(child.first, node);
+        }
+    };
+    dfs(0, -1);  // dfs
+    vector<ll> ans(n, 0);
+    for (ll i = 0; i < n; ++i) ans[i] = down_c[i] + UP - up_c[i];
+    ll mn = *ranges::min_element(ans);
+    cout << mn << '\n';
+    for (ll i = 0; i < n; ++i)
+        if (ans[i] == mn) cout << i + 1 << ' ';
+    cout << '\n';
+}
+using namespace std;
+#define ll long long
+int main() {
+    ll n;
+    cin >> n;
+    vector<vector<pair<ll, bool>>> g(n);
+    
+    for (ll i = 0; i < n - 1; ++i) {
+        ll u, v;
+        cin >> u >> v;
+        --u, --v;
+        g[u].push_back({v, true});   // true means "down" edge (original direction)
+        g[v].push_back({u, false});  // false means "up" edge (reverse direction)
+    }
+    ll UP = 0; // Total "up" edges
+    vector<ll> up_c(n, 0), down_c(n, 0);
+
+    function<void(ll, ll)> dfs = [&](ll node, ll parent) {
+        for (auto &child : g[node]) {
+            if (child.first == parent) continue;
+            if (child.second) {
+                // Edge node -> child is original direction (down)
+                down_c[child.first] = down_c[node] + 1;
+                up_c[child.first] = up_c[node];
+            } else {
+                // Edge node -> child is reversed direction (up)
+                up_c[child.first] = up_c[node] + 1;
+                down_c[child.first] = down_c[node];
+                ++UP; // Count total up edges
+            }
+            dfs(child.first, node);
+        }
+    };
+
+    dfs(0, -1); // Start DFS from node 0
+    
+    vector<ll> ans(n, 0);
+    for (ll i = 0; i < n; ++i) {
+        ans[i] = down_c[i] + UP - up_c[i];
+    }
+
+    ll mn = *min_element(ans.begin(), ans.end());
+    cout << mn << '\n';
+    for (ll i = 0; i < n; ++i) {
+        if (ans[i] == mn) cout << i + 1 << ' ';
+    }
+    cout << '\n';
 }
 using namespace std;
 //B.Effective Approach
