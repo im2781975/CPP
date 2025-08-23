@@ -1146,6 +1146,165 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/18/E
+// 18E. Flag 2
+using namespace std;
+const int ax = 505;
+int row, col;
+int cnt[ax][2][26]; // cnt[row][parity][char] → frequency of each char in even/odd col
+int dp[ax][26][26] //min changes up to this row with pattern (char1, char2)
+int arr[ax], ray[ax]; //chosen char from each row
+// char input[ax]; pair <int, int> ans[ax];
+int main(){
+    cin >> row >> col;
+    for(int i = 1; i <= row; i++){
+        for(int j = 0; j < col; j++){
+            char ch; cin >> ch;
+            cnt[i][j % 2][ch - 'a']++;
+        }
+    } /*
+    for(int i = 1; i <= row; i++){
+        cin >> input + 1;
+        for(int j = 1; j <= col; j++){
+            int ch = input[j] - 'a';
+            cnt[i][ch][j % 2]++;
+        }
+    } */
+    for(int i = 1; i <= row; i++){
+        //c1->etter for even columns (positions j % 2 == 0) & c2 → letter for odd column
+        for(int c1 = 0; c1 < 26; c1++){
+            for(int c2 = 0; c2 < 26; c2++){
+                // Characters for even and odd columns must differ
+                if(c1 == c2)    continue;
+                dp[i][c1][c2] = INT_MAX;
+                //previous row
+                for(int p1 = 0; p1 < 26; p1++){
+                    if(p1 == c1)    continue;
+                    for(int p2 = 0; p2 < 26; p2++){
+                        if(p2 == c2 || p1 == p2)    continue;
+                        if(dp[i][c1][c2] > dp[i - 1][p1][p2]){
+                            dp[i][c1][c2] = dp[i - 1][p1][p2];
+                            parent[i][c1][c2] = {p1, p2};
+                            
+                        }
+                    }
+                }
+                int changes = col - cnt[i][0][c1] - cnt[i][1][c2];
+                dp[i][c1][c2] += changes;
+            }
+        }
+    }
+    int res = INT_MAX;
+    int x, y = 0, 1;
+    pair <int, int> best{x, y};
+    for(int c1 = 0; c1 < 26; c1++){
+        for(int c2 = 0; c2 < 26; c2++){
+            if(c1 == c2)    continue;
+            if(dp[row][c1][c2] < res){
+                res = dp[row][c1][c2];
+                x = c1; y = c2;
+                best = {x, y};
+            }
+        }
+    }
+    cout << res << "\n";
+    /*
+    for(int i = row; i >= 1; i--){
+        ans[i] = {x, y};
+        auto prv = parent[i][x][y];
+        x = prv.first;
+        y = prv.second;
+    }
+    for(int i = 1; i <= row; i++){
+        for(int j = 1; j <= col; j++){
+            char ar = (j % 2 ? ans[i].first : ans[i].second) + 'a';
+            cout << ar;
+        }
+        cout << endl;
+    } */
+    int tmp = row;
+    while(tmp >= 1){
+        arr[tmp] = best.first;
+        ray[tmp] = best.second;
+        best = parent[row][best.first][best.second];
+        --row;
+    }
+    for(int i = 1; i <= row; i++){
+        for(int j = 0; j < col; j++){
+            char c = (j % 2 == 0 ? arr[i] : ray[i]) + 'a';
+            cout << c;
+        }
+        cout << endl;
+    }
+}
+using namespace std;
+const int ax = 510, INF = 0x3f3f3f3f;
+char grid[ax][ax];
+int row, col;
+int dp[ax][26][26]; //dp[row][char][char]
+pair <int, int> parent[ax][26][26];
+int compute(int i, int a, int b){
+    int changes = 0;
+    for(int j = 1; j <= col; j++){
+        char ch = ((j % 2) ? (a + 'a') : (b + 'a'));
+        if(grid[i][j] != ch)    changes++;
+    }
+    return changes;
+}
+int main(){
+    cin >> row >> col;
+    for(int i = 1; i <= row; i++)    cin >> (grid[i] + 1);
+    memset(dp, 0x3f, sizeof(dp));
+    for(int a = 0; a < 26; a++){
+        for(int b = 0; b < 26; b++){
+            if(a == b)    continue;
+            dp[1][a][b] = compute(1, a, b);
+        }
+    }
+    for(int i = 2; i <= n; i++){
+        for(int a = 0; a < 26; a++){
+            for(int b = 0; b < 26; b++){
+                if(a == b)    continue;
+                int cost = compute(i, a, b);
+                for(int x = 0; x < 26; x++){
+                    if(x == a)    continue;
+                    for(int y = 0; y < 26; y++){
+                        if(y == b || x == y)    continue;
+                        if(dp[i][a][b] > dp[i - 1][x][y] + cost){
+                            dp[i][a][b] = dp[i - 1][x][y] + cost;
+                            parent[i][a][b] = {x, y};
+                        }
+                    }
+                }
+            }
+        }
+    }
+    int res = INF;
+    pair <int, int> last = {0, 1};
+    for(int a = 0; a < 26; a++){
+        for(int b = 0; b < 26; b++){
+            if(a == b)    continue;
+            if(dp[n][a][b] < res){
+                res = dp[n][a][b];
+                last = {a, b};
+            }
+        }
+    }
+    cout << res << "\n";
+    int r = row;
+    while(r >= 1){
+        int a = last.first, b = last.second;
+        for(int j = 1; j <= col; j++)
+            grid[row][j] = ((j % 2) ? (a + 'a') : (b + 'a'));
+        last = pair[row][a][b];
+        row--;
+    }
+    for(int i = 1; i <= row; i++){
+        for(int j = 1; j <= col; j++)
+            cout << grid[i][j] << " ";
+        cout << endl;
+    }
+}
 https://codeforces.com/problemset/problem/19/A
 // 19A. World Football Cup
 /*
