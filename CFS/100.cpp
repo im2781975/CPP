@@ -1146,6 +1146,61 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/18/D
+// 18D. Seller Bob
+using namespace std;
+const int ax = 2005;
+using ll = long long;
+vector <string> pow2(ax); // stores powers of 2 as strings (st2[i] = 2^i).
+vector <string> ing(ax, "0"); // stores intermediate values, all initialized to "0". 
+/*
+string add(string a, string b){
+    if(a.size() < b.size())    swap(a, b);
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    string res; int carry = 0;
+    for(size_t i = 0; i < a.size() || carry; i++){
+        int sum = 0;
+        if(i < a.size())    sum += a[i] - '0';
+        if(i < b.size())    sum += b[i] - '0';
+        res.push_back((sum % 10) + '0');
+        carry = sum / 10;
+    }
+    reverse(res.begin(), res.end());
+    return res;
+} */
+string add(string a, string b){
+    if(a.size() < b.size())    swap(a, b);
+    string res;
+    int carry = 0, n = a.size(), m = b.size();
+    for(int i = 0; i < n; i++){
+        int x = a[n - 1 - i] - '0'; //'0' converts character to integer.
+        int y = (i < m) ? b[m - 1 - i] - '0' : 0;
+        int sum = x + y + carry;
+        res.push_back((sum % 10) + '0');
+        carry = sum / 10;
+    }
+    if(carry)    res.push_back(carry + '0');
+    reverse(res.begin(), res.end());
+    return res;
+}
+int main(){
+    pow2[0] = "1";
+    // loop is precomputing powers of 2 as strings,Instead of multiplying by 2 each time the code uses addition
+    for(int i = 1; i < ax; i++)
+        pow2[i] = add(pow2[i - 1], pow2[i - 1]);
+    int n; cin >> n;
+    string ans = "0";
+    for(int i = 0; i < n; i++){
+        int x; 
+        string s; cin >> s >> x;
+        if(s == "win")    ing[x] = add(ans, pow2[x]);
+        // Compare pow2[x] and ans.first length.if equal than size[]
+        if(ing[x].size() > ans.size() || (ing[x].size() == ans.size() && ing[x] > ans))
+            ans = ing[x];
+    }
+    cout << ans;
+}
 https://codeforces.com/problemset/problem/18/E
 // 18E. Flag 2
 using namespace std;
