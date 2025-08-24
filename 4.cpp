@@ -1,135 +1,4 @@
 
-https://codeforces.com/problemset/problem/6/B
-// B. President's Office
-using namespace std;
-
-#define FOR(i,n)   for(int i=0; i<n; ++i)
-#define FORE(it,c) for(__typeof(c.begin()) it = c.begin(); it != c.end(); it++)
-#define SZ(c)      ((int)c.size())
-
-int main()
-{
-
-    int n, m;
-    string str, c;
-    int dir[][2] = { {0,-1}, {0,1}, {-1,0}, {1,0} };
-    set<char> deputies;
-
-    getline(cin, str);
-    istringstream strin(str);
-    strin >> n >> m >> c;
-
-    vector<string> room(n);
-
-    FOR(i,n)
-    {
-        getline(cin, room[i]);
-    }
-
-
-    FOR(i,n)
-    {
-        FOR(j,m)
-        {
-            if(room[i][j] == c[0])
-            {
-                FOR(k, 4)
-                {
-                    int ii = i + dir[k][0], jj = j + dir[k][1];
-                    if((ii >= 0) && (ii < n) && (jj >= 0) && (jj < m))
-                    {
-                        if(room[ii][jj] != c[0] && room[ii][jj] != '.')
-                        {
-                            deputies.insert(room[ii][jj]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    printf("%d\n", deputies.size());
-
-    return 0;
-}
-
-using namespace std;
-int main() {
-    int n, m;
-    char president;
-    string line;
-
-    getline(cin, line);
-    stringstream(line) >> n >> m >> president;
-
-    vector<string> room(n);
-    for (int i = 0; i < n; ++i)
-        getline(cin, room[i]);
-
-    set<char> deputies;
-    int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
-
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
-            if (room[i][j] != president) continue;
-            for (int d = 0; d < 4; ++d) {
-                int ni = i + dx[d], nj = j + dy[d];
-                if (ni >= 0 && ni < n && nj >= 0 && nj < m) {
-                    char neighbor = room[ni][nj];
-                    if (neighbor != president && neighbor != '.')
-                        deputies.insert(neighbor);
-                }
-            }
-        }
-    }
-
-    cout << deputies.size() << endl;
-    return 0;
-}
-
-using namespace std;
-using ll = long long;
-ll n, m;
-char ch;
-vector<vector<char>> vv;
-set<char> colors;
-
-void checkNeighbor(ll i, ll j) {
-    if (vv[i][j] != '.' && vv[i][j] != ch) {
-        colors.insert(vv[i][j]);
-    }
-}
-
-void Solution() {
-    cin >> n >> m >> ch;
-    vv.assign(n + 4, vector<char>(m + 4, '.'));
-
-    for (ll i = 1; i <= n; ++i)
-        for (ll j = 1; j <= m; ++j)
-            cin >> vv[i][j];
-
-    for (ll i = 1; i <= n; ++i) {
-        for (ll j = 1; j <= m; ++j) {
-            if (vv[i][j] == ch) {
-                checkNeighbor(i + 1, j);
-                checkNeighbor(i - 1, j);
-                checkNeighbor(i, j + 1);
-                checkNeighbor(i, j - 1);
-            }
-        }
-    }
-
-    cout << (int)colors.size() << '\n';
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    Solution();
-
-    return 0;
-}
 
 https://codeforces.com/problemset/problem/6/C
 // C. Alice, Bob and Chocolate
@@ -1002,6 +871,63 @@ int main() {
 
     cout << ans << "\n";
     return 0;
+}
+...
+	https://codeforces.com/problemset/problem/6/B
+// 6B. President's Office
+using namespace std;
+int main(){
+    int n, m;
+    char president; cin >> n >> m >> president;
+    vector <string> room(n);
+    for(int i = 0; i < n; i++)    cin >> room[i];
+    int dir[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    // int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
+    set <char> deputies;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(room[i][j] == president){
+                for(int d = 0; d < 4; d++){
+                    int ni = i + dir[d][0];
+                    int nj = j + dir[d][1];
+                    // int ni = i + dx[d], nj = j + dy[d];
+                    if(ni >= 0 && ni < n && nj >= 0 && nj < m){
+                        char neighbor = room[ni][nj];
+                        if(neighbor != president && neighbor != '.')
+                            deputies.insert(neighbor);
+                    }
+                }
+            }
+        }
+    }
+    cout << deputies.size();
+}
+using namespace std;
+int n, m; char ch;
+vector <vector <char> >vec;
+set <char> colors;
+void neighbor(int i, int j){
+    if(vec[i][j] != '.' && vec[i][j]!= ch)
+        colors.insert(vec[i][j]);
+}
+int main(){
+    cin >> n >> m >> ch;
+    vec.assign(n + 4, vector <char> (m + 4, '.'));
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++)
+            cin >> vec[i][j];
+    }
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            if(vec[i][j] == ch){
+                neighbor(i + 1, j);
+                neighbour(i - 1, j);
+                neighbor(i, j + 1);
+                neighbor(i, j - 1);
+            }
+        }
+    }
+    cout << (int)colors.size();
 }
 https://codeforces.com/problemset/problem/8/C
 C. Looking for Order
