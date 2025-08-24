@@ -10837,6 +10837,69 @@ int main() {
     }
     cout << '\n';
 }
+https://codeforces.com/problemset/problem/222/B
+using namespace std;
+#define ll long long
+#define v vector
+#define vl vector<ll>
+#define fo(i, n) for (ll i = 0; i < (n); i++)
+int main(){
+    ll n, m, k;
+    cin >> n >> m >> k;
+    v<v<ll>> vv(n, v<ll>(m));
+
+    fo(i, n) {
+        fo(j, m) {
+            cin >> vv[i][j];
+        }
+    }
+    char q;
+    ll I, J;
+    vl r(n), c(m);
+    fo(i, n) r[i] = i;
+    fo(i, m) c[i] = i;
+    
+    fo(i, k) {
+        cin >> q >> I >> J;
+        if (q == 'c') {
+            swap(c[I - 1], c[J - 1]);
+        } else if (q == 'r') {
+            swap(r[I - 1], r[J - 1]);
+        } else {
+            cout << vv[r[I - 1]][c[J - 1]] << '\n';
+        }
+    }
+}
+using namespace std;
+#define ll long long
+int main() {
+    ll n, m, k;
+    cin >> n >> m >> k;
+
+    vector<vector<ll>> vv(n, vector<ll>(m));
+    for (ll i = 0; i < n; i++) {
+        for (ll j = 0; j < m; j++) {
+            cin >> vv[i][j];
+        }
+    }
+
+    while (k--) {
+        char q;
+        ll I, J;
+        cin >> q >> I >> J;
+        if (q == 'r') {
+            swap(vv[I - 1], vv[J - 1]);
+        } else if (q == 'c') {
+            for (ll i = 0; i < n; i++) {
+                swap(vv[i][I - 1], vv[i][J - 1]);
+            }
+        } else {
+            cout << vv[I - 1][J - 1] << "\n";
+        }
+    }
+    return 0;
+}
+
 using namespace std;
 //B.Effective Approach
 http://codeforces.com/problemset/problem/227/B
