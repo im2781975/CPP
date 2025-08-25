@@ -873,7 +873,7 @@ int main() {
     return 0;
 }
 ...
-	https://codeforces.com/problemset/problem/6/B
+https://codeforces.com/problemset/problem/6/B
 // 6B. President's Office
 using namespace std;
 int main(){
@@ -921,13 +921,52 @@ int main(){
         for(int j = 1; j <= m; j++){
             if(vec[i][j] == ch){
                 neighbor(i + 1, j);
-                neighbour(i - 1, j);
+                neighbor(i - 1, j);
                 neighbor(i, j + 1);
                 neighbor(i, j - 1);
             }
         }
     }
     cout << (int)colors.size();
+}
+https://codeforces.com/problemset/problem/6/C
+// 6C. Alice, Bob and Chocolate
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <int> choco(n);
+    for(int i = 0; i < n; i++)    cin >> choco[i];
+    int left = 0, right = n - 1;
+    int cntalice = 0, cntbob = 0;
+    int timealice = 0, timebob = 0;
+    while(left <= right){
+        if(timealice <= timebob){
+            timealice += choco[left++];
+            cntalice++;
+        }
+        else{
+            timebob += choco[right--];
+            cntbob++;
+        }
+    }
+    cout << cntalice << " " << cntbob << endl;
+    // cout << left << " " << n - left << endl;
+    /*
+    vector <int> choco(n + 5, 0);
+    for(int i = 1; i <= n; i++){
+        int beat; cin >> beat;
+        choco[i] = choco[i - 1] + beat;
+    }
+    choco[n + 1] = choco[n];
+    int left = 0, right = n + 1;
+    while(right > left){
+        int alice = choco[left];
+        int bob = choco[n + 1] - choco[right];
+        if(alice <= bob)    left++;
+        else if(alice > bob)    right--;
+    }
+    cout << left << " " << n - left;
+    */
 }
 https://codeforces.com/problemset/problem/8/C
 C. Looking for Order
