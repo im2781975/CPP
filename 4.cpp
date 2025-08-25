@@ -819,6 +819,29 @@ int main(){
     printPath(2, health[2] + 1, health[1] + 1);
     cout << endl;
 }
+https://codeforces.com/problemset/problem/7/A
+// 7A. Kalevitch and Chess
+using namespace std;
+int main(){
+    vector <bool> row(8, false), col(8, false);
+    // bool row[8] = {false}, col[8] = {false};
+    string str;
+    for(int i = 0; i < 8; i++){
+        cin >> str;
+        for(int j = 0; j < 8; j++){
+            if(str[j] == 'W'){
+                row[i] = true; col[j] = true;
+            }
+        }
+    }
+    int blockedrow = count(row.begin(), row.end(), true);
+    int blockedcol = count(col.begin(), col.end(), true);
+    // If all rows and columns are unblocked, output should be 8
+    int res = 16 - blockedrow - blockedcol;
+    // int res = 16 - count(row, row + 8, true) - count(col, col + 8, true);
+    if(res == 16)    res = 8;
+    cout << res;
+}
 https://codeforces.com/problemset/problem/8/C
 C. Looking for Order
 using namespace std;
