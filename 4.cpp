@@ -1,134 +1,4 @@
 
-https://codeforces.com/problemset/problem/6/D
-// D. Lizards and Basements 2
-using namespace std;
-const int maxn=20;
-const int inf=1e9;
-int dp[maxn][maxn][maxn];
-int vis[maxn][maxn][maxn];
-int path[maxn][maxn][maxn];
-int n,a,b;
-int h[maxn];
-int dfs(int i,int cur,int pre)
-{
-	cur=cur<0?0:cur;
-	pre=pre<0?0:pre;
-	if(i==n)
-	{
-		if(cur==0) return 0;
-		else return inf;
-	}
-	if(vis[i][cur][pre]) return dp[i][cur][pre];
-	vis[i][cur][pre]=1;
-	int &ans=dp[i][cur][pre];
-	ans=inf;
-	int lb=(pre+b-1)/b,hb=max(lb,max((cur+a-1)/a,(h[i+1]+b)/b));
-	int p;
-	for(int j=lb;j<=hb;j++)
-	{
-		int tmp=j+dfs(i+1,h[i+1]+1-j*b,cur-j*a);
-		if(ans>tmp)
-		{
-			ans=tmp;
-			path[i][cur][pre]=j;
-		}
-	}
-	return ans;
-}
-void print(int i,int cur,int pre)
-{
-	cur=cur<0?0:cur;
-	pre=pre<0?0:pre;
-	if(i==n) return;
-	int tmp=path[i][cur][pre],cnt=tmp;
-	while(cnt--) printf("%d ",i);
-	print(i+1,h[i+1]+1-tmp*b,cur-tmp*a);
-}
-int main()
-{
-	cin>>n>>a>>b;
-	for(int i=1;i<=n;i++) cin>>h[i];
-	memset(vis,0,sizeof(vis));
-	int ans=dfs(2,h[2]+1,h[1]+1);
-	cout<<ans<<"\n";
-	print(2,h[2]+1,h[1]+1);
-	puts("");
-	return 0;
-}
-#include <bits/stdc++.h>
-using namespace std;
-
-const int INF = 1e9;
-
-int n, a, b;
-vector<int> h; // heights
-int dp[20][20][20];
-bool visited[20][20][20];
-int pathChoice[20][20][20];
-
-// Recursive DP
-int dfs(int i, int cur, int pre) {
-    cur = max(cur, 0);
-    pre = max(pre, 0);
-
-    // Base case: reached end
-    if (i == n) {
-        return (cur == 0) ? 0 : INF;
-    }
-
-    if (visited[i][cur][pre]) return dp[i][cur][pre];
-    visited[i][cur][pre] = true;
-
-    int &ans = dp[i][cur][pre];
-    ans = INF;
-
-    // Lower bound of hits for this stage
-    int lb = (pre + b - 1) / b;
-    // Upper bound: max hits needed considering both current and next
-    int hb = max(lb, max((cur + a - 1) / a, (h[i + 1] + b) / b));
-
-    for (int j = lb; j <= hb; j++) {
-        int temp = j + dfs(i + 1, h[i + 1] + 1 - j * b, cur - j * a);
-        if (temp < ans) {
-            ans = temp;
-            pathChoice[i][cur][pre] = j; // store choice
-        }
-    }
-    return ans;
-}
-
-// Print path of chosen hits
-void printPath(int i, int cur, int pre) {
-    cur = max(cur, 0);
-    pre = max(pre, 0);
-    if (i == n) return;
-
-    int hits = pathChoice[i][cur][pre];
-    for (int k = 0; k < hits; k++) {
-        cout << i << " ";
-    }
-    printPath(i + 1, h[i + 1] + 1 - hits * b, cur - hits * a);
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    cin >> n >> a >> b;
-    h.resize(n + 1);
-    for (int i = 1; i <= n; i++) {
-        cin >> h[i];
-    }
-
-    memset(visited, false, sizeof(visited));
-
-    int ans = dfs(2, h[2] + 1, h[1] + 1);
-    cout << ans << "\n";
-    printPath(2, h[2] + 1, h[1] + 1);
-    cout << "\n";
-
-    return 0;
-}
 https://codeforces.com/problemset/problem/6/E
 // E. Exposition
 using namespace std;
@@ -897,6 +767,57 @@ int main(){
     }
     cout << left << " " << n - left;
     */
+}
+https://codeforces.com/problemset/problem/6/D
+// 6D. Lizards and Basements 2
+using namespace std;
+const int ax = 25;
+bool vis[ax][ax][ax];
+int n, a, b; //number of monster, main attack damage, splash attack damage
+int health[ax]; // health of each monster
+int dp[ax][ax][ax];
+// dp[idx][cur][pre] → minimum attacks needed starting from monster idx when:
+// cur, pre = current monster's remaining health, previous(idx - 1) monster's remaining health
+int path[ax][ax][ax];
+int dfs(int idx, int cur, int pre){
+    cur = max(cur, 0); pre = max(pre, 0);
+    if(idx == n) //last monster
+        return (cur = 0) ? 0 : INT_MAX;
+    if(vis[idx][cur][pre])    return vis[idx][cur][pre];
+    //mark as visited
+    vis[idx][cur][pre] = true;
+    int &res = dp[idx][cur][pre];
+    res = INT_MAX;
+    int lb = (pre + b - 1) / b; // hits needed to kill the previous monster via splash:
+    // upper bound = max hits needed to ensure current and next monster are not left with huge health:
+    int hb = max(lb, max((cur + a - 1) / a, (health[idx + 1] + b) / b));
+    for(int j = lb; j <= hb; j++){
+        int cost = j + dfs(idx + 1, health[idx + 1] + 1 - j * b, cur - j * a);
+        if (cost < res) {
+            res = cost;
+            path[idx][cur][pre] = j;
+        }
+        return res;
+    }
+}
+void printPath(int idx, int cur, int pre) {
+    cur = max(cur, 0);
+    pre = max(pre, 0);
+    if (idx == n) return;
+    int hits = path[idx][cur][pre];
+    for (int i = 0; i < hits; i++)
+        cout << idx << " ";
+    printPath(idx + 1, health[idx + 1] + 1 - hits * b, cur - hits * a);
+}
+int main(){
+    cin >> n >> a >> b
+    // start considering from the second monster (because the first attack is handled as part of initialization).
+    for(int i = 1; i <= n; i++)    cin >> health[i];
+    memset(vis, false, sizeof(vis));
+    int res = dfs(2, health[2] + 1, health[1] + 1);
+    cout << res << endl;
+    printPath(2, health[2] + 1, health[1] + 1);
+    cout << endl;
 }
 https://codeforces.com/problemset/problem/8/C
 C. Looking for Order
