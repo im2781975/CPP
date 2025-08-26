@@ -1,202 +1,4 @@
 
-https://codeforces.com/problemset/problem/6/E
-// E. Exposition
-using namespace std;
-typedef pair<int,int> pii;
-const int maxn=100010;
-int h[maxn];
-int d1[maxn][20],d2[maxn][20];
-void RMQ_init(int* A,int n)
-{
-	for(int i=0;i<n;i++) d1[i][0]=d2[i][0]=A[i];
-	for(int j=1;(1<<j)<=n;j++)
-		for(int i=0;i+(1<<j)-1<n;i++)
-		{
-			d1[i][j]=min(d1[i][j-1],d1[i+(1<<(j-1))][j-1]);
-			d2[i][j]=max(d2[i][j-1],d2[i+(1<<(j-1))][j-1]);
-		}
-}
-int RMQ1(int L,int R)
-{
-	int k=0;
-	while((1<<(k+1))<=R-L+1) k++;
-	return min(d1[L][k],d1[R-(1<<k)+1][k]);
-}
-int RMQ2(int L,int R)
-{
-	int k=0;
-	while((1<<(k+1))<=R-L+1) k++;
-	return max(d2[L][k],d2[R-(1<<k)+1][k]);
-}
-int main()
-{
-	int n,k;
-	scanf("%d%d",&n,&k);
-	for(int i=0;i<n;i++) scanf("%d",&h[i]);
-	int f=0,r=0,maxl=0;
-	vector<pii> v;
-	RMQ_init(h,n);
-	while(r<n)
-	{
-		while(r<n)
-		{
-			int minh=RMQ1(f,r),maxh=RMQ2(f,r);
-			if(maxh-minh>k) break;
-			if(r-f+1>maxl)
-			{
-				maxl=r-f+1;
-				v.clear();
-				v.push_back(make_pair(f,r));
-			}
-			else if(r-f+1==maxl)
-				v.push_back(make_pair(f,r));
-			r++;
-		}
-		while(f<r)
-		{
-			int minh=RMQ1(f,r),maxh=RMQ2(f,r);
-			if(maxh-minh<=k) break;
-			f++;
-		}
-	}
-	printf("%d %d\n",maxl,(int)v.size());
-	for(int i=0;i<v.size();i++) printf("%d %d\n",v[i].first+1,v[i].second+1);
-	return 0;
-}
-#include <bits/stdc++.h>
-using namespace std;
-
-using pii = pair<int, int>;
-
-vector<vector<int>> minTable, maxTable;
-vector<int> h;
-int n, k;
-
-void buildSparseTable(const vector<int> &A) {
-    int logn = __lg(A.size()) + 1;
-    minTable.assign(A.size(), vector<int>(logn));
-    maxTable.assign(A.size(), vector<int>(logn));
-
-    for (int i = 0; i < (int)A.size(); i++) {
-        minTable[i][0] = A[i];
-        maxTable[i][0] = A[i];
-    }
-
-    for (int j = 1; (1 << j) <= (int)A.size(); j++) {
-        for (int i = 0; i + (1 << j) - 1 < (int)A.size(); i++) {
-            minTable[i][j] = min(minTable[i][j - 1], minTable[i + (1 << (j - 1))][j - 1]);
-            maxTable[i][j] = max(maxTable[i][j - 1], maxTable[i + (1 << (j - 1))][j - 1]);
-        }
-    }
-}
-
-int queryMin(int L, int R) {
-    int k = __lg(R - L + 1);
-    return min(minTable[L][k], minTable[R - (1 << k) + 1][k]);
-}
-
-int queryMax(int L, int R) {
-    int k = __lg(R - L + 1);
-    return max(maxTable[L][k], maxTable[R - (1 << k) + 1][k]);
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    cin >> n >> k;
-    h.resize(n);
-    for (int &x : h) cin >> x;
-
-    buildSparseTable(h);
-
-    int f = 0, r = 0, maxLen = 0;
-    vector<pii> segments;
-
-    while (r < n) {
-        while (r < n) {
-            int minh = queryMin(f, r);
-            int maxh = queryMax(f, r);
-            if (maxh - minh > k) break;
-
-            if (r - f + 1 > maxLen) {
-                maxLen = r - f + 1;
-                segments.clear();
-                segments.emplace_back(f, r);
-            } else if (r - f + 1 == maxLen) {
-                segments.emplace_back(f, r);
-            }
-            r++;
-        }
-        while (f < r) {
-            int minh = queryMin(f, r);
-            int maxh = queryMax(f, r);
-            if (maxh - minh <= k) break;
-            f++;
-        }
-    }
-
-    cout << maxLen << " " << segments.size() << "\n";
-    for (auto &p : segments) {
-        cout << p.first + 1 << " " << p.second + 1 << "\n";
-    }
-
-    return 0;
-}
-
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-https://codeforces.com/problemset/problem/7/A
-// A. Kalevitch and Chess
-using namespace std;
-int main() {
-    vector<bool> row(8, false), col(8, false);
-    string line;
-    for (int r = 0; r < 8; ++r) {
-        cin >> line;
-        for (int c = 0; c < 8; ++c) {
-            if (line[c] == 'W') {
-                row[r] = true;
-                col[c] = true;
-            }
-        }
-    }
-    int blockedRows = count(row.begin(), row.end(), true);
-    int blockedCols = count(col.begin(), col.end(), true);
-    int answer = 16 - blockedRows - blockedCols;
-    // If all rows and columns are unblocked, output should be 8
-    if (answer == 16) {
-        answer = 8;
-    }
-    cout << answer << endl;
-    return 0;
-}
-using namespace std;
-int main(){
-    string s;
-    bool row[8] = {false}, col[8] = {false};
-    for (int r = 0; r < 8; ++r)
-    {
-        cin >> s;
-        for (int c = 0; c < 9; ++c)
-        {
-            if (s[c] == 'W')
-            {
-                row[r] = true;
-                col[c] = true;
-            }
-        }
-    }
-    int answer = 16 - count(row, row + 8, true) - count(col, col + 8, true);
-    if (answer == 16)
-    {
-        answer = 8;
-    }
-    cout << answer;
-    return 0;
-}
 https://codeforces.com/problemset/problem/7/B
 B. Memory Manager
 using namespace std;
@@ -818,6 +620,34 @@ int main(){
     cout << res << endl;
     printPath(2, health[2] + 1, health[1] + 1);
     cout << endl;
+}
+https://codeforces.com/problemset/problem/6/E
+// 6E. Exposition
+using namespace std;
+int main(){
+    int n, k; cin >> n >> k;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)    cin >> vec[i];
+    int left = 0, lenght = 0;
+    multiset <int> window(n);
+    vector <int> start;
+    for(int right = 0; right < n; right++){
+        window.insert(vec[right]);
+        while(!window.empty() && (*window.rbegin() - *window.begin()) > k){
+            window.erase(window.find(vec[left]));
+            left++;
+        }
+    }
+    int cur = (int)window.size();
+    if(cur > length){
+        length = cur;
+        start.clear();
+        start.push_back(left);
+    }
+    else if(cur == length)    start.push_back(left);
+    cout << length << " " << (int)start.size() << "\n";
+    for(int i = 0; i < start.size(); i++)
+        cout << i + 1 << " " << i + length << endl;
 }
 https://codeforces.com/problemset/problem/7/A
 // 7A. Kalevitch and Chess
