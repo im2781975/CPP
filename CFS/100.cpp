@@ -1343,6 +1343,80 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/18/B
+// 18B. Platforms
+using namespace std;
+int main(){
+    int n, d, m, l; cin >> n >> d >> m >> l;
+    // n, m-> number of platforms, distance between the start of consecutive platforms.
+    // d, l -> exactly jumping units, length of each platforms 
+    /*
+    if(m - l <= 1){
+        int tmp = n * m;
+        int res = ((tmp + d - 1) / d) * d;
+        cout << res << endl;
+        return 0;
+    }
+    int i = 0;
+    while((i % m) <= l && (i / m) < n)
+        i += d;
+    cout << i << endl; */
+    /* for (int i = 0; i < n; i++) {
+        int lst = (m * (i + 1)) / d * d;
+        if (lst == m * (i + 1)) lst -= d;
+        if (lst > m * i + l) {
+            while (lst - d > m * i + l)
+                lst -= d;
+            cout << lst << "\n";
+            return;
+        }
+    }
+    int q = (m * n) / d * d;
+    if (q < m * n) q += d;
+    cout << q << endl; */
+    int cur = 0;
+    for(int i = 0; i < n; i++){
+        // end of platform i (i*m + l)
+        int a = i * m + l;
+        // start of next platform ((i+1)*m)
+        int b = (i + 1) * m;
+        if(cur >= b)    continue;
+        if(cur > a){
+            cout << cur << endl;
+            return 0;
+        }
+        int steps = (a - cur) / d;
+        cur += steps * d;
+        if(cur < b){
+            cout << cur << endl;
+            return 0;
+        }
+    }
+    cout << cur;
+    return 0;
+}
+https://codeforces.com/problemset/problem/18/C
+// 18C. Stripe
+using namespace std;
+int main(){
+    int n, cnt = 0; cin >> n;
+    vector <int> vec(n + 1), prefix(n + 1, 0);
+    for(int i = 1; i <= n; i++){
+        cin >> vec[i];
+        prefix[i] = prefix[i - 1] + vec[i];
+    }
+    int total = prefix[n];
+    for(int i = 1; i < n; i++){
+        if(prefix[i] = total - prefix[i])
+            cnt++;
+    }/*
+    for(int i = 0; i < n; i++)    cin >> vec[i];
+    partial_sum(vec.begin(), vec.end(), prefix.begin());
+    for(int i = 0; i < n - 1; i++){
+        if(2 * prefix[i] == prefix[n - 1])    cnt++;
+    } */
+    cout << cnt;
+}
 https://codeforces.com/problemset/problem/18/D
 // 18D. Seller Bob
 using namespace std;
