@@ -1088,6 +1088,203 @@ int main(){
     else if(segment)    cout << "SEGMENT";
     else    cout << "IMMPOSSIBLE";
 }
+https://codeforces.com/problemset/problem/6/B
+// 6B. President's Office
+using namespace std;
+int main(){
+    int n, m;
+    char president; cin >> n >> m >> president;
+    vector <string> room(n);
+    for(int i = 0; i < n; i++)    cin >> room[i];
+    int dir[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    // int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
+    set <char> deputies;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(room[i][j] == president){
+                for(int d = 0; d < 4; d++){
+                    int ni = i + dir[d][0];
+                    int nj = j + dir[d][1];
+                    // int ni = i + dx[d], nj = j + dy[d];
+                    if(ni >= 0 && ni < n && nj >= 0 && nj < m){
+                        char neighbor = room[ni][nj];
+                        if(neighbor != president && neighbor != '.')
+                            deputies.insert(neighbor);
+                    }
+                }
+            }
+        }
+    }
+    cout << deputies.size();
+}
+using namespace std;
+int n, m; char ch;
+vector <vector <char> >vec;
+set <char> colors;
+void neighbor(int i, int j){
+    if(vec[i][j] != '.' && vec[i][j]!= ch)
+        colors.insert(vec[i][j]);
+}
+int main(){
+    cin >> n >> m >> ch;
+    vec.assign(n + 4, vector <char> (m + 4, '.'));
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++)
+            cin >> vec[i][j];
+    }
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            if(vec[i][j] == ch){
+                neighbor(i + 1, j);
+                neighbor(i - 1, j);
+                neighbor(i, j + 1);
+                neighbor(i, j - 1);
+            }
+        }
+    }
+    cout << (int)colors.size();
+}
+https://codeforces.com/problemset/problem/6/C
+// 6C. Alice, Bob and Chocolate
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <int> choco(n);
+    for(int i = 0; i < n; i++)    cin >> choco[i];
+    int left = 0, right = n - 1;
+    int cntalice = 0, cntbob = 0;
+    int timealice = 0, timebob = 0;
+    while(left <= right){
+        if(timealice <= timebob){
+            timealice += choco[left++];
+            cntalice++;
+        }
+        else{
+            timebob += choco[right--];
+            cntbob++;
+        }
+    }
+    cout << cntalice << " " << cntbob << endl;
+    // cout << left << " " << n - left << endl;
+    /*
+    vector <int> choco(n + 5, 0);
+    for(int i = 1; i <= n; i++){
+        int beat; cin >> beat;
+        choco[i] = choco[i - 1] + beat;
+    }
+    choco[n + 1] = choco[n];
+    int left = 0, right = n + 1;
+    while(right > left){
+        int alice = choco[left];
+        int bob = choco[n + 1] - choco[right];
+        if(alice <= bob)    left++;
+        else if(alice > bob)    right--;
+    }
+    cout << left << " " << n - left;
+    */
+}
+https://codeforces.com/problemset/problem/6/D
+// 6D. Lizards and Basements 2
+using namespace std;
+const int ax = 25;
+bool vis[ax][ax][ax];
+int n, a, b; //number of monster, main attack damage, splash attack damage
+int health[ax]; // health of each monster
+int dp[ax][ax][ax];
+// dp[idx][cur][pre] → minimum attacks needed starting from monster idx when:
+// cur, pre = current monster's remaining health, previous(idx - 1) monster's remaining health
+int path[ax][ax][ax];
+int dfs(int idx, int cur, int pre){
+    cur = max(cur, 0); pre = max(pre, 0);
+    if(idx == n) //last monster
+        return (cur = 0) ? 0 : INT_MAX;
+    if(vis[idx][cur][pre])    return vis[idx][cur][pre];
+    //mark as visited
+    vis[idx][cur][pre] = true;
+    int &res = dp[idx][cur][pre];
+    res = INT_MAX;
+    int lb = (pre + b - 1) / b; // hits needed to kill the previous monster via splash:
+    // upper bound = max hits needed to ensure current and next monster are not left with huge health:
+    int hb = max(lb, max((cur + a - 1) / a, (health[idx + 1] + b) / b));
+    for(int j = lb; j <= hb; j++){
+        int cost = j + dfs(idx + 1, health[idx + 1] + 1 - j * b, cur - j * a);
+        if (cost < res) {
+            res = cost;
+            path[idx][cur][pre] = j;
+        }
+        return res;
+    }
+}
+void printPath(int idx, int cur, int pre) {
+    cur = max(cur, 0);
+    pre = max(pre, 0);
+    if (idx == n) return;
+    int hits = path[idx][cur][pre];
+    for (int i = 0; i < hits; i++)
+        cout << idx << " ";
+    printPath(idx + 1, health[idx + 1] + 1 - hits * b, cur - hits * a);
+}
+int main(){
+    cin >> n >> a >> b
+    // start considering from the second monster (because the first attack is handled as part of initialization).
+    for(int i = 1; i <= n; i++)    cin >> health[i];
+    memset(vis, false, sizeof(vis));
+    int res = dfs(2, health[2] + 1, health[1] + 1);
+    cout << res << endl;
+    printPath(2, health[2] + 1, health[1] + 1);
+    cout << endl;
+}
+https://codeforces.com/problemset/problem/6/E
+// 6E. Exposition
+using namespace std;
+int main(){
+    int n, k; cin >> n >> k;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)    cin >> vec[i];
+    int left = 0, lenght = 0;
+    multiset <int> window(n);
+    vector <int> start;
+    for(int right = 0; right < n; right++){
+        window.insert(vec[right]);
+        while(!window.empty() && (*window.rbegin() - *window.begin()) > k){
+            window.erase(window.find(vec[left]));
+            left++;
+        }
+    }
+    int cur = (int)window.size();
+    if(cur > length){
+        length = cur;
+        start.clear();
+        start.push_back(left);
+    }
+    else if(cur == length)    start.push_back(left);
+    cout << length << " " << (int)start.size() << "\n";
+    for(int i = 0; i < start.size(); i++)
+        cout << i + 1 << " " << i + length << endl;
+}
+https://codeforces.com/problemset/problem/7/A
+// 7A. Kalevitch and Chess
+using namespace std;
+int main(){
+    vector <bool> row(8, false), col(8, false);
+    // bool row[8] = {false}, col[8] = {false};
+    string str;
+    for(int i = 0; i < 8; i++){
+        cin >> str;
+        for(int j = 0; j < 8; j++){
+            if(str[j] == 'W'){
+                row[i] = true; col[j] = true;
+            }
+        }
+    }
+    int blockedrow = count(row.begin(), row.end(), true);
+    int blockedcol = count(col.begin(), col.end(), true);
+    // If all rows and columns are unblocked, output should be 8
+    int res = 16 - blockedrow - blockedcol;
+    // int res = 16 - count(row, row + 8, true) - count(col, col + 8, true);
+    if(res == 16)    res = 8;
+    cout << res;
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
