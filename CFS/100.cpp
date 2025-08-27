@@ -1343,6 +1343,107 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/17/D
+// 17D. Notepad
+using namespace std;
+int strmod(string &str, int ber){
+    int res = 0;
+    for(int i = 0; i < str.size(); i++)
+        res = (res * 10 + (str[i] - '0')) % ber;
+    return res;
+}
+int euler(int n){
+    int res = n;
+    for(int i = 2; i * i <= n; i++){
+        if(n % i == 0){
+            res -= res / i;
+            while(n % i == 0)    n /= i;
+        }
+    }
+    if(n > 1)    res -= res / n;
+    return res;
+}
+int modpow(int a, int b, int mod){
+    int res = 1;
+    int base = a % mod;
+    while(b){
+        if(b & 1)    res = (res * base) % mod;
+        base = (base * base) % mod;
+        b >>= 1;
+    }
+    return res;
+}
+int main(){
+    string str, ing; cin >> str >> ing;
+    int ber; cin >> ber;
+    int n = strmod(str, ber);
+    int pre = (n - 1 + ber) % ber;
+    int phi = euler(ber);
+    int num; 
+    if(ing.size() <= 4){
+        int N = stoll(ing);
+        int res = pre * modpow(n, N - 1, ber) % ber;
+        if(res == 0)    res = ber;
+        cout << res;
+        return 0;
+    }
+    if(ing == "1")    num = 0;
+    else {
+        num = strmod(ing, phi);
+        num = (num - 1 + phi) % phi;
+    }
+    int res = pre * modpow(n, num, ber) % ber;
+    if(res == 0)    res = ber;
+    cout << res << endl;
+}
+https://codeforces.com/problemset/problem/18/A
+// 18A. Triangle
+using namespace std;
+int dist2(int x1, int y1, int x2, int y2) {
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+}
+bool isRightTriangle(int ax, int ay, int bx, int by, int cx, int cy) {
+    int ab = dist2(ax, ay, bx, by);
+    int bc = dist2(bx, by, cx, cy);
+    int ac = dist2(ax, ay, cx, cy);
+    if (ab == 0 || bc == 0 || ac == 0) return false;
+    return (ab + bc == ac) || (ab + ac == bc) || (ac + bc == ab);
+}
+int main() {
+    int ax, ay, bx, by, cx, cy;
+    cin >> ax >> ay >> bx >> by >> cx >> cy;
+    if (isRightTriangle(ax, ay, bx, by, cx, cy)) {
+        cout << "RIGHT\n";
+        return;
+    }
+    vector <pair <int, int>> moves = {{0,0},{1,0},{-1,0},{0,1},{0,-1}};
+    for (size_t i = 0; i < moves.size(); i++) {
+        for (size_t j = 0; j < moves.size(); j++) {
+            for (size_t k = 0; k < moves.size(); k++) {
+                int dx1 = moves[i].first, dy1 = moves[i].second;
+                int dx2 = moves[j].first, dy2 = moves[j].second;
+                int dx3 = moves[k].first, dy3 = moves[k].second;
+
+                if (dx1 == 0 && dy1 == 0 && dx2 == 0 && dy2 == 0 && dx3 == 0 && dy3 == 0)
+                    continue; 
+                if (isRightTriangle(ax + dx1, ay + dy1, bx + dx2, by + dy2, cx + dx3, cy + dy3)) {
+                    cout << "ALMOST\n";
+                    return;
+                }
+            }
+        }
+    } /*
+    vector<pair<int, int>> moves = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    for (auto [dx, dy] : moves) {
+        if (isRightTriangle(ax + dx, ay + dy, x2, y2, x3, y3) ||
+            isRightTriangle(x1, y1, bx + dx, by + dy, x3, y3) ||
+            isRightTriangle(x1, y1, x2, y2, cx + dx, cy + dy)) {
+            cout << "ALMOST";
+            return;
+        }
+    } */
+    cout << "NEITHER\n";
+}
 https://codeforces.com/problemset/problem/18/B
 // 18B. Platforms
 using namespace std;
