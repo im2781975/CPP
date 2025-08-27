@@ -10370,6 +10370,69 @@ int main() {
     }
     return 0;
 }
+https://codeforces.com/problemset/problem/222/E
+E. Decoding Genome
+using namespace std;
+using ll = long long;
+
+const ll MOD = 1e9 + 7;
+
+// Matrix multiplication
+vector<vector<ll>> multiply(const vector<vector<ll>> &A, const vector<vector<ll>> &B) {
+    int n = A.size(), m = B[0].size(), p = A[0].size();
+    vector<vector<ll>> res(n, vector<ll>(m, 0));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            ll sum = 0;
+            for (int k = 0; k < p; ++k) {
+                sum += A[i][k] * B[k][j];
+                if (sum >= MOD * MOD) sum -= MOD * MOD;
+            }
+            res[i][j] = sum % MOD;
+        }
+    }
+    return res;
+}
+
+// Matrix exponentiation
+vector<vector<ll>> power(vector<vector<ll>> base, ll exp) {
+    int n = base.size();
+    vector<vector<ll>> res(n, vector<ll>(n, 0));
+    for (int i = 0; i < n; ++i) res[i][i] = 1;
+
+    while (exp > 0) {
+        if (exp & 1) res = multiply(res, base);
+        base = multiply(base, base);
+        exp >>= 1;
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n, m, k;
+    cin >> n >> m >> k;
+
+    vector<vector<ll>> Base(m, vector<ll>(m, 1));
+    vector<vector<ll>> Transform(m, vector<ll>(1, 1));
+
+    for (int i = 0; i < k; ++i) {
+        string s;
+        cin >> s;
+        int prev = islower(s[0]) ? s[0] - 'a' : s[0] - 'A' + 26;
+        int now = islower(s[1]) ? s[1] - 'a' : s[1] - 'A' + 26;
+        Base[now][prev] = 0;
+    }
+
+    vector<vector<ll>> ans = multiply(power(Base, n - 1), Transform);
+
+    ll res = 0;
+    for (int i = 0; i < m; ++i) (res += ans[i][0]) %= MOD;
+
+    cout << res << '\n';
+}
 
 using namespace std;
 //B.Effective Approach
@@ -10472,6 +10535,39 @@ int main() {
     cout << "YES" << endl;
     return 0;
 }
+https://codeforces.com/problemset/problem/230/A
+using namespace std;
+using ll = long long;
+using vpl = vector<pair<ll, ll>>;
+
+#define fo(i, n) for (ll i = 0; i < n; i++)
+#define mp make_pair
+#define pb push_back
+#define F first
+#define S second
+#define sortall(x) sort(x.begin(), x.end())
+int main() {
+    ll s, n;
+    cin >> s >> n;
+    vpl paired;
+    
+    fo(i, n) {
+        ll x, y;
+        cin >> x >> y;
+        paired.pb(mp(x, y));
+    }
+
+    sortall(paired);
+    fo(i, n) {
+        if (s <= paired[i].F) { // can't defeat the monster
+            cout << "NO\n";
+            return;
+        } else {
+            s += paired[i].S; // gain strength
+        }
+    }
+    cout << "YES\n";
+}
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -10534,7 +10630,34 @@ int main() {
 
     cout << "YES\n";
 }
+https://codeforces.com/problemset/problem/230/B
+using namespace std;
+using ll = long long;
+bool isPrime(ll n){
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
 
+    for (ll i = 5; i * i <= n; i += 6)
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+
+    return true;
+}
+int main(){
+    ll n;
+    cin >> n;
+    ll root = sqrt(n);
+    if (root * root != n) { // not a perfect square
+        cout << "NO\n";
+        return;
+    }
+
+    if (isPrime(root)) 
+        cout << "YES\n";
+    else
+        cout << "NO\n";
+}
 using namespace std;
 // problemset/problem/231/A
 // A. Team
@@ -10550,6 +10673,23 @@ int main(){
     }
     cout << solved;
 }
+using namespace std;
+using ll = long long;
+int main() {
+    ll n, ans = 0;
+    cin >> n;
+
+    for (ll i = 0; i < n; i++) {
+        ll n1, n2, n3;
+        cin >> n1 >> n2 >> n3;
+        if (n1 + n2 + n3 > 1) ans++;
+    }
+
+    cout << ans << '\n';
+
+    return 0;
+}
+
 #include<iostream>
 using namespace std;
 
@@ -10627,6 +10767,7 @@ int main() {
 	cout << counter;
 	return 0;
 }
+	
 https://codeforces.com/problemset/problem/231/A
 // A. Team
 using namespace std;
@@ -10692,6 +10833,24 @@ int main() {
         cout << endl;
     }
     return 0;
+}
+	
+using namespace std;
+using ll = long long;
+int main() {
+    ll n;
+    cin >> n;
+
+    if (n & 1) { // n is odd, impossible
+        cout << -1 << '\n';
+        return;
+    }
+
+    for (ll i = 1; i <= n; i++) {
+        if (i & 1) cout << i + 1 << " "; // swap odd index with next
+        else cout << i - 1 << " ";      // swap even index with previous
+    }
+    cout << '\n';
 }
 #include<bits/stdc++.h>
 using namespace std;
@@ -10806,6 +10965,102 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/233/B
+using namespace std;
+using ll = long long;
+ll DigitSum(ll n) {
+    ll sum = 0;
+    string s = to_string(n);
+    for (char c : s) sum += c - '0';
+    return sum;
+}
+int main() {
+    ll n;
+    cin >> n;
+    ll ans = -1;
+
+    for (ll sx = 1; sx <= 162; sx++) { // max sum of digits for 18-digit number is 9*18=162
+        long double det = (long double)sx * sx + 4.0 * n; // determinant
+        ll sqrtDet = (ll)sqrtl(det);
+        
+        if (sqrtDet * sqrtDet != det) continue; // only consider perfect squares
+        
+        ll x = (sqrtDet - sx) / 2; // quadratic formula solution
+        if (x > 0 && DigitSum(x) == sx) {
+            ans = x;
+            break;
+        }
+    }
+
+    cout << ans << '\n';
+}
+using namespace std;
+ll DigitSum(ll n)
+{
+    ll sum = 0;
+    string s = to_string(n);
+    fo(i, s.length()) sum += s[i] - '0';
+    return sum;
+}
+int main()
+{
+    ll n;
+    cin >> n;
+    ll ans = -1;
+    for (ll sx = 1; sx <= 162; sx++) // max sx is of 99999999.. 18 digits => 9*18 => 162
+    {
+        double sq1 = sqrtl(sx * sx + 4 * n); // sqrtl is sqrt for ll
+        ll sq2 = (ll)sqrtl(sx * sx + 4 * n);
+        ll x = (sq2 - sx) / 2; //-b+sq2/2 <- quadratic formula, only one solution here as x>0
+        if ((sq1 - sq2) == 0.0)
+        { /// if determinant is full square
+            if (x > 0 && DigitSum(x) == sx)
+            {
+                ans = x;
+                break;
+            }
+        }
+    }
+    cout << ans;
+    return;
+}
+https://codeforces.com/problemset/problem/235/A
+using namespace std;
+using ll = long long;
+
+void Solution() {
+    ll n;
+    cin >> n;
+
+    auto solve = [&](const auto &self, ll N) -> ll {
+        if (N <= 2) return N;
+        if (N & 1) return N * (N - 1) * (N - 2); // if N is odd, product of top 3 numbers
+
+        ll P = N * (N - 1);
+        ll num = N - 2;
+
+        while (num > 0) {
+            if (gcd(N, num) == 1 && gcd(N - 1, num) == 1) {
+                P *= num;
+                break;
+            }
+            --num;
+        }
+
+        return max(P, self(self, N - 1));
+    };
+
+    cout << solve(solve, n) << '\n';
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    Solution();
+
+    return 0;
+}
 
 using namespace std;
 http://codeforces.com/contest/236/problem/A
@@ -10827,6 +11082,34 @@ int main() {
     else
         cout << "IGNORE HIM!" << endl;
 }
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    string s, unique = "";
+    cin >> s;
+
+    for (char c : s) {
+        if (unique.find(c) == string::npos) {
+            unique += c;
+        }
+    }
+
+    if (unique.length() & 1) 
+        cout << "IGNORE HIM!\n";
+    else 
+        cout << "CHAT WITH HER!\n";
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    solve();
+
+    return 0;
+}
+
 #include<iostream>
 #include<string>
 #include<algorithm>
@@ -10890,6 +11173,87 @@ int main(){
     cout<<"IGNORE HIM!";
   }
 } 
+https://codeforces.com/problemset/problem/236/B
+using namespace std;
+#define ll long long
+const int MAX = 1000001;
+int divi[MAX];
+// Precompute the number of divisors for every number up to MAX
+void divisor() {
+    for (int i = 1; i < MAX; i++) {
+        for (int j = i; j < MAX; j += i) {
+            divi[j]++;
+        }
+    }
+}
+
+int main() {
+    divisor();
+
+    ll a, b, c;
+    cin >> a >> b >> c;
+    ll ans = 0;
+    const ll MOD = 1073741824; // 2^30
+
+    for (ll i = 1; i <= a; i++) {
+        for (ll j = 1; j <= b; j++) {
+            for (ll k = 1; k <= c; k++) {
+                ans = (ans + divi[i * j * k]) % MOD;
+            }
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/242/A
+using namespace std;
+#define ll long long
+#define vpl vector<pair<ll, ll>>
+#define eb emplace_back
+#define sz(x) ((ll)(x).size())
+#define ln "\n"
+int main() {
+    ll x, y, a, b;
+    cin >> x >> y >> a >> b;
+    vpl ans;
+    
+    for (ll i = a; i <= x; i++) {
+        for (ll j = b; j <= y; j++) {
+            if (i > j)
+                ans.eb(i, j);
+        }
+    }
+
+    cout << sz(ans) << ln;
+    for (auto [i, j] : ans)
+        cout << i << " " << j << ln;
+}
+https://codeforces.com/problemset/problem/244/B
+using namespace std;
+#define ll long long
+int main() {
+    set<ll> vals;
+    ll x = 0, y = 0;
+
+    function<void(ll, ll)> rec = [&](ll num, ll digs) {
+        if (digs == 10) return; // stop at 10 digits
+        if (num) vals.insert(num); // avoid inserting 0
+        rec(num * 10 + x, digs + 1);
+        rec(num * 10 + y, digs + 1);
+    };
+
+    for (x = 0; x <= 9; ++x) {
+        for (y = 0; y <= 9; ++y) {
+            rec(0, 0);
+        }
+    }
+    vals.insert(1000000000); 
+    ll n;
+    cin >> n;
+    // count numbers <= n
+    cout << distance(vals.begin(), vals.lower_bound(n + 1)) << '\n';
+}
 using namespace std;
 // A. Cupboards
 // http://codeforces.com/contest/248/problem/A
