@@ -1343,6 +1343,44 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/17/C
+// 17C. Balance
+using namespace std;
+const int ax = 157, modu = 51123987;
+int arr[3][ax], route[ax][ax][ax][ax];
+int main(){
+    int n; // lenght of the string
+    string str; cin >> n >> str;
+    for(int i = n; i >= 1; i--){
+        for(int j = 0; j < 3; j++)
+            arr[j][i] = arr[j][i + 1];
+            // arr[j][i] = 0[out of bound]
+        arr[str[i - 1] - 'a'][i]= i;
+    }
+    int type = ceil(n / 3.0);
+    // route[pos][a][b][c] = number of ways to reach state pos using a items of type 1, b of type 2, and c of type 3.
+    route[1][0][0][0] = 1;
+    int res = 0;
+    for(int pos = 1; pos <= n; pos++){
+        for(int a = 0; a <= m; a++){
+            for(int b = 0; b <= m; b++){
+                for(int c = 0; c <= m; c++){
+                    int ways = route[pos][a][b][c];
+                    if(!ways) continue;
+                    if(a + b + c == n && abs(a - b) <= 1 && abs(b - c) <= 1 && abs(c - a) <= 1)
+                        res = (res + ways) % modu;
+                        if(a + 1 <= m && arr[0][pos])
+                            route[arr[0][pos]][a + 1][b][c] = (route[arr[0][pos]][a + 1][b][c] + ways) % modu;
+                        if(b + 1 <= m && arr[1][pos])
+                            route[arr[1][pos]][a][b + 1][c] = (route[arr[1][pos]][a][b + 1][c] + ways) % modu;
+                        if(c + 1 <= m && arr[2][pos])
+                            route[arr[2][pos]][a][b][c + 1] = (route[arr[2][pos]][a][b][c + 1] + ways) % modu;
+                }
+            }
+        }
+    }
+    cout << res;
+}
 https://codeforces.com/problemset/problem/17/D
 // 17D. Notepad
 using namespace std;
