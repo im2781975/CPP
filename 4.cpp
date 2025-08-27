@@ -11254,6 +11254,63 @@ int main() {
     // count numbers <= n
     cout << distance(vals.begin(), vals.lower_bound(n + 1)) << '\n';
 }
+https://codeforces.com/problemset/problem/245/E
+using namespace std;
+using ll = long long;
+auto sz = [](const auto &container) -> ll { return container.size(); };
+
+int main() {
+    string s;
+    cin >> s;
+    vector<ll> pref(sz(s));
+    pref[0] = 1 - 2 * (s[0] == '-'); 
+    for (ll i = 1; i < sz(s); ++i)
+        pref[i] = pref[i - 1] + (1 - 2 * (s[i] == '-'));
+    ll mx = *ranges::max_element(pref);
+    ll mn = *ranges::min_element(pref);
+    cout << max({abs(mn), abs(mx), abs(mx - mn)}) << '\n';
+}
+https://codeforces.com/problemset/problem/245/H
+using namespace std;
+using ll = long long;
+auto sz = [](const auto &container) -> int { return (int)container.size(); };
+int main() {
+    string s;
+    cin >> s;
+    int n = sz(s);
+
+    // Step 1: DP to check palindromes
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    for (int j = 0; j < n; ++j) {
+        for (int i = j; i >= 0; --i) {
+            if (i == j)
+                dp[i][j] = 1;
+            else if (j - i == 1)
+                dp[i][j] = (s[i] == s[j]);
+            else if (s[i] == s[j])
+                dp[i][j] = dp[i + 1][j - 1];
+        }
+    }
+
+    // Step 2: Build 2D prefix sum (1-based indexing for convenience)
+    vector<vector<int>> pref(n + 1, vector<int>(n + 1, 0));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            pref[i + 1][j + 1] =
+                pref[i + 1][j] + pref[i][j + 1] - pref[i][j] + dp[i][j];
+        }
+    }
+    auto get = [&](int l, int r) {
+        return pref[r][r] - pref[l - 1][r] - pref[r][l - 1] + pref[l - 1][l - 1];
+    };
+    int q;
+    cin >> q;
+    while (q--) {
+        int l, r;
+        cin >> l >> r;  // assuming 1-based input
+        cout << get(l, r) << '\n';
+    }
+}
 using namespace std;
 // A. Cupboards
 // http://codeforces.com/contest/248/problem/A
@@ -11412,6 +11469,41 @@ int main() {
     }
     cout << result << endl;
 }
+https://codeforces.com/problemset/problem/254/B
+using namespace std;
+using ll = long long;
+array<int, 12> days_in_month = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+array<int, 13> prefix_days;
+
+int getDayIndex(int month, int day) {
+    return prefix_days[month - 1] + day; // 1-based day index
+}
+int main() {
+    // Build prefix sum of days
+    partial_sum(days_in_month.begin(), days_in_month.end(), prefix_days.begin() + 1);
+
+    int n;
+    cin >> n;
+    // Use difference array for range updates
+    vector<ll> diff(500, 0);
+    for (int i = 0; i < n; ++i) {
+        int m, d, p, t;
+        cin >> m >> d >> p >> t;
+        int start = getDayIndex(m, d);
+        int end = start + t - 1;
+        diff[start] += p;
+        if (end + 1 < (int)diff.size()) diff[end + 1] -= p;
+    }
+    // Compute prefix sum to get actual values
+    ll ans = 0, current = 0;
+    for (ll x : diff) {
+        current += x;
+        ans = max(ans, current);
+    }
+    cout << ans << '\n';
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/255/A
 A. Greg's Workout
 using namespace std;
@@ -11475,7 +11567,79 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/259/B
+using namespace std;
+using ll = long long;
+int main() {
+    ll arr[4][4]{}; // 1-based indexing for simplicity
 
+    // Input matrix (1..3 for both rows and columns)
+    for (int i = 1; i <= 3; ++i) {
+        for (int j = 1; j <= 3; ++j) {
+            cin >> arr[i][j];
+        }
+    }
+
+    // Compute missing diagonal values
+    arr[1][1] = max(1LL, max(arr[3][2] - arr[1][3] + 1, arr[2][3] - arr[1][2] + 1));
+    arr[2][2] = arr[1][1] + arr[1][3] - arr[3][2];
+    arr[3][3] = arr[1][1] + arr[1][2] - arr[2][3];
+
+    int x = arr[3][1] + arr[1][3] - arr[1][1] - arr[3][3];
+    x /= 2;
+
+    for (int i = 1; i <= 3; ++i) arr[i][i] += x;
+
+    // Output the completed matrix
+    for (int i = 1; i <= 3; ++i) {
+        for (int j = 1; j <= 3; ++j) {
+            cout << arr[i][j] << " ";
+        }
+        cout << '\n';
+    }
+}
+https://codeforces.com/problemset/problem/260/A
+using namespace std;
+using ll = long long;
+int main() {
+    ll a, b, n;
+    cin >> a >> b >> n;
+    // Try appending one digit (0-9) to 'a' so the number is divisible by b
+    for (int i = 0; i < 10; ++i) {
+        ll nw = a * 10 + i;
+        if (nw % b == 0) {
+            cout << nw;
+            // Append n-1 zeros
+            cout << string(n - 1, '0') << '\n';
+            return;
+        }
+    }
+    cout << -1 << '\n';
+}
+https://codeforces.com/problemset/problem/261/A
+using namespace std;
+using ll = long long;
+int main() {
+    int m;
+    cin >> m;
+    vector<ll> q(m);
+    for (int i = 0; i < m; ++i) cin >> q[i];
+    int n;
+    cin >> n;
+    vector<ll> a(n);
+    for (int i = 0; i < n; ++i) cin >> a[i];
+
+    ll min_q = *min_element(q.begin(), q.end()); // Best discount strategy
+    sort(a.begin(), a.end(), greater<ll>());     // Sort prices descending
+
+    ll ans = 0;
+    for (int i = 0; i < n; ++i) {
+        if (i % (min_q + 2) < min_q) {
+            ans += a[i]; // Pay for first 'min_q' items in every block of (min_q + 2)
+        }
+    }
+    cout << ans << '\n';
+}
 http://codeforces.com/problemset/problem/263/A
 // A. Beautiful Matrix
 using namespace std;
@@ -11611,6 +11775,20 @@ int main() {
     }
     cout << pos + 1 << endl;
     return 0;
+}
+using namespace std;
+using ll = long long;
+int main() {
+    string s, t;
+    cin >> s >> t;
+    
+    ll pos = 0;
+    for (char c : t) {
+        if (pos < (ll)s.size() && c == s[pos]) {
+            pos++;
+        }
+    }
+    cout << pos + 1 << '\n'; // If problem expects 1-based index of next char
 }
 
 using namespace std;
