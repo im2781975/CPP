@@ -11790,6 +11790,52 @@ int main() {
     }
     cout << pos + 1 << '\n'; // If problem expects 1-based index of next char
 }
+https://codeforces.com/problemset/problem/265/B
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+#define ln "\n"
+#define vl vector<ll>
+int main() {
+    ll n;
+    cin >> n;
+    vl arr(n);
+    fo(i, n) cin >> arr[i];
+    ll ans = n + arr[0] + (n - 1);
+    fo(i, n - 1) {
+        ans += abs(arr[i + 1] - arr[i]);
+    }
+
+    cout << ans << ln;
+}
+https://codeforces.com/problemset/problem/265/C
+using namespace std;
+#define ll long long
+#define str string
+#define vl vector<ll>
+#define fo(i, n) for (ll i = 0; i < (n); i++)
+#define sz(x) ((ll)(x).size())
+#define eb emplace_back
+#define ln "\n"
+#define all(x) (x).begin(), (x).end()
+int main() {
+    str s;
+    cin >> s;
+    vl l, r;
+
+    // Separate positions of 'l' and others
+    fo(i, sz(s)) {
+        if (s[i] == 'l') l.eb(i + 1);
+        else r.eb(i + 1);
+    }
+
+    // Print r in original order
+    fo(i, sz(r)) cout << r[i] << ln;
+
+    // Print l in reverse order
+    reverse(all(l));
+    fo(i, sz(l)) cout << l[i] << ln;
+}
 
 using namespace std;
 http://codeforces.com/contest/266/problem/A
@@ -11944,7 +11990,30 @@ int main() {
     }
     cout << s;
 }
-	
+using namespace std;
+	int main(){
+    int n, t;
+    cin >> n >> t;
+    string s, ans;
+    cin >> s;
+    ans = s;
+    while (t--)
+    {
+        fo(i, s.length() - 1)
+        {
+            if (s[i] == 'B' && s[i + 1] == 'G')
+            {
+                ans[i] = 'G';
+                ans[i + 1] = 'B';
+            }
+        }
+        if (s == ans) //!very important
+            break;
+        s = ans;
+    }
+    cout << s << endl;
+    return;
+}
 using namespace std;
 int main() { 
     int n, t; string s; cin >> n >> t >> s;
@@ -12003,7 +12072,25 @@ int main() {
     }
     cout << gameCount << endl;
 }
-	
+int main(){
+    ll t;
+    cin >> t;
+    ll c1[100]{0}, c2[100]{0};
+
+    fo(i, t)
+    {
+        ll n1, n2;
+        cin >> n1 >> n2;
+        c1[n1 - 1]++;
+        c2[n2 - 1]++;
+    }
+    ll sum = 0;
+    fo(i, 100) sum += c1[i] * c2[i];
+    cout << sum << "\n";
+
+    return;
+}
+
 using namespace std;
 int main(){
     int n; cin>>n;
