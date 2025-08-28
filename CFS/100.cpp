@@ -1399,6 +1399,58 @@ int main(){
         } */
     }
 }
+https://codeforces.com/problemset/problem/7/C
+// 7C. Line
+using namespace std;
+int gcdext(int a, int b, int &x, int &y){
+    if(a == 0){
+        x = 0; y = 1;
+        return b;
+    } /*
+    a * x + b * y = gcd(a, b);
+    (b mod a) * x1 + a * y1 = gcd(a, b);
+    (b mod a) * x1 + a * y1 = (b - (b / a) * a) * x1 + a * y1;
+    ax + by = b * x1 + a * (y1 - (b / a) * x1); */
+    x = y1 - (b / a) * x1;
+    y = x1;
+
+    int x1, y1;
+    int g = gcdext(a, b, x1, y1);
+    return g;
+}
+int extgcd(int a, int b, int &x, int &y){
+    if(b == 0){
+        x = 1; y = 0;
+        return a;
+    }
+    int res = extgcd(b, a % b, x, y);
+    y -= (a / b) * x; // ax + by = gcd(a, b)
+    return res;
+}
+int main(){
+    int a, b, c; cin >> a >> b >> c;
+    int x, y;
+    // g = gcd(a, b) and some initial (x, y) such that: ax + by = g
+    int g = gcdext(a, b, x, y);
+    if(c % g != 0){
+        cout << -1; // No Solution
+        return 0;
+    }
+    int k = c / g;
+    x * = k; y *= k;
+    cout << x << " " << y;
+    /*
+    c = - c; // ax + by + c = 0
+    int gcd = extgcd(a, b, x, y);
+    if(c % gcd != 0){
+        cout << -1;
+        return 0;
+    }
+    x *= c / gcd;
+    y *= c / gcd; 
+    cout << x << " " << y << endl;
+    */
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
