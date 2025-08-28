@@ -1285,6 +1285,120 @@ int main(){
     if(res == 16)    res = 8;
     cout << res;
 }
+https://codeforces.com/problemset/problem/7/B
+// 7B. Memory Manager
+using namespace std;
+int main(){
+    int t, m, token = 1; cin >> t >> m;
+    vector <int> mem(m, 0);
+    while(t--){
+        // n = number of consecutive memory blocks to allocate.
+        // cntfree = counter of consecutive free blocks found.
+        // start = index where free block sequence started
+        // m = sizeof the memory
+        string cmd; cin >> cmd;
+        if(cmd == "alloc"){
+            int n; cin >> n;
+            int cntfree = 0, start = -1;
+            for(int i = 0; i < m; i++){
+                if(mem[i] == 0){
+                    if(cntfree == 0) start = i;
+                    cntfree++;
+                    if(cntfree == n){
+                        for(int j = start; j < start + n; j++)
+                            mem[j] = token;
+                        cout << token++ << endl;
+                        start = -1;
+                        break;
+                    }
+                }
+                else    cntfree = 0;
+            }
+            if(start != -1 && cntfree < n)
+                cout << "NULL" << endl;
+        } /*
+        if(cmd == "alloc"){
+            int n; cin >> n;
+            bool allocated = false;
+            for(int start = 0; start <= m - n; start++){
+                bool canalloc = true;
+                for(int j = start; j < start + n; j++){
+                    if(mem[j]!= 0){
+                        canalloc = false;
+                        break;
+                    }
+                }
+                if(canalloc){
+                    cout << token << endl;
+                    for(int j = start; j < start + n; j++)
+                        mem[j] = token;
+                    token++;
+                    allocated = true;
+                    break;
+                }
+            }
+            if(!allocated)    cout << "NULL" << endl;
+        } */
+        else if(cmd == "erase"){
+            int x; cin >> x;
+            if(x <= 0){
+                cout << "ILLEGEL ERASE ARGUMENT";
+                continue;
+            }
+            bool erased = false;
+            for(int i = 0; i < mem.size(); i++){
+                if(mem[i] == x){
+                    mem[i] = 0;
+                    erased = true;
+                }
+            }
+            if(!erased) cout << "ILLEGEL ERASE ARGUMENT";
+        } /*
+        else if (cmd == "erase") {
+            int id; cin >> id;
+            if (id < 1) {
+                cout << "ILLEGAL_ERASE_ARGUMENT\n";
+                continue;
+            }
+            bool found = false;
+            for(int i = 0; i < mem.size(); i++){
+                if(mem[i] == id){
+                    memory[i] = 0;
+                    found = true;
+                }
+            }
+            if (!found) cout << "ILLEGAL_ERASE_ARGUMENT\n";
+        } */
+        else if(cmd == "defragment"){
+           /* int pos = 0;
+            for(int i = 0; i < m; i++){
+                if(i != pos){
+                    mem[pos] = mem[i];
+                    mem[i] = 0;
+                }
+                pos++;
+            } */
+            vector <int> compacted;
+            for(int i = 0; i < mem.size(); i++){
+                if(mem[i] != 0)    compacte.push_back(mem[i]);
+                while((int)compacted.size() < m)    compacted.push_back(0);
+                mem.swap(compacted);
+            }
+        } /*
+        else if (cmd == "defragment") {
+            int pos = 0;
+            for (int i = 0; i < k; i++) {
+                if (mem[i] != 0) {
+                    if (pos != i) {
+                        mem[pos] = mem[i];
+                        mem[i] = 0;
+                    }
+                    pos++;
+                }
+            }
+        } */
+    }
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
