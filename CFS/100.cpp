@@ -1451,6 +1451,86 @@ int main(){
     cout << x << " " << y << endl;
     */
 }
+https://codeforces.com/problemset/problem/7/D
+// 7D. Palindrome Degree
+using namespace std;
+using ul = unsigned long long int;
+const int ax = pow(5, 8);
+const int base = pow(5, 3);
+int dp[ax];
+ul power[ax], hash[2][ax];
+// hash[0] -> forward hash for str, hash[1] -> backward hash for str
+// dp[] = stores palindromic degrees for prefixes.
+// power[] = stores powers of base for hashing
+int main(){
+    string str; cin >> str;
+    int n = (int)str.size();
+    string ing = str;
+    reverse(ing.begin(), ing.end());
+    str = ' ' + str; ing = ' ' + ing;
+    power[0] = 1;
+    for(int i = 1; i <= n; i++)
+        power[i] = power[i - 1] * base;
+    for(int i = 1; i <= n; i++)
+        hash[0][i] = hash[0][i - 1] * base + (unsigned char)(str[i]);
+    for(int i = 1; i <= n; i++)
+        hash[1][i] = hash[1][i - 1] * base + (unsigned char)(ing[i]);
+    auto get = [&](ul hash[], int l, int r) -> ul{
+        if(l > r)    return 0;
+        return hash[r] - hash[l - 1] * power[r - l + 1];
+    }
+    // dp[i] = dp[i/2] + 1 because the first half of a palindrome contributes to its degree.
+    int res = 0;
+    for(int i = 1; i <= n; i++){
+        if(get(hash[0], 1, i) == get(hash[1], n - i + 1, n){
+            dp[i] = dp[i / 2] + 1;
+            res += dp[i];
+        }
+    }
+    cout << res << endl;
+}
+using namespace std;
+const int ax = pow(5, 8);
+//const int modu = pow(5, 8);
+const int base = pow(5, 3);
+int power[ax];
+int main(){
+    string str; cin >> str;
+    int n = str.size();
+    /*vector <int> dp(n + 1, 0);
+    int fwdhash = 0, revhash = 0, power = 1;
+    int res = 0;
+    for(int i = 1; i <= n; i++){
+        int x = (unsigned char)(str[i] - 'a');
+        fwdhash = (fwdhash * base + x) % modu;
+        revhash = (revhash + power * x) % modu;
+        if(fwdhash == revhash){
+            dp[i] = dp[i / 2] + 1;
+            res += dp[i];
+        }
+        power = (power * base) % modu;
+    }
+    cout << res; */
+    power[0] = 1;
+    // power[1] = base, power[2] = base^2
+    for(int i = 1; i <= n; i++)
+        power[i] = power[i - 1] * base;
+    int fwdhash = 0, revhash = 0, len = 0;
+    auto extend = [&](int x){
+        fwdhash += x * power[len]; // multiply character by base^len and add.
+        (revhash *= base) += x;// shift rev_hash left & add char
+        ++len;
+    }
+    vector <int> res(n);
+    extend(str[0]);
+    res[0] = 1;
+    for(int i = 1; i < n; i++){
+        extend(str[i]);
+        if(revhash == fwdhash)
+            res[i] = res[(i - 1) / 2] + 1
+    }
+    cout << accumulate(begin(res), end(res), 0);
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
