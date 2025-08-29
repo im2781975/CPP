@@ -12083,7 +12083,76 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/285/A
+using namespace std;
+#define ll long long
+#define cn cout << '\n';
+ll n, k;
+int main() {
+    cin >> n >> k;
+    for (ll i = 1; i <= n - k - 1; ++i) 
+        cout << i << " ";
+    for (ll i = n; i >= n - k; --i) 
+        cout << i << " ";
+    cout << endl;
+}
+https://codeforces.com/problemset/problem/285/B
+using namespace std;
+int main() {
+    int n, s, t; cin >> n >> s >> t;
+    vector<int> arr(n + 1);
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    int ans = 0;
+    while (s != t && ans <= n) {
+        s = arr[s];
+        ans++;
+    }
+    if (s == t) 
+        cout << ans << "\n";
+    else 
+        cout << -1 << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/285/C
+using namespace std;
+int main() {
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
 
+    sort(arr.begin(), arr.end());
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        ans += abs((i + 1) - arr[i]);
+    }
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/287/A
+using namespace std;
+int main() {
+    vector<vector<char>> mat(4, vector<char>(4));
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            cin >> mat[i][j];
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            int cnt = 0;
+            cnt += (mat[i][j] == '#');
+            cnt += (mat[i+1][j] == '#');
+            cnt += (mat[i][j+1] == '#');
+            cnt += (mat[i+1][j+1] == '#');
+            if (cnt != 2) {
+                cout << "YES\n";
+                return 0;
+            }
+        }
+    }
+    cout << "NO\n";
+    return 0;
+}
 using namespace std;
 // http://codeforces.com/contest/289/problem/A
 // A - Polo the Penguin and Segments
@@ -12096,6 +12165,30 @@ int main() {
     }
     cout << (k - (sum % k)) % k << endl;
     return 0;
+}
+https://codeforces.com/problemset/problem/289/B
+using namespace std;
+#define ll long long
+int main() {
+    ll n, m, d;
+    cin >> n >> m >> d;
+    vector<ll> vec(n * m);
+    for (ll i = 0; i < n * m; i++) cin >> vec[i];
+    sort(vec.begin(), vec.end());
+    ll check = vec[0] % d;
+    // check if all elements have same remainder modulo d
+    for (ll i = 1; i < n * m; i++) {
+        if (vec[i] % d != check) {
+            cout << -1 << "\n";
+            return;
+        }
+    }
+    ll mid_ele = vec[(n * m) / 2];
+    ll ans = 0;
+    for (ll x : vec) {
+        ans += abs(mid_ele - x) / d;
+    }
+    cout << ans << "\n";
 }
 using namespace std;
 http://codeforces.com/contest/294/problem/A
@@ -12154,6 +12247,24 @@ int main() {
     }
     for(int i = 0; i < n; i++)
         cout << arr[i] << '\n';
+}
+https://codeforces.com/problemset/problem/304/A
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int ans = 0;
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            int temp = (i * i) + (j * j);
+            int temp2 = sqrt(temp);
+            if (temp2 * temp2 == temp and temp2 <= n)
+                ans++;
+        }
+    }
+    cout << ans;
+    return 0;
 }
 https://codeforces.com/problemset/problem/306/A
 using namespace std;
@@ -12242,7 +12353,29 @@ int main() {
     cout << '\n';
     return 0;
 }
+https://codeforces.com/problemset/problem/313/A
+using namespace std;
+int main(){
+    ll n;
+    cin >> n;
+    if (n >= 0)
+        cout << n;
+    else{
+        string s1 = to_string(-n), s2;
+        s2 = s1;
+        ll len = s1.length();
 
+        s1.erase(len - 1, 1);
+        s2.erase(len - 2, 1);
+        ll n1 = stoi(s1), n2 = stoi(s2);
+        if (len == 1)
+            cout << 0;
+        else
+            cout << -1 * min(n1, n2);
+    }
+
+    return;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/318/A
 // A. Even Odds
