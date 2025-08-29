@@ -1531,6 +1531,59 @@ int main(){
     }
     cout << accumulate(begin(res), end(res), 0);
 }
+https://codeforces.com/problemset/problem/7/E
+// 7E. Defining Macros
+using namespace std;
+map <string, int> mp;
+int eval(const string &str, int l, int r){
+    // '+', '-'
+    for(int i = r - 1, wt = 0; i >= l; i--){
+        if(str[i] == ')')    wt++;
+        if(str[i] == '(')    wt--;
+        if(!wt && (str[i] == '+' || str[i] == '-')){
+            int L = eval(str, l, i);
+            int R = eval(str, i + 1, r);
+            //If operator is - → right-hand side must be “complex enough” (R > 1)
+            return L && R && (str[i] != '-' || R > 1);
+            
+        }
+    }
+    // '*', '/'
+    for(int i = r - 1, wt = 0; i >= l; i--){
+        if(str[i] == ')')    wt++;
+        if(str[i] == '(')    wt--;
+        if(!wt && (str[i] == '*' || str[i] == '/')){
+            int L = eval(str, l, i);
+            int R = eval(str, i + 1, r);
+            // L > 1 && R > 1 → both sides must be "complex enough"
+            
+            return (L > 1 && R > 1 && (str[i] != '/' || R > 2)) ? 2 : 0;
+        }
+    }
+    // ')', '('
+    if(str[l] == '(' && str[r - 1] == ')')
+        return eval(str, l + 1, r - 1) ? 3 : 0;
+    // variable
+    string u = str.substr(l, r - l);
+    return mp.count(u) ? mp[u] : 3;
+}
+int getexpr(){
+    string line, cleaned; getline(cin, line);
+    for(int i = 0; i < line.size(); i++){
+        if(line[i] != ' ')    cleaned += line[i];
+    }
+    return eval(cleaned, 0, cleaned.size());
+}
+int main(){
+    int n; cin >> n;
+    string dummy, name; getline(cin, dummy);
+    while(n--){
+        cin >> dummy >> name;
+        getline(cin, dummy);
+        mp[name] = getexpr();
+    }
+    cout << (getexpr() ? "Ok" : "suspicious");
+}
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
