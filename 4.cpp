@@ -11664,6 +11664,26 @@ int main(){
         (360 % (180 - x)) ? cout << "No\n" : cout << "Yes\n";
     }
 }
+https://codeforces.com/problemset/problem/270/A
+using namespace std;
+#define ll long long
+int main(){
+    ll a; cin >> a;
+    //Total sum of angles = (n-2)*180
+	//Each internal angle = (n-2)*180/n;
+	//a*n=(n-2)*180
+	//a*n-180*n=-360
+	//(180-a)*n=360
+    if (a < 60) {
+        cout << "NO";
+        return 0;
+    }
+    if (360 % (180 - a) == 0) // must divide perfectly to form an integer n
+        cout << "YES";
+    else
+        cout << "NO";
+    return 0;
+}
 using namespace std;
 http://codeforces.com/problemset/problem/271/A
 // Beautiful Year
@@ -11690,6 +11710,19 @@ int main() {
         ++n;
     cout << n;
     return 0;
+}
+https://codeforces.com/problemset/problem/271/A
+using namespace std;
+#define ll long long
+int main(){
+    ll n; cin >> n;
+    while (++n){
+        string s = to_string(n);
+        set<char> uniDigits(s.begin(), s.end()); // use char since digits are chars
+        if (s.size() == uniDigits.size()) // unique digits check
+            break;
+    }
+    cout << n << "\n";
 }
 	#include<iostream>
 using namespace std;
@@ -11794,7 +11827,112 @@ int main() {
     cout << ans << "\n";
     return 0;
 }
+https://codeforces.com/problemset/problem/276/C
+using namespace std;
+#define ll long long
+int main() {
+    ll n, q, u, v;
+    cin >> n >> q;
+    vector<ll> a(n);
+    for (ll i = 0; i < n; ++i) cin >> a[i];
 
+    vector<ll> cnt(n + 1, 0);
+
+    // range updates (difference array technique)
+    while (q--) {
+        cin >> u >> v;
+        u--, v--;
+        ++cnt[u];
+        --cnt[v + 1];
+    }
+
+    // prefix sum to get frequency counts
+    for (ll i = 1; i < n; ++i) cnt[i] += cnt[i - 1];
+    cnt.pop_back(); // remove the extra element at end
+
+    // sort both arrays in descending order
+    ranges::sort(cnt, greater<ll>());
+    ranges::sort(a, greater<ll>());
+
+    ll sum = 0;
+    for (ll i = 0; i < n; ++i) sum += a[i] * cnt[i];
+
+    cout << sum << '\n';
+}
+https://codeforces.com/problemset/problem/279/A
+using namespace std;
+#define ll long long
+using vpl = vector<pair<ll,ll>>;
+vpl res;
+void fillSpiral() {
+    ll x = 0, y = 0;
+    ll ctr = 0;
+    res.emplace_back(x, y);
+    while (x != 200 && y != 200) {
+        ctr++;
+        if (ctr % 2 == 0) ctr = -ctr;  // alternate direction
+
+        x += ctr;
+        res.emplace_back(x, y);
+
+        y += ctr;
+        res.emplace_back(x, y);
+
+        if (ctr % 2 == 0) ctr = -ctr;
+    }
+}
+void Solution() {
+    ll x, y;
+    cin >> x >> y;
+
+    ll idx = 0;
+    for (size_t i = 1; i < res.size(); i++) {
+        ll x1 = res[i - 1].first, y1 = res[i - 1].second;
+        ll x2 = res[i].first, y2 = res[i].second;
+
+        // normalize ranges
+        if (x1 > x2) swap(x1, x2);
+        if (y1 > y2) swap(y1, y2);
+
+        // check if (x,y) lies on this segment
+        if (x >= x1 && x <= x2 && y >= y1 && y <= y2) break;
+        idx++;
+    }
+
+    cout << idx << "\n";
+}
+
+int main() {
+    ll tc = 1;
+    fillSpiral();
+    while (tc--)
+        Solution();
+    return 0;
+}
+https://codeforces.com/problemset/problem/279/B
+using namespace std;
+#define ll long long
+#define all(x) (x).begin(), (x).end()
+#define amax(a,b) a = max(a,b)
+int main() {
+    ll n, t;
+    cin >> n >> t;
+    vector<ll> a(n), pref(n + 1, 0);
+    for (ll &x : a) cin >> x;
+
+    // prefix sum: pref[i] = sum of first i elements
+    partial_sum(all(a), pref.begin() + 1);
+
+    ll ans = 0;
+    for (ll i = 1; i <= n; ++i) {
+        // find farthest j such that pref[j] - pref[i-1] <= t
+        auto it = upper_bound(all(pref), pref[i - 1] + t);
+        ll j = (it - pref.begin()) - 1; // largest valid j
+        amax(ans, j - (i - 1));
+    }
+
+    cout << ans << '\n';
+}
 using namespace std;
 // A. Word Capitalization
 // problemset/problem/281/A
@@ -11803,6 +11941,17 @@ int main() {
     if (!ch.empty() && ch[0] >= 'a' && ch[0] <= 'z')
         ch[0] = ch[0] - 32; 
     cout << ch << endl;
+}
+#include<iostream>
+
+int main(){
+    char a[1000];
+    std::cin>>a;
+    if(a[0]<=122 && a[0]>=97){
+        a[0]=a[0]-32;
+    }
+    std::cout<<a;
+    return 0;
 }
 using namespace std;
 http://codeforces.com/contest/281/problem/A
@@ -11882,6 +12031,24 @@ int main() {
     }
     cout << x << endl;
 }
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n, ans = 0;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        string s;
+        cin >> s;
+        if (s[0] == '+' || s[1] == '+' || s[2] == '+')
+            ans++;
+        else if (s[0] == '-' || s[1] == '-' || s[2] == '-')
+            ans--;
+    }
+    cout << ans << endl;
+    return 0;
+}
 using namespace std;
 int main() {
 	int n; cin >> n;
@@ -11894,6 +12061,29 @@ int main() {
 	}
 	cout << x;
 }
+https://codeforces.com/problemset/problem/284/B
+using namespace std;
+int main() {
+    int n;
+    string s;
+    cin >> n >> s;
+
+    int cntI = 0, cntA = 0;
+    for (char c : s) {
+        if (c == 'I') cntI++;
+        else if (c == 'A') cntA++;
+    }
+
+    if (cntI == 0) 
+        cout << cntA << '\n';
+    else if (cntI == 1) 
+        cout << 1 << '\n';
+    else 
+        cout << 0 << '\n';
+
+    return 0;
+}
+
 using namespace std;
 // http://codeforces.com/contest/289/problem/A
 // A - Polo the Penguin and Segments
