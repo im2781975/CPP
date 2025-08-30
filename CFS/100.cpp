@@ -287,12 +287,12 @@ int main(){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             if(i > 0){
-                dp2[i][j] = min(dp[i][j], dp[i - 1][j] + matrix[i][j].first);
-                dp5[i][j] = min(dp[i][j], dp[i- 1][j] + matrix[i][j].second);
+                dp2[i][j] = min(dp2[i][j], dp[i - 1][j] + matrix[i][j].first);
+                dp5[i][j] = min(dp5[i][j], dp[i- 1][j] + matrix[i][j].second);
             }
             if(j > 0){
-                dp2[i][j] = min(dp[i][j], dp[i][j - 1] + matrix[i][j].first);
-                dp5[i][j] = min(dp[i][j], dp[i][j - 1] + matrix[i][j].second);
+                dp2[i][j] = min(dp2[i][j], dp[i][j - 1] + matrix[i][j].first);
+                dp5[i][j] = min(dp5[i][j], dp[i][j - 1] + matrix[i][j].second);
             }
         }
     }
