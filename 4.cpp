@@ -12415,6 +12415,212 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/318/A
+using namespace std;
+#define ll long long
+int main() {
+    ll n, k;
+    cin >> n >> k;
+    k--; // convert to 0-based index
+    ll mid = (n + n % 2) / 2 - 1; // middle index for odd/even adjustment
+    if (k > mid)
+        cout << (k - mid) * 2 << "\n";
+    else
+        cout << 2 * k + 1 << "\n";
+}
+https://codeforces.com/problemset/problem/320/A
+using namespace std;
+int main() {
+    string s; cin >> s;
+    if (s[0] == '4') {
+        cout << "YES" << endl;
+        return 0;
+    }
+    for (int i = 0; i < (int)s.length(); i++) {
+        if (s[i] == '1')
+            continue;
+        else if (s[i] == '4') {
+            if (s[i - 1] == '1') continue;
+            else if (i >= 2 && s[i - 1] == '4' && s[i - 2] == '1') continue;
+            else {
+                cout << "YES" << endl;
+                return 0;
+            }
+        } else {
+            cout << "YES" << endl;
+            return 0;
+        }
+    }
+    cout << "YES" << endl;
+    return 0;
+}
+https://codeforces.com/problemset/problem/320/B
+using ll = long long;
+constexpr auto sz = [](const auto &container) -> ll { return ll(container.size()); };
+#define all(x) (x).begin(), (x).end()
+int main() {
+    ll q;
+    cin >> q;
+    vector<array<ll, 2>> intervals;
+
+    while (q--) {
+        ll type;
+        cin >> type;
+        if (type == 1) {
+            ll x, y;
+            cin >> x >> y;
+            intervals.push_back({x, y});
+        } else {
+            ll src, ext;
+            cin >> src >> ext;
+            --src, --ext;
+            vector<ll> vis(sz(intervals), 0);
+
+            function<bool(ll)> dfs = [&](ll idx) {
+                if (idx == ext) return true;
+                vis[idx] = 1;
+                auto [a, b] = intervals[idx];
+                for (ll i = 0; i < sz(intervals); i++) {
+                    if (vis[i]) continue;
+                    auto [c, d] = intervals[i];
+                    // intervals overlap if one endpoint lies strictly inside the other
+                    if ((c < a && a < d) || (c < b && b < d)) {
+                        if (dfs(i)) return true;
+                    }
+                }
+                return false;
+            };
+
+            cout << (dfs(src) ? "YES\n" : "NO\n");
+        }
+    }
+}
+https://codeforces.com/problemset/problem/322/B
+using namespace std;
+int main() {
+    ll r, g, b;
+    cin >> r >> g >> b;
+    ll ans = r / 3 + b / 3 + g / 3;
+    if (min({r, b, g}) > 1) ans = max(ans, (r - 1) / 3 + (b - 1) / 3 + (g - 1) / 3 + 1);
+    if (min({r, b, g}) > 2) ans = max(ans, (r - 2) / 3 + (b - 2) / 3 + (g - 2) / 3 + 2);
+    cout << ans << '\n';
+}
+https://codeforces.com/problemset/problem/327/A
+using namespace std;
+using ll = long long;
+int main() {
+    constexpr int N = 102;
+    int a[N], dp[N];
+    int n; cin >> n;
+    for (int i = 0; i < n; ++i) cin >> a[i];
+    /* 
+    dp[n][0] = dp[n][1] = dp[n][2] = 0;
+    for (int i = n - 1; i >= 0; --i) {
+        dp[i][0] = max(dp[i + 1][0] + a[i], dp[i + 1][1] + a[i]);
+        dp[i][1] = max(dp[i + 1][2] + 1 - a[i], dp[i + 1][1] + 1 - a[i]);
+        dp[i][2] = dp[i + 1][2] + a[i];
+    }
+    cout << max({dp[0][0], dp[0][1], dp[0][2]}) << '\n';  // this is for atmost one move
+    */
+    dp[0] = ((a[0] == 0) ? 1 : -1);
+    for (int i = 1; i < n; ++i) {
+        int b = ((a[i] == 0) ? 1 : -1);
+        dp[i] = max(b, dp[i - 1] + b);
+    }
+    cout << *max_element(dp, dp + n) + count(a, a + n, 1);
+}
+https://codeforces.com/problemset/problem/334/A
+using namespace std;
+int main() {
+    int n; cin >> n; 
+    for (int i = 0; i < n; i++) {
+        cout << i + 1;
+        for (int j = 1; j < n; j++) {
+            cout << " " << (n * j + (i + j) % n + 1);
+        }
+        cout << "\n";
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/334/B
+using namespace std;
+int main() {
+    vector<pair<int,int>> points(8);
+    vector<int> X, Y;
+
+    for (int i = 0; i < 8; i++) {
+        cin >> points[i].first >> points[i].second;
+        X.push_back(points[i].first);
+        Y.push_back(points[i].second);
+    }
+
+    sort(X.begin(), X.end());
+    X.erase(unique(X.begin(), X.end()), X.end());
+    sort(Y.begin(), Y.end());
+    Y.erase(unique(Y.begin(), Y.end()), Y.end());
+
+    sort(points.begin(), points.end());
+    vector<pair<int,int>> expected;
+
+    if (X.size() != 3 || Y.size() != 3) {
+        cout << "ugly\n";
+        return 0;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (i == 1 && j == 1) continue; // exclude the center
+            expected.push_back({X[i], Y[j]});
+        }
+    }
+
+    sort(expected.begin(), expected.end());
+
+    if (expected == points)
+        cout << "respectable\n";
+    else
+        cout << "ugly\n";
+
+    return 0;
+}
+using namespace std;
+int main() {
+    vector<pair<int,int>> inp;
+    vector<int> X, Y;
+
+    for (int i = 0; i < 8; i++) {
+        int x, y;
+        cin >> x >> y;
+        inp.push_back({x, y});
+        X.push_back(x);
+        Y.push_back(y);
+    }
+
+    sort(X.begin(), X.end());
+    X.erase(unique(X.begin(), X.end()), X.end());
+    sort(Y.begin(), Y.end());
+    Y.erase(unique(Y.begin(), Y.end()), Y.end());
+
+    sort(inp.begin(), inp.end());
+    vector<pair<int,int>> ans;
+
+    if (X.size() != 3 || Y.size() != 3) {
+        cout << "ugly\n";
+        return;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (i == 1 && j == 1) continue; // skip center
+            ans.push_back({X[i], Y[j]});
+        }
+    }
+    sort(ans.begin(), ans.end());
+    if (ans == inp)
+        cout << "respectable\n";
+    else
+        cout << "ugly\n";
+{
 using namespace std;
 http://codeforces.com/problemset/problem/337/A
 // 337A - Puzzles
@@ -12596,6 +12802,27 @@ int main() {
     cout << moves << endl;
     return 0;
 }
+https://codeforces.com/problemset/problem/339/B
+using namespace std;
+#define ll long long
+#define fo(i, n) for (int i = 0; i < n; i++)
+int main(){
+    int n, m;
+    cin >> n >> m;
+    ll a[m];
+    fo(i, m) cin >> a[i];
+
+    ll time = 0, position = 1;
+    fo(i, m)
+    {
+        if (a[i] >= position)
+            time += a[i] - position;
+        else
+            time += n + a[i] - position;
+        position = a[i];
+    }
+    cout << time;
+}
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -12650,6 +12877,51 @@ int main() {
 
     cout << steps << '\n';
     return 0;
+}
+https://codeforces.com/problemset/problem/339/D
+using namespace std;
+using ll = long long;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    n = (1LL << n);  // array size is 2^n
+    vector<ll> a(n);
+    for (auto &x : a) cin >> x;
+
+    // segment tree: {value, op}, op = 1 means OR, op = 0 means XOR
+    vector<pair<ll, int>> seg(2 * n);
+
+    // build leaves
+    for (ll i = 0; i < n; i++) seg[n + i] = {a[i], 1};
+
+    // build internal nodes
+    for (ll i = n - 1; i >= 1; --i) {
+        auto l = seg[2 * i], r = seg[2 * i + 1];
+        if (l.second == 1)  // OR level
+            seg[i] = {l.first | r.first, 0};
+        else                // XOR level
+            seg[i] = {l.first ^ r.first, 1};
+    }
+
+    auto update = [&](ll idx, ll val) {
+        idx += n;
+        seg[idx].first = val;
+        for (idx >>= 1; idx >= 1; idx >>= 1) {
+            auto l = seg[2 * idx], r = seg[2 * idx + 1];
+            if (l.second == 1)
+                seg[idx] = {l.first | r.first, 0};
+            else
+                seg[idx] = {l.first ^ r.first, 1};
+        }
+    };
+
+    while (m--) {
+        ll p, b;
+        cin >> p >> b;
+        --p;  // 0-based
+        update(p, b);
+        cout << seg[1].first << '\n';
+    }
 }
 https://codeforces.com/problemset/problem/343/B
 // B. Alternating Current
