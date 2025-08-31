@@ -573,17 +573,17 @@ int main(){
     // '?' -> jokers
     string pattern; cin >> pattern;
     int m = count(pattern.begin(), pattern.end(), '?');
-    vector <pair <int, int> >jokers(m);
+    vector <pair <int, int> >joker(m);
     for(int i = 0; i < m; i++){
-        cin >> jokers[i].first >> jokers[i].second;
+        cin >> joker[i].first >> joker[i].second;
         /* int open, close; cin >> open >> close;
-        jokers[i] = {open, close}; */
+        joker[i] = {open, close}; */
     }
     vector <bool> isjoker(patter.size(), false);
     int sum = 0;// total cost so far (starting with all ')' replacements)
     for(int i = 0, j = 0; i < pattern.size(); i++){
         if(pattern[i] == '?'){
-            isjoker[i] = false;
+            isjoker[i] = true;
             sum += joker[j++].second;
             pattern[i] = ')';
         }
@@ -597,7 +597,7 @@ int main(){
             k++;
         } /*
         if (isjoker[i]) {
-            int diff = jokers[k].first - jokers[k].second;
+            int diff = joker[k].first - joker[k].second;
             pq.push({diff, i});
             k++;
         }*/
@@ -613,7 +613,7 @@ int main(){
             if(!Q.empty()){
                 pair <int, int> j = Q.top(); Q.pop();
                 sum += j.first;
-                patter[j.second] = '(';
+                pattern[j.second] = '(';
                 st += 2;
             } */
             else    break;
