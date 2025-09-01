@@ -1642,6 +1642,143 @@ int main(){
     }
     cout << total_matches;
 }
+https://codeforces.com/problemset/problem/17/A
+// 17A. Noldbach problem
+using namespace std;
+const int ax = 1001;
+int main(){
+    int n, k; cin >> n >> k;
+    vector <bool> isprime(ax, true);
+    isprime[0] = isprime[1] = false;
+    for(int i = 2; i * i < ax; i++){
+        if(isprime[i]){
+            for(int j = i * i; j < ax; j += i)
+                isprime[j] = false;
+        }
+    }
+    vector <int> prime;
+    for(int i = 2; i <= n; i++){
+        if(isprime[i])    prime.push_back(i);
+    }
+    int cnt = 0;
+    for(int i = 2; i + 1 < (int)prime.size(); i++){
+        int special = 1 + prime[i] + prime[i + 1];
+        if(special <= n && isprime[special])    cnt++;
+    }
+    cout << (cnt >= k ? "YES" : "NO") << endl;
+    /*
+    int ax = 1001; bool isprime[ax];
+    memset(isprime, true, sizeof(isprime));
+    for(int i = 2; i * i <= ax; i++){
+        if(isprime[i] == true){
+            for(int j = i; j < ax; j += i)
+                isprime[j] = false;
+        }
+    }
+    vector <int> vec, hold, ::iterator it;
+    for(int i = 2; i < ax; i++){
+        if(isprime[i])    vec.push_back(i);
+    }
+    int sum = 0;
+    for(int i = 0; i < (int)vec.size(); i++){
+        sum = 1 + vec[i] + vec[i + 1];
+        it = find(vec.begin(), vec.end(), find);
+        if(it != vec.end())    hold.push_back(sum);
+    }
+    int cnt = 0;
+    for(int i = 0; i < (int)hold.size(); i++){
+        if(hold[i] <= n)    cnt++;
+        else    break;
+    }
+    cout << (cnt >= k ? "YES" : "NO") << endl;
+    // duplicate check
+    cout << (cnt >= k ? "YES" : "NO") << endl; */
+}
+https://codeforces.com/problemset/problem/17/B
+// 17B. Hierarchy
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)    cin >> vec[i];
+    
+    int m; cin >> m;
+    vector <vector <pair <int, int>>> twin(n + 1);
+    for(int i = 0; i < m; i++){
+        int a, b, c; cin >> a >> b >> c;
+        twin[b].push_back({a, c});
+    }
+    int cnt = 0, idx = -1;
+    for(int i = 1; i <= n; i++){
+        // Counts how many nodes have no incoming edges
+        if(twin[i].empty()){
+            cnt++; idx = i;
+        }
+        if(cnt >= 2)    break;
+    }
+    if(cnt >= 2){
+        cout << -1 << endl;
+        return 0;
+    }
+    int res = 0;
+    for(int i = 1; i <= n; i++){
+        if(i == idx)    continue;
+        int add = INT_MAX;
+        for(int j = 0; j < twin[j].size(); j++)
+            // Take the cheapest incoming edge (min(c)).
+            add = min(add, twin[i][j].second);
+        //for(auto &[a, c] : twin[i])
+            //add = min(add, c);
+        res += add;
+    }
+    cout << res << endl;
+    /*
+    while(m--){
+        int a, b, c; cin >> a >> b >> c;
+        --a; --b;
+        twin[a].push_back({b, c});
+        indegree[b]++;
+    }
+    queue <int> q;
+    for(int i = 0; i < n; i++){
+        if(indegree[i] == 0){
+            q.push(i); cost[i] = 0;
+        }
+    }
+    if(q.size() != 1){
+        cout << -1 << endl;
+        return 0;
+    }
+    while(!q.empty()){
+        int u = q.front(); q.pop(); /*
+        for (auto [v, c] : adj[u]) {
+            cost[v] = min(cost[v], (ll)c);
+            if (--indegree[v] == 0) 
+                q.push(v);
+        } */
+        for(int i = 0; i < (int)twin[u].size(); i++){
+            int v = twin[u][i].first;
+            int c = twin[u][i].second;
+            cost[v] = min(cost[v], (int)c);
+            if(--indegree[v] == 0)    q.push(v);
+        }
+    }
+    int sum = 0;
+    sum += accumulate(cost.begin(), cost.end(), 0);
+    */ /*
+    vector <int> cost(n, INT_MAX);
+    for(int i = 0; i < m; i++){
+        int x, y, z; cin >> x >> y >> z;
+        cost[y] = min(cost[y], z);
+    }
+    int res = 0, missing = 0;
+    for(int i = 1; i <= n; i++){
+        if(cost[i] == INT_MAX)    missing++;
+        else    res += cost[i];
+    }
+    if(missing > 1)    cout << -1 << endl;
+    else    cout << res; */
+}
 https://codeforces.com/problemset/problem/17/C
 // 17C. Balance
 using namespace std;
