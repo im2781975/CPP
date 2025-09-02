@@ -1,4 +1,3 @@
-
 https://codeforces.com/problemset/problem/8/C
 C. Looking for Order
 using namespace std;
