@@ -12988,6 +12988,31 @@ int main(){
     }
     cout << counter;
 }
+https://codeforces.com/problemset/problem/344/A
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+#define rep(i, a, b) for (ll i = a; i < b; i++)
+int main(){
+    ll n;
+    cin >> n;
+    string val;
+    vector<ll> arr(n);
+    ll ans = 0;
+
+    fo(i, n)
+    {
+        cin >> val;
+        arr[i] = val[0] - '0'; // store only first digit
+    }
+
+    rep(i, 1, n)
+    {
+        if (arr[i] != arr[i - 1])
+            ans++;
+    }
+    cout << ans + 1 << "\n";
+}
 using namespace std;
 int main() {
     int n; cin >> n;
@@ -13078,6 +13103,293 @@ int main() {
 
     cout << groups << "\n";
     return 0;
+}
+https://codeforces.com/problemset/problem/353/A
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+int main()
+{
+    ll n;
+    cin >> n;
+    vector<array<ll, 2>> arr(n);
+    ll sum1 = 0, sum2 = 0;
+
+    fo(i, n)
+    {
+        cin >> arr[i][0] >> arr[i][1];
+        sum1 += arr[i][0];
+        sum2 += arr[i][1];
+    }
+
+    // Case 1: Both sums already even
+    if ((sum1 % 2 == 0) && (sum2 % 2 == 0))
+    {
+        cout << 0 << "\n";
+        return;
+    }
+
+    // Case 2: One even, one odd -> impossible
+    if ((sum1 % 2 != sum2 % 2))
+    {
+        cout << -1 << "\n";
+        return;
+    }
+
+    // Case 3: Both odd
+    fo(i, n)
+    {
+        if ((arr[i][0] % 2) != (arr[i][1] % 2))
+        {
+            cout << 1 << "\n";
+            return;
+        }
+    }
+
+    // No domino with mixed parity → impossible
+    cout << -1 << "\n";
+}
+void solve()
+{
+
+    ll n;
+    cin >> n;
+    ll arr[n][2];
+    ll sum1(0), sum2(0);
+    fo(i, n)
+    {
+        cin >> arr[i][0] >> arr[i][1];
+        sum1 += arr[i][0];
+        sum2 += arr[i][1];
+    }
+
+    if ((sum1 & 1) == 0 && (sum2 & 1) == 0)
+    {
+        cout << "0";
+        return;
+    }
+
+    if ((sum1 & 1) == 1 && (sum2 & 1) == 0)
+    {
+        cout << "-1";
+        return;
+    }
+    if ((sum1 & 1) == 0 && (sum2 & 1) == 1)
+    {
+        cout << "-1";
+        return;
+    }
+
+    else
+    {
+        fo(i, n)
+        {
+            if (arr[i][0] % 2 == 0 && arr[i][1] % 2 != 0)
+            {
+                cout << "1";
+                return;
+            }
+            if (arr[i][0] % 2 != 0 && arr[i][1] % 2 == 0)
+            {
+                cout << "1";
+                return;
+            }
+        }
+
+        cout << "-1";
+        // if two elements are odd on one domino
+    }
+
+    return;
+}
+	//356/A
+	void Solution() {
+    ll n, m, l, r, x;
+    cin >> n >> m;
+    set<ll> st;
+    vector<ll> ans(n, -1);
+    for (ll i = 1; i <= n; ++i) st.insert(i);
+    for (ll i = 0; i < m; ++i) {
+        cin >> l >> r >> x;
+        auto it = st.lower_bound(l);
+        while (it != st.end() && *it <= r) {
+            ans[*it - 1] = x;
+            st.erase(*it);
+            it = st.lower_bound(l);
+        }
+        st.insert(x);
+        ans[x - 1] = 0;
+    }
+    for (auto &X : ans) cout << X << ' ';
+}
+https://codeforces.com/problemset/problem/357/C
+int main() {
+    ll n, m, l, r, x;
+    cin >> n >> m;
+    set<ll> alive;
+    vector<ll> ans(n, -1);
+    for (ll i = 1; i <= n; ++i) alive.insert(i);  // will always decrease and thus fast
+    for (ll i = 0; i < m; ++i) {
+        cin >> l >> r >> x;
+        auto it = alive.lower_bound(l);
+        while (it != alive.end() && *it <= r) {
+            ans[*it - 1] = x;  // losers gets winner's number
+            alive.erase(*it);
+            it = alive.lower_bound(l);
+        }
+        alive.insert(x);
+        ans[x - 1] = 0;  // winner gets 0
+    }
+    for (auto &X : ans) cout << X << ' ';
+}
+https://codeforces.com/problemset/problem/357/E
+using namespace std;
+int min(int a, int b)
+{
+    return (a < b ? a : b);
+}
+int max(int a, int b)
+{
+    return (a > b ? a : b);
+}
+
+int main()
+{
+    long int n;
+    cin >> n;
+    int ctr[5] = {0};
+    int i, input, re = 0;
+    for (i = 0; i < n; i++)
+    {
+        cin >> input;
+        ctr[input]++;
+    }
+    int entering, leaving, moving;
+    moving = min(ctr[1], ctr[2]);
+    re += moving;
+    ctr[1] -= moving;
+    ctr[2] -= moving;
+    ctr[3] += moving;
+    if (ctr[1] > 0 && ctr[2] == 0)
+    {
+        moving = ctr[1] / 3;
+        re += moving * 2;
+        ctr[1] -= moving * 3;
+        ctr[3] += moving;
+        if (ctr[1] == 1)
+        {
+            if (ctr[3] >= 1)
+            {
+                re++;
+            }
+            else
+            {
+                if (ctr[4] >= 2)
+                {
+                    re += 2;
+                }
+                else
+                {
+                    re = -1;
+                }
+            }
+        }
+        if (ctr[1] == 2)
+        {
+            if (ctr[4] >= 1)
+            {
+                re += 2;
+            }
+            else
+            {
+                if (ctr[3] >= 2)
+                {
+                    re += 2;
+                }
+                else
+                {
+                    re = -1;
+                }
+            }
+        }
+    }
+    if (ctr[1] == 0 && ctr[2] > 0)
+    {
+        moving = ctr[2] / 3;
+        re += moving * 2;
+        ctr[2] -= moving * 3;
+        ctr[3] += moving * 2;
+        if (ctr[2] == 1)
+        {
+            if (ctr[4] >= 1)
+            {
+                re++;
+            }
+            else
+            {
+                if (ctr[3] >= 2)
+                {
+                    re += 2;
+                }
+                else
+                {
+                    re = -1;
+                }
+            }
+        }
+        if (ctr[2] == 2)
+        {
+            re += 2; //merge
+        }
+    }
+    cout << re;
+    return 0;
+}
+	361/B
+using namespace std;
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; i++)
+#define ln "\n"
+int main() {
+    ll n, k;
+    cin >> n >> k;
+
+    if (n == k) { 
+        // Special case: not possible since gcd condition fails
+        cout << -1 << ln;
+        return;
+    }
+
+    // Construct permutation
+    // Example: n=5, k=2 -> output: 3 1 4 5 2
+    cout << n - k << " ";
+    fo(i, n - k - 1) cout << i + 1 << " ";
+    fo(i, k) cout << n - k + 1 + i << " ";
+    cout << ln;
+}
+362/B
+using namespace std;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    vl arr(m);
+    fo(i, m) cin >> arr[i];
+    sort(all(arr));
+    if (m == 0) {
+        cout << "YES";
+        return;
+    }
+    if (arr[0] == 1 || arr[m - 1] == n) {
+        cout << "NO";
+        return;
+    }
+    for (int i = 2; i < m; ++i) {
+        if (arr[i] - arr[i - 1] == 1 && arr[i - 1] - arr[i - 2] == 1) {
+            cout << "NO";
+            return;
+        }
+    }
+    cout << "YES";
 }
 
 http://codeforces.com/contest/363/problem/B
