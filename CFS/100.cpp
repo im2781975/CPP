@@ -1601,46 +1601,272 @@ int main(){
     string arr[] = {"1/6", "1/3", "1/2", "2/3", "5/6", "1/1", "0/1"};
     cout << arr[maxi] << endl; */
 }
-http://codeforces.com/contest/16/problem/A
+https://codeforces.com/problemset/problem/16/A
 // 16A. Flag
 using namespace std;
 int main(){
     int n, m; cin >> n >> m;
-    int flag[n];
-    for(int i = 0; i < n; i++)    cin >> flag[i];
-    bool Isvalid = true;
+    char arr[101][101];
     for(int i = 0; i < n; i++){
-        for(int j = 1; j < m; j++){
-            if(flag[i][j] != flag[i][0]){
-                Isvalid = false;
+        for(int j = 0; j < m; j++)
+            cin >> arr[i][j];
+    }
+    for(int i = 0; i < n - 1; i++){
+        for(int j = 0; j < m; j++){
+            if(arr[i][j] == arr[i + 1][j]){
+                cout << "NO" << endl;
+                return 0;
+            }
+        }
+    }
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m - 1; j++){
+            if(arr[i][j] != arr[i][j + 1]){
+                cout << "NO" << endl;
+                return 0;
+            }
+        }
+    }
+    cout << "YES";
+}
+using namespace std;
+int main(){
+    int n, m; cin >> n >> m;
+    vector <string> vec(n);
+    for(int i = 0; i < n; i++) cin >> vec[i]; 
+    /*
+    for(int i = 0; i < n; i++){
+        char ch = vec[i][0];
+        for(int j = 0; j < m; j++){
+            if(vec[i][j] != ch){
+                cout << "NO" << endl;
+                return 0;
+            }
+        }
+    }
+    for(int i = 0; i < n - 1; i++){
+        if(vec[i][0] == vec[i + 1][0]){
+            cout << "NO" << endl;
+            return 0;
+        }
+    } */
+    for(int i = 0; i < n; i++){
+        if(!all_of(vec[i].begin(), vec[i].end(), [&](char ch){
+            return ch = vec[i][0];
+        })){
+            cout << "NO" << endl;
+            return 0;
+        }
+        if(i > 0 && vec[i][0] == vec[i - 1][0]){
+            cout << "NO" << endl;
+            return 0;
+        }
+    }
+    cout << "YES" << endl;
+}
+using namespace std;
+int main() {
+    int n, m; cin >> n >> m;
+    string prevRow;
+    bool valid = true;
+    for (int i = 0; i < n; ++i) {
+        string row; cin >> row;
+        for (int j = 1; j < m; ++j) {
+            if (row[j] != row[0]) {
+                valid = false;
                 break;
             }
         }
-        if(i > 0 && flag[i][0] == flag[i - 1][0]){
-            Isvalid = false;
-            break;
-        }
+        if (i > 0 && row[0] == prevRow[0]) 
+            valid = false;
+        if (!valid) break;
+        prevRow = row;
     }
-    cout << Isvalid ? "YES" : "NO";
+    cout << (valid ? "YES" : "NO") << endl;
 }
-http://codeforces.com/contest/16/problem/B
+https://codeforces.com/problemset/problem/16/B
 // 16B. Burglar and Matches
 using namespace std;
-bool comp(pair <int, int> a, pair <int, int> b){
-    return a.second > b.second;
+int main(){
+    //n -> capacity
+    int n, m; cin >> n >> m;
+    vector <pair <int, int>> matches(m);
+    for(int i = 0; i < m; i++){
+        cin >> matches[i].second >> matches[i].first;
+        //prices, boxes -> value, quantity
+        /*int boxes, prices; cin >> boxes >> prices;
+        matches[i] = {prices, boxes}; */
+    }
+    // sort(matches.begin(), matches.end());
+    // reverse(matches.begin(), matches.end());
+    /*sort(matches.begin(), matches.end(), [](pair <int, int> &x, pair <int, int> &y){
+        return x.first > y.first;
+    });
+    int res = 0;
+    for(int i = 0; i < m && n > 0; i++){
+        int take = min(n, matches[i].second);
+        res += take * matches[i].first;
+        n -= take;
+    } */
+    sort(matches.begin(), matches.end(), greater <pair <int, int>>());
+    int res = 0;
+    for(int i = 0; i < m; i++){
+        if(matches[i].second <= n){
+            res += matches[i].second * matches[i].first;
+            n -= matches[i].second;
+        }
+        else {
+            res += n * matches[i].first;
+            n = 0;
+        }
+        if(n == 0)    break;
+    }/*
+    multimap <int, int, greater<int>> marr;
+    int x, y;
+    for(int i = 0; i < m; i++){
+        cin >> x >> y;
+        marr.insert(pair <int, int> (y, x));
+    }
+    multimap <int, int> ::iterator itr;
+    int count = 0, res = 0;
+    for (itr = marr.begin(); itr != marr.end(); ++itr){
+        count += itr->second;
+        if(count >= n){
+            itr->second = itr->second - (count - n);
+            res += itr->first * itr->second;
+            break;
+        }
+        sum += itr->first * itr->second;
+    }*/
+    cout << res;
+}
+https://codeforces.com/problemset/problem/16/C
+// 16C. Monitor
+using namespace std;
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
 }
 int main(){
-    int n, m; cin >> n >> m;
-    vector <pair <int, int> >boxes(m);
-    for(int i = 0; i < m; i++)    cin >> boxes[i].first >> boxes[i].second;
-    sort(boxes.begin(), boxes.end(), comp);
-    int total_matches = 0, rem = n;
-    for(int i = 0; i < m && rem > 0; i++){
-        int take = min(boxes[i].first, rem);
-        total_matches += 1LL * take * boxes[i].second;
-        rem -= take;
+    int x, y, a, b; cin >> x >> y >> a >> b;
+    int g = gcd(a, b);
+    // int g = __gcd(a, b);
+    a /= g; b /= g;
+    
+    int mini = min(x / a, y / b);
+    cout << a * k << " " << b * k << endl;
+}
+https://codeforces.com/problemset/problem/16/D
+// 16D. Logging
+int getTime(const string &s) {
+    int h = stoi(s.substr(1, 2)) % 12; 
+    // 12-hour format
+    int m = stoi(s.substr(4, 2));
+    if (s[7] == 'p') h += 12;          
+    // add 12 hours for PM
+    return h * 60 + m;                  
+    // total minutes since midnight
+}
+using namespace std;
+int main(){
+    //number of message
+    int n; cin >> n;
+    cin.ignore();
+    //day ->counts the number of days needed
+    // prv ->stores the time of the previous message
+    // cnt-> counts how many consecutive messages have the exact same timestamp.
+    int day = 1, prv = -1, cnt = 0;
+    string str;
+    for(int i = 0; i < n; i++){
+        getline(cin, str);
+        /* int h = (str[1] - '0') * 10 + (str[2] - '0');
+        h %= 12;
+        int m = (str[4] - '0') * 10 + (str[5] - '0');
+        if(str[7] == 'p')    h += 12;
+        int now = h * 60 + m; */
+        int now = getTime(str);
+        if(prv != -1){
+            if(now < prv){
+                day++; cnt = 1;
+            }
+            else if(now == prv){
+                cnt++;
+                if(cnt == 1){
+                    // same time appears 11 time -> new day
+                    day++; cnt = 1;
+                }
+            }
+            else    cnt = 1;
+        }
+        prv = now;
     }
-    cout << total_matches;
+    cout << day;
+}
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int day = 1, cnt = 1, prv = -1;
+    for(int i = 0; i < n; i++){
+        char dummy, maridiem;
+        int h, m; string str;
+        cin >> dummy >> h >> dummy >> m >> meridiem;
+        getline(cin, str);
+        if(h == 12)    h = 0;
+        if(meridiem == 'p')    h += 12;
+        int time = h * 60 + m;
+        if (i > 0) {
+            if (time < prevTime || (time == prevTime && count == 10)) {
+                days++;
+                count = 1;
+            else if (time == prevTime)
+                count++;
+            else count = 1;
+        }
+        prevTime = time;
+    }
+    cout << days << endl;
+}
+https://codeforces.com/problemset/problem/16/E
+// 16E. Fish
+using namespace std;
+int n;// number of fish
+double grid[20][20];
+int dp[1 << 20]; // subset of alive fish.
+double transition(int prvmask, int fish){
+    int alivecnt = __builtin_popcount(prvmask);
+    double den = alivecnt * (alivecnt - 1);
+    double chance = 0;
+    for(int i = 0; i < n; i++){
+        if(prvmask && (1 << i))
+            // i can eat `fish`
+            chance += grid[i][fish]; 
+    }
+    return chanse / den;
+}
+double DP(int mask){
+    if(_builtin_popcount(mask) == n)    return 1.0;
+    if(dp[mask] > -0.5)    return dp[mask];
+    double res = 0;
+    for(int fish = 0; fish < n; fish++){
+        if(!(mask && (1 << fish))){
+            int prvmask = mask | (1 << fish);
+            res += transition(prvmask, fish) * DP(prvmask);
+        }
+    }
+    return dp[mask] = res;
+}
+int main(){
+    cin >> n; //number of fish
+    //probability that fish i eats fish j
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++)
+            cin >> grid[i][j];
+    }
+    fill(dp, dp + (1 << n), -1.0);
+    cout << fixed << setprecision(6);
+    // compute probability for each fish being the last survivor
+    for(int i = 0; i < n; i++)
+        cout << DP(1 << i) << " ";
+    cout << endl;
 }
 https://codeforces.com/problemset/problem/17/A
 // 17A. Noldbach problem
