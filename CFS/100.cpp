@@ -1916,6 +1916,17 @@ int main(){
         cnt++;
     }
     cout << cnt << endl;
+    /* int res = 0;
+    for (int len = 1; len <= 9; len++) {
+        for (int mask = 0; mask < (1 << (len - 1)); mask++) {
+            long long num = 1; 
+            for (int k = 0; k < len - 1; k++) {
+                num = num * 10 + ((mask >> k) & 1);
+            }
+            if (num <= n) ans++;
+        }
+    }
+    cout << res << endl; */
 }
 https://codeforces.com/problemset/problem/9/D
 // 9D. How many trees?
