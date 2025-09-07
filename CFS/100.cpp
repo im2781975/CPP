@@ -1866,6 +1866,98 @@ int main(){
     string arr[] = {"1/6", "1/3", "1/2", "2/3", "5/6", "1/1", "0/1"};
     cout << arr[maxi] << endl; */
 }
+https://codeforces.com/problemset/problem/9/B
+// 9B. Running Student
+using namespace std;
+int main(){
+    int n, busvt, stdvt, ux, uy;
+    cin >> n >> busvt >> stdvt >> xu >> yu;
+    // n, busvt, stdvt, xu, yu -> total stops, bus velocity, student volocity, coordinates of university
+    //bus stops
+    vector <int> vec(n);
+    for(int i = 0; i < n; i++)
+        cin >> vec[i];
+    cin >> ux >> uy; //university coordinates
+    int idx = 0;
+    double mintime = DBL_MAX;
+    //took the bus from second stop
+    for(int i = 1; i < n; i++){
+        double bustime = vec[i] / busvt;
+        // distance between stop(which stop the student take bus)to university / stdvt
+        double runtime = sqrt(pow(ux - vec[i], 2) + (pow(uy - 0), 2)) / stdvt;
+        double totaltime = bustime + runtime;
+        if(totaltime <= mintime){
+            mintime = totaltime;
+            idx = i;
+        }
+    }
+    cout << idx + 1 << endl;
+}
+https://codeforces.com/contest/9/problem/C
+// 9C. Hexadecimal's Numbers
+using namespace std;
+int n, cnt = 0;
+void dfs(int x){
+    if(x > n)    return;
+    cnt++;
+    dfs(x * 10); // append '0'
+    dfs(x * 10 + 1); // append '1'
+}
+int main(){
+    cin >> n;
+    // dfs(1); cout << cnt;
+    queue <long long> q; q.push(1);
+    int cnt = 1;
+    while(!q.empty()){
+        int num = q.front(); q.pop();
+        if(num > n)     continue;
+        q.push(num * 10); // append '0'
+        q.push(num * 10 + 1); // append '1'
+        cnt++;
+    }
+    cout << cnt << endl;
+}
+https://codeforces.com/problemset/problem/9/D
+// 9D. How many trees?
+using namespace std;
+int dp[100][100]; // dp[n][h] = number of binary trees with n nodes and height ≤ h
+int main(){
+    int n, h; cin >> n >> h; // node,  height
+    for(int height = 1; height <= n; ++height){
+        dp[0][height - 1] = 1; // For 0 nodes, there’s exactly 1 tree: the empty tree.
+        for(int nodes = 1; nodes <= n; nodes++){
+            for(int left = 0; left < nodes; ++nodes){
+                int right = nodes - left - 1;
+                dp[nodes][height] += dp[left][height - 1] * dp[right][height - 1];
+            }
+        }
+    }
+    cout << dp[n][n] - dp[n][h - 1];
+}
+using namespace std;
+int main(){
+    int n, h; cin >> n >> h;
+    // dp[nodes][height]
+    vector <vector <int>> dp(n + 1, vector <int> (n + 1, 0));
+    dp[0][0] = 1;
+    for(int left = 0; left <= n; left++){
+        for(int lh = 0; lh <= left; lh++){
+            for(int right = 0; right <= n - left; ++right){
+                for(int rh = 0; rh <= right; ++rh){
+                    int nodestotal = left + right + 1;
+                    int totalheight = max(lh, rh) + 1;
+                    if(nodestotal <= n)
+                        dp[nodestotal][totalheight] += dp[left][lh] * dp[right][rh];
+                }
+            }
+        }
+    }
+    int res = 0;
+    for(int height = h; height <= n; ++height)
+        res += dp[n][height];
+    cout << res << endl;
+}
+
 https://codeforces.com/problemset/problem/16/A
 // 16A. Flag
 using namespace std;
