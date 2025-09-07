@@ -1,80 +1,3 @@
-
-https://codeforces.com/problemset/problem/11/A
-// A. Increasing Sequence
-using namespace std;
-int main() {
-    int n, d, prev, curr, moves = 0;
-    cin >> n >> d >> prev;
-    for (int i = 1; i < n; ++i) {
-        cin >> curr;
-        if (curr <= prev) {
-            int x = (prev - curr) / d + 1;
-            moves += x;
-            curr += x * d;
-        }
-        prev = curr;
-    }
-    cout << moves << endl;
-    return 0;
-}
-using namespace std;
-int main(){
-    int n, d, b0, b, moves = 0;
-    cin >> n >> d >> b0;
-    while (--n) {
-        cin >> b0;
-        if (b <= b0){
-            int x = (b0 - b) / d + 1;
-            moves += x;
-            b0 = b + x * d;
-        }
-        else    b0 = b;
-    }
-    cout << moves;
-}
-using namespace std;
-int main(){
-    int n, d; cin >> n >> d;
-    int a[2001];
-    for(int i = 0; i < n; i++)    cin >> a[i];
-    int ans = 0, div = 0, sub = 0;
-    for(int i = 1; i < n; i++){
-        if(a[i-1] >= a[i]){
-            sub = a[i-1] - a[i];
-            if(sub == 0){
-                ans++;
-                a[i] += d;
-            }
-            else{
-                sub++;
-                div = sub / d;
-                if(sub % d != 0)    div++;
-                a[i] += div * d;
-                ans += div;
-            }
-        }
-    }
-    cout << ans << endl;
-}
-using namespace std;
-int main(){
-    int n, d; cin >> n >> d;
-    vector <int a(n);
-    for (int &x : a) cin >> x;
-    int operations = 0;
-    for (int i = 1; i < n; i++) {
-        if (a[i] <= a[i - 1]) {
-            ll diff = a[i - 1] - a[i] + 1;
-            ll steps = (diff + d - 1) / d; 
-            a[i] += steps * d;
-            operations += steps;
-        }
-    }
-    cout << operations << '\n';
-    return 0;
-}
-
-
 https://codeforces.com/problemset/problem/10/C
 // C. Digital Root
 using namespace std;
@@ -346,6 +269,81 @@ int main() {
 
     return 0;
 }
+https://codeforces.com/problemset/problem/11/A
+// A. Increasing Sequence
+using namespace std;
+int main() {
+    int n, d, prev, curr, moves = 0;
+    cin >> n >> d >> prev;
+    for (int i = 1; i < n; ++i) {
+        cin >> curr;
+        if (curr <= prev) {
+            int x = (prev - curr) / d + 1;
+            moves += x;
+            curr += x * d;
+        }
+        prev = curr;
+    }
+    cout << moves << endl;
+    return 0;
+}
+using namespace std;
+int main(){
+    int n, d, b0, b, moves = 0;
+    cin >> n >> d >> b0;
+    while (--n) {
+        cin >> b0;
+        if (b <= b0){
+            int x = (b0 - b) / d + 1;
+            moves += x;
+            b0 = b + x * d;
+        }
+        else    b0 = b;
+    }
+    cout << moves;
+}
+using namespace std;
+int main(){
+    int n, d; cin >> n >> d;
+    int a[2001];
+    for(int i = 0; i < n; i++)    cin >> a[i];
+    int ans = 0, div = 0, sub = 0;
+    for(int i = 1; i < n; i++){
+        if(a[i-1] >= a[i]){
+            sub = a[i-1] - a[i];
+            if(sub == 0){
+                ans++;
+                a[i] += d;
+            }
+            else{
+                sub++;
+                div = sub / d;
+                if(sub % d != 0)    div++;
+                a[i] += div * d;
+                ans += div;
+            }
+        }
+    }
+    cout << ans << endl;
+}
+using namespace std;
+int main(){
+    int n, d; cin >> n >> d;
+    vector <int a(n);
+    for (int &x : a) cin >> x;
+    int operations = 0;
+    for (int i = 1; i < n; i++) {
+        if (a[i] <= a[i - 1]) {
+            ll diff = a[i - 1] - a[i] + 1;
+            ll steps = (diff + d - 1) / d; 
+            a[i] += steps * d;
+            operations += steps;
+        }
+    }
+    cout << operations << '\n';
+    return 0;
+}
+
 https://codeforces.com/problemset/problem/11/D
 // D. A Simple Task
 using namespace std;
