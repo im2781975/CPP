@@ -1584,6 +1584,271 @@ int main(){
     }
     cout << (getexpr() ? "Ok" : "suspicious");
 }
+https://codeforces.com/problemset/problem/8/A
+// 8A. Train and Peter
+using namespace std;
+bool func(const string &station, const string &stop1, const station &stop2){
+    //station.find(stop1) returns the first index where stop1 occurs, or string::npos if not found.
+    size_t pos = station.find(stop1);
+    if(pos = string::npos)    return false;
+    // check if stop2 occurs after stop1 ends.
+    return station.find(stop2, pos + stop1.size()) != station::npos;
+}
+int main(){
+    string station, stop1, stop2; cin >> station >> stop1 >> stop2; /*
+    auto func = [](const string &station, const string &stop1, const string &stop2) {
+        size_t pos = str.find(stop1);
+        return pos != string::npos && station.find(stop2, pos + stop1.size()) != string::npos;
+    }; */ /*
+    bool forward = false, backward = false;
+    size_t pos = s.find(stop1);
+    if (pos != string::npos && station.find(stop2, pos + stop1.size()) != string::npos)
+        forward = true;
+    // check backward
+    reverse(station.begin(), station.end());
+    pos = station.find(stop1);
+    if (pos != string::npos && station.find(stop2, pos + stop1.size()) != string::npos)
+        backward = true; */
+    bool forward = func(station, stop1, stop2);
+    reverse(station.begin(), station.end());
+    bool backward = func(station, stop1, stop2);
+    
+    if (forward && backward) cout << "both";
+    else if (forward)        cout << "forward";
+    else if (backward)       cout << "backward";
+    else                     cout << "fantasy";
+    return 0;
+}
+https://codeforces.com/problemset/problem/8/B
+// 8B. Obsession with Robots
+using namespace std;
+int main(){
+    string str; cin >> str;
+    set <pair <int, int>> visited;
+    bool ok = true;
+    int dx[] = {-1, 1, 0, 0};
+    int dy[] = {0, 0, -1, 1};
+    /*set<pair<int,int>> visited;
+    pair<int,int> pos = {0,0};
+    visited.insert(pos);
+    for (char c : s) {
+        if (c == 'L') pos.first--;
+        else if (c == 'R') pos.first++;
+        else if (c == 'U') pos.second++;
+        else if (c == 'D') pos.second--;
+        int cnt = visited.count(pos);
+        for (int i = 0; i < 4; i++)
+            cnt += visited.count({pos.first + dx[i], pos.second + dy[i]});
+        if (cnt > 1) {
+            ok = false;
+            break;
+        }
+        visited.insert(pos);
+    }*/
+    int x = 0, y = 0;
+    visited.insert({x, y});
+    for(int i = 0; i < str.size(); i++){
+        if(str[i] == "L") x--;
+        else if(str[i] == "R") x++;
+        else if(str[i] == "U") y++;
+        else if(str[i] == "D") y--;
+        bool ok = true;
+        if(visited.count({x, y})) ok = false;
+        //count the visited cell
+        int cnt = 0;
+        for(int i = 0; i < 4; i++)
+            cnt += visited.count({x + dx[i], y + dy[i]});
+        if(cnt > 1) ok = false;
+        visited.insert({x, y});
+    }
+    cout << (ok ? "OK" : "BUG") << endl;
+}
+https://codeforces.com/problemset/problem/8/C
+// 8C. Looking for Order
+using namespace std;
+const int ax = 1e5;
+int main(){
+    int n, X, Y; cin >> n >> X >> Y;
+    // n, X, Y -> total points, starting coordinates
+    int arr[30], ray[30]; // coordinates they can move
+    arr[0] = X; ray[0] = Y;
+    // must visit all n points by making multiple trips starting and ending at 0.
+    for(int i = 1; i <= n; i++)
+        cin >> arr[i] >> ray[i];
+    int full = (1 << n); // n =3, full = 8
+    vector <int> dp(full, ax); // dp[S] = minimum cost to visit all points in S.
+    //s represent the bitmask of full(range) visited points
+    vector <int> lst(full, -1); // previous state (for path reconstruction).
+    dp[0] = 0;
+    int dist[30][30]; //squared dist between i & j
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= n; j++)
+            dist[i][j] = (arr[i] - arr[j]) * (arr[i] - arr[j]) + (ray[i] - ray[j]) * (ray[i] - ray[j]);
+    }
+    // s -> bitmask of visited points
+    for(int s = 0; s < full; s++){
+        if(dp[s] == ax)    continue;
+        int i;
+        //find first unvisited point
+        for(int i = 1; i <= n; i++){
+            if(!(s & (1 << (i - 1))))
+                break;
+        }
+        if(i > n) continue;
+        {   //visit i alone
+            // mark point i as visited in the new set T.
+            int T = s | (1 << (i - 1));
+            //(1 << (i - 1)) = bitmask representing point i.
+            int cost = dp[s] + dist[0][i] + dist[i][0];
+            if(cost < dp[T]){
+                dp[T] = cost;
+                lst[T] = s;
+            }
+        }
+        //visit i & j togeather
+        for(int j = i + 1; j <= n; j++){
+            if(s & (1 << (j - 1))) continue;
+            int T = s | (1 << (i - 1)) | (1 << (j - 1));
+            int cost = dp[s] + dist[0][i] + dist[i][j] + dist[j][0];
+            if (cost < dp[T]) {
+                dp[T] = cost;
+                lst[T] = s;
+            }
+        } /*
+        for (int j = i; j <= n; j++) {
+            if (s & (1 << (j - 1))) continue;
+            int T = s | (1 << (i - 1)) | (1 << (j - 1));
+
+            int dx1 = arr[0] - art[i], dy1 = ray[0] - ray[i];
+            int dx2 = arr[i] - arr[j], dy2 = ray[i] - ray[j];
+            int dx3 = arr[0] - arr[j], dy3 = ray[0] - ray[j];
+
+            int val = dp[s] + dx1*dx1 + dy1*dy1 + dx2*dx2 + dy2*dy2 + dx3*dx3 + dy3*dy3;
+            if (val < dp[T]) {
+                dp[T] = val;
+                lst[T] = s;
+            }
+        } */
+    }
+    //output minimum cost
+    cout << dp[full - 1] << endl;
+    for(int s = full - 1; s; s = lst[s]){
+        for(int i = 1; i <= n; i++){
+            if((s ^ lst[s]) & (1 << (i - 1)))
+                cout << i << " ";
+        }
+        cout << "0";
+    }
+    cout << endl;
+    /*vector<int> path;
+    for (int S = full - 1; S; S = lst[S]){
+        path.push_back(0);
+        for (int i = 1; i <= n; i++) {
+            if ((S ^ lst[S]) & (1 << (i - 1))) 
+                path.push_back(i);
+        }
+        path.push_back(0);
+    }
+    reverse(path.begin(), path.end());
+    for (int v : path) cout << v << " ";
+    cout << endl; */
+}
+https://codeforces.com/problemset/problem/8/E
+// 8E. Beads
+using namespace std;
+int n, m; // length of the bin string, string what we want
+// Counts how many valid canonical strings of length len start with a given ing.
+bool valid(const string &str){
+    string ing = str;
+    string rev = ing; reverse(rev.begin(), rev.end());
+    string comp = ing;
+    // complement (flip with comp ^= 1, since '0' ^ 1 = '1', '1' ^ 1 = '0')
+    for(int i = 0; i < comp.size(); i++)
+        comp[i] ^= 1;
+    string revcomp = comp; reverse(revcomp.begin(), revcomp.end());
+    return (ing < rev && ing < comp && ing < revcomp);
+}
+long long validcnt(const string &ing, int len){
+    // number of positions left to fill after the ing.
+    int rem = len - ing.size();
+    //mask represents all binary combinations of the remaining positions. There are 2^rem combinations.
+    int cnt = 0;
+    for(int mask = 0; mask < (1 << rem); ++mask){
+        string str = ing;
+        for(int i = 0; i < rem; i++)
+            str += ((mask >> i) & 1) + '0';
+        if(valid(str))    cnt++;
+    }
+    return cnt;
+}
+int main(){
+    cin >> n >> m;
+    string res = "";
+    for(int i = 1; i < n; i++){
+        int cnt = validcnt(res + "0", n);
+        if(m <= cnt) res += '0';
+        else {
+            m -= cnt; res += '1';
+        }
+    }
+    cout << res;
+}
+using namespace std;
+int n, m;
+int arr[55]; //store bits
+int dp[55][2][2];
+// dp[pos][l][r]
+// pos, l, r-> current position in the string, boolean indicating whether the left-side constraint is active or ride sided
+// counts the number of valid binary strings from position pos down to the middle, considering symmetry constraints.
+int dfs(int pos, int l, int r){
+    // If we’ve crossed the middle of the string, the prefix fully determines the string.
+    if(pos < n - pos + 1) return 1;
+    if(dp[pos][l][r] != -1) return dp[pos][l][r];
+    int res = 0;
+    // candidate bit at position pos.
+    for(int i = 0; i <= 1; i++){
+        if(arr[pos]!= -1 && arr[pos] != i)
+            continue;
+        // candidate bit at mirror position n - pos + 1.
+        for(int j = 0; j <= 1; j++){
+            if(arr[n - pos - 1] != -1 && arr[n - pos - 1] != j)
+                continue;
+        }
+        // (l && i > j) → If left-limit is active, i cannot exceed its mirror j.
+        // (r && i > 1 - j) → If right-limit is active, i cannot exceed complement of mirror.
+        // (pos == n - pos + 1 && i != j) → At the exact middle, the digit must mirror itself.
+        if((l && i > j) || (r && i > 1 - j) || (pos == n - pos + 1) || (i != j))
+            continue;
+        // recursive call for next smaller pos
+        res += dfs(pos - 1, l && (i == j), r && (i != j));
+    }
+    return dp[pos][l][r] = res;
+}
+int main(){
+    int n, m; cin >> n >> m;
+    m++; //for 1 base indexing
+    memset(arr, -1, sizeof(arr));
+    memset(dp, -1, sizeof(dp));
+    arr[n] = 0; // Start with the last bit a[n] = 0.
+    // If the total number of valid strings is less than m
+    if(dfs(n, 1, 1) < m) {
+        cout << -1 << endl;
+        return 0;
+    }
+    cout << "0"; //first digit
+    for(int i = n - 1; i >= 1; i--){
+        memset(dp, -1, sizeof(dp));
+        arr[i] = 0;
+        int sum = dfs(n, 1, 1);
+        if(m > sum) {
+            m -= sum; arr[i] = 1;
+            cout << "1";
+        }
+        else    cout << "0";
+    }
+    cout << endl;
+}
+
 http://codeforces.com/contest/9/problem/A
 // 9A. Die Roll
 using namespace std;
