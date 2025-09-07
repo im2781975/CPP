@@ -1957,7 +1957,67 @@ int main(){
         res += dp[n][height];
     cout << res << endl;
 }
-
+https://codeforces.com/problemset/problem/15/A
+// 15A. Cottage Village
+using namespace std;
+int main(){
+    int n; cin >> n; // number of intervals
+    double k; cin >> k; // required distance between points placed outside intervals.
+    vector <pair <double, double>> interval(n);
+    for(int i = 0; i < n; i++){
+        double x, y; cin >> x >> y;
+        intervals[i] = {x - y / 2, x + y / 2};
+    }
+    sort(intervals.begin(), intervals.end());
+    int res; = 2;
+    for(int i = 1; i < n; i++){
+        double gap = intervals[i].first - intervals[i - 1].second;
+        if(gap == k)    res += 1;
+        else if(gap > k)    res += 2;
+    }
+    cout << res;
+}
+https://codeforces.com/problemset/problem/15/B
+// 15B. Laser
+using namespace std;
+int main(){
+    int n, m, x1, x2, y1, y2;
+    cin >> n >> m >> x1 >> x2 >> y1 >> y2;
+    // n, m = number of rows & columns
+    // (x1, y1) and (x2, y2) = coordinates of two given cells
+    int dxl = min(x1, x2) - 1;// columns are left of the leftmost of the two x’s.
+    int dxr = n - max(x1, x2); // columns are right of the rightmost of the two x’s.
+    int dyu = m - max(y1, y2); // rows are above the higher of the two y’s.
+    int dyd = min(y1, y2) - 1; // rows are below the lower of the two y’s.
+    int res = n * m - 2 * (1 + dxl + dxr) * (1 + dyd + dyu);
+    int sx = max(0LL, 1 + min(x1, x2) + dxr - max(x1, x2) + dxl); // overlap width along x.
+    int sy = max(0LL, 1 + min(y1, y2) + dyd - max(y1, y2) + dyu; // overlap height along y.
+    res += sx * sy; //overlapping region
+    cout << res;
+}
+https://codeforces.com/problemset/problem/15/C
+// 15C. Industrial Nim
+using namespace std;
+int XOR(int x){
+    if(x % 4 == 0) return x;
+    if(x % 4 == 1) return 1;
+    if(x % 4 == 2) return x + 2;
+    return 0;
+    /* int ones = (x + 1) / 2;
+    int res = ones & 1;
+    if((x + 1) % 2)    res ^= x;
+    return res; */
+}
+int main(){
+    int n; cin >> n;
+    int res = 0;
+    while(n--){
+        int a, b; cin >> a >> b;
+        b += a - 1;
+        res ^= (XOR(b) ^ XOR(a - 1));
+    }
+    cout << (res ? "tolik" : "bolik") << endl;
+}
 https://codeforces.com/problemset/problem/16/A
 // 16A. Flag
 using namespace std;
