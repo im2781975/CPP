@@ -12921,6 +12921,182 @@ int main(){
     }
     cout << ans + res;
 }
+https://codeforces.com/problemset/problem/368/B
+using namespace std;
+using ll = long long;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+
+    vector<ll> a(n), b(n);
+    for (ll i = 0; i < n; i++) cin >> a[i];
+    set<ll> len;
+    for (ll i = n - 1; i >= 0; --i) {
+        len.insert(a[i]);
+        b[i] = (ll)len.size();
+    }
+    while (m--) {
+        ll q;
+        cin >> q;
+        cout << b[q - 1] << "\n";
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/371/D
+using namespace std;
+using ll = long long;
+int main() {
+    ll n;
+    cin >> n;
+    vector<ll> capacity(n);
+    for (ll &C : capacity) cin >> C;
+
+    set<ll> unfilled;
+    for (ll i = 0; i < n; ++i) unfilled.insert(i);
+
+    auto orig = capacity;
+
+    ll q;
+    cin >> q;
+    while (q--) {
+        ll type;
+        cin >> type;
+
+        if (type == 1) {
+            ll p, x;
+            cin >> p >> x;
+            --p;
+
+            auto it = unfilled.lower_bound(p);
+            if (it == unfilled.end()) continue;
+
+            p = *it;
+            while (true) {
+                if (p >= n) break;
+
+                ll to_dec = min(capacity[p], x);
+                capacity[p] -= to_dec;
+                x -= to_dec;
+
+                if (capacity[p] == 0) unfilled.erase(p);
+                if (x == 0) break;
+
+                ++p;
+            }
+
+        } else { // type == 2
+            ll k;
+            cin >> k;
+            --k;
+            cout << orig[k] - capacity[k] << "\n";
+        }
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/376/B
+using namespace std;
+using ll = long long;
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<ll> balance(n, 0);
+
+    while (m--) {
+        int a, b;
+        ll c;
+        cin >> a >> b >> c;
+        --a, --b;
+        balance[a] -= c;
+        balance[b] += c;
+    }
+
+    ll sum = 0;
+    for (int i = 0; i < n; ++i) {
+        if (balance[i] > 0)
+            sum += balance[i];
+    }
+
+    cout << sum << "\n";
+}
+https://codeforces.com/problemset/problem/377/A
+using namespace std;
+using ll = long long;
+int main() {
+    ll n, m, k;
+    cin >> n >> m >> k;
+    vector<string> grid(n);
+    vector<vector<int>> vis(n, vector<int>(m, 0));
+    ll sum = 0;  // total number of '.' cells
+    for (auto &row : grid) {
+        cin >> row;
+        sum += count(row.begin(), row.end(), '.');
+    }
+    sum -= k;  // we want to keep exactly 'sum' reachable '.' cells
+
+    // directions: down, right, up, left
+    ll dx[4] = {1, 0, -1, 0};
+    ll dy[4] = {0, 1, 0, -1};
+
+    queue<pair<ll, ll>> bfs;
+    ll sx = -1, sy = -1;
+    // find a starting '.' cell
+    for (ll i = 0; i < n; i++) {
+        for (ll j = 0; j < m; j++) {
+            if (grid[i][j] == '.') {
+                sx = i;
+                sy = j;
+            }
+        }
+    }
+    bfs.push({sx, sy});
+    vis[sx][sy] = 1;
+    while (!bfs.empty() && sum > 0) {
+        auto [X, Y] = bfs.front();
+        bfs.pop();
+
+        vis[X][Y] = 2;  // mark as kept
+        --sum;
+
+        for (int dir = 0; dir < 4; dir++) {
+            ll nx = X + dx[dir], ny = Y + dy[dir];
+            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+            if (vis[nx][ny] != 0 || grid[nx][ny] != '.') continue;
+            bfs.push({nx, ny});
+            vis[nx][ny] = 1;
+        }
+    }
+    // replace all other '.' with 'X'
+    for (ll i = 0; i < n; i++) {
+        for (ll j = 0; j < m; j++) {
+            if (grid[i][j] == '.' && vis[i][j] != 2) {
+                grid[i][j] = 'X';
+            }
+        }
+    }
+    for (ll i = 0; i < n; i++) {
+        cout << grid[i] << '\n';
+    }
+}
+https://codeforces.com/problemset/problem/379/A
+using namespace std;
+using ll = long long;
+int main() {
+    ll a, b;
+    cin >> a >> b;
+
+    ll ctr = 0;   // total burned
+    ll rem = 0;   // leftover stubs
+    while (a > 0) {
+        ctr += a;         // burn all current candles
+        rem += a;         // add burned stubs
+        a = rem / b;      // exchange stubs for new candles
+        rem %= b;         // leftover stubs after exchange
+    }
+    cout << ctr << "\n";
+    // Alternative direct formula:
+    // cout << (a * b - 1) / (b - 1) << "\n";
+}
 http://codeforces.com/problemset/problem/379/A
 // New_Year_Candles.cpp
 using namespace std;
@@ -12988,7 +13164,34 @@ int main() {
     cout << total << "\n";
     return 0;
 }
+https://codeforces.com/problemset/problem/381/A
+using namespace std;
+using ll = long long;
+int main() {
+    int n;
+    cin >> n;
+    vector<ll> vec(n);
+    for (int i = 0; i < n; i++) cin >> vec[i];
 
+    int i = 0, j = n - 1;
+    ll s1 = 0, s2 = 0;
+    int ctr = 0;
+
+    while (i <= j) {
+        if (vec[i] > vec[j]) {
+            if (ctr % 2 == 0) s1 += vec[i];
+            else s2 += vec[i];
+            i++;
+        } else {
+            if (ctr % 2 == 0) s1 += vec[j];
+            else s2 += vec[j];
+            j--;
+        }
+        ctr++;
+    }
+
+    cout << s1 << " " << s2 << "\n";
+}
 using namespace std;
 http://codeforces.com/contest/381/problem/A
 // A. Sereja and Dima
@@ -13262,6 +13465,121 @@ int main() {
     } else
         cout << "Impossible" << endl;
     return 0;
+}
+https://codeforces.com/problemset/problem/385/C
+using namespace std;
+using ll = long long;
+const ll INF = 1e18;
+const int N = 1e7 + 5;
+const ll MOD = 1'000'000'007;
+vector<int> spf(N, -1);
+void fill_spf() {
+    for (int i = 2; i < N; i++) {
+        if (spf[i] == -1) {        // i is prime
+            spf[i] = i;
+            if ((ll)i * i < N) {
+                for (ll j = 1LL * i * i; j < N; j += i) {
+                    if (spf[j] == -1) spf[j] = i;
+                }
+            }
+        }
+    }
+}
+// Factorization using spf[]
+vector<int> factorise(int n) {
+    vector<int> res;
+    while (n > 1) {
+        int fac = spf[n];
+        res.push_back(fac);
+        while (n % fac == 0) n /= fac;
+    }
+    return res;
+}
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> x(n);
+    for (int &X : x) cin >> X;
+
+    vector<int> cnt(N, 0);  // cnt[p] = how many numbers divisible by prime p
+
+    for (int i = 0; i < n; i++) {
+        auto C = factorise(x[i]);
+        for (int c : C) cnt[c]++;
+    }
+
+    vector<int> pref(N, 0);
+    for (int i = 1; i < N; i++) pref[i] = pref[i - 1] + cnt[i];
+
+    int m;
+    cin >> m;
+    while (m--) {
+        int l, r;
+        cin >> l >> r;
+        if (l >= N) cout << "0\n";
+        else cout << pref[min(r, N - 1)] - pref[l - 1] << "\n";
+    }
+}
+https://codeforces.com/problemset/problem/387/A
+using namespace std;
+using ll = long long;
+int main() {
+    string s;
+    cin >> s;
+
+    stringstream ss(s);
+    ll h, m;
+    char ch;
+    ss >> h >> ch >> m;
+
+    string dur;
+    cin >> dur;
+    stringstream dd(dur);
+    ll dh, dm;
+    dd >> dh >> ch >> dm;
+
+    // subtract duration
+    ll ansh = h - dh;
+    ll ansm = m - dm;
+
+    if (ansm < 0) {
+        ansm += 60;
+        ansh -= 1;
+    }
+    if (ansh < 0) {
+        ansh += 24;
+    }
+
+    cout << setw(2) << setfill('0') << ansh << ':'
+         << setw(2) << setfill('0') << ansm << "\n";
+}
+https://codeforces.com/problemset/problem/387/B
+using namespace std;
+using ll = long long;
+int main() {
+    ll n, m;
+    cin >> n >> m;
+
+    vector<ll> a(n), b(m);
+    for (ll i = 0; i < n; i++) cin >> a[i];
+    for (ll i = 0; i < m; i++) cin >> b[i];
+
+    sort(a.rbegin(), a.rend()); // sort descending
+    sort(b.rbegin(), b.rend()); // sort descending
+
+    ll ans = n; // max problems we need to prepare
+    ll pos = 0; // pointer in b
+
+    for (ll i = 0; i < n; i++) {
+        if (pos < m && b[pos] >= a[i]) {
+            pos++;
+            ans--; // problem covered
+        }
+        if (pos >= m) break;
+    }
+
+    cout << ans << "\n";
 }
 using namespace std;
 http://codeforces.com/contest/404/problem/A
