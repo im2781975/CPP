@@ -688,7 +688,7 @@ int main(){
 using namespace std;
 int main(){
     int day, sum; cin >> day;
-    vector <pair <int, int> >vec(day);
+    vector <pair <int, int> >a(day);
     vector <int> res(day);
     int maxtime = 0, mintime = 0;
     for(int i = 0; i < day; i++){
