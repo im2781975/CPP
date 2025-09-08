@@ -988,6 +988,8 @@ int main(){
     }
     int maxlen = 0, cnt = 0, lastcut = -1;
     for(auto it = st.begin(); it!= st.end(); it++){
+        // Between each pair of consecutive cuts, we get a valid region.
+        // Its length = *it - lastcut - 1.
         int len = *it - lastcut - 1;
         if(len > maxlen){
             maxlen = 1;
