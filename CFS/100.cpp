@@ -758,7 +758,7 @@ int main(){
         for(int j = 0; j < i; j++){
             if(w[idx[i]] < w[idx[j]] && h[idx[i]] < h[idx[j]]){
                 if(cnt[j] + 1 > cnt[i]){
-                    cnt[j] = cnt[i] + 1;
+                    cnt[i] = cnt[j] + 1;
                     path[i] = j;
                 }
             }
