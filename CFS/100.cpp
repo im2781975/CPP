@@ -796,55 +796,56 @@ int main(){
     }*/
 }
 using namespace std;
-const int peak = 5010;
-int w[peak], h[peak], vis[peak], m = 0;
-int index[peak]; //an array of indices used to sort envelopes without moving w[] and h[].
-int dp[peak];// stores the maximum chain length starting at envelope u
-int pos[peak]; //stores the next envelope in the optimal chain from u.
-int idx[peak];// original 1-based indices of envelopes (to print at the end).
-int dfs(int u) {
-    if (vis[u]) return dp[u];
-    vis[u] = 1;
-    dp[u] = 1; pos[u] = -1;
-    for (int i = u + 1; i < m; i++) {
-        if (w[index[i]] > w[index[u]] && h[index[i]] > h[index[u]]) {
-            int tmp = dfs(i);
-            if (dp[u] < tmp + 1) {
-                dp[u] = tmp + 1;
-                pos[u] = i;
+int main() {
+    int n, W, H; cin >> n >> W >> H;
+    vector<int> w, h, id;
+    for (int i = 0; i < n; i++) {
+        int a, b; cin >> a >> b;
+        if (a > W && b > H) { 
+            w.push_back(a);
+            h.push_back(b);
+            id.push_back(i + 1);
+        }
+    }
+    int m = w.size();
+    if (m == 0) {
+        cout << "0" << endl;
+        return 0;
+    }
+    vector<int> idx(m);
+    iota(idx.begin(), idx.end(), 0);
+    sort(idx.begin(), idx.end(), [&](int i, int j) {
+        if (w[i] == w[j]) return h[i] < h[j];
+        return w[i] < w[j];
+    });
+    vector<int> dp(m, 1), parent(m, -1);
+
+    int bestLen = 0, bestEnd = -1;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < i; j++) {
+            if (w[idx[i]] > w[idx[j]] && h[idx[i]] > h[idx[j]]) {
+                if (dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    parent[i] = j;
+                }
             }
         }
-    }
-    return dp[u];
-}
-int main(){
-    int n, W, H; cin >> n >> W >> H;
-    for(int i = 0; i < n; i++){
-        int a, b; cin >> a >> b;
-        if(a <= W || b <= H)    continue;
-        w[m] = a; h[m] = b;
-        idx[m] = i + 1; // store original 1-based index
-        index[m] = m; // store index for sorting
-        m++;
-    }
-    sort(index, index + m, [&](int x, int y){
-        return w[x] < w[y];
-    });
-    memset(vis, 0, sizeof(vis));
-    int res = 0; start = -1;
-    for(int i = 0; i < m; i++){
-        int tmp = dfs[i];
-        if(res < tmp){
-            res = tmp; start = i;
+        if (dp[i] > bestLen) {
+            bestLen = dp[i];
+            bestEnd = i;
         }
     }
-    if(res == 0)    cout << "0";
-    else{
-        cout << res << endl;
-        cout << idx[index[start]];
-        start = pos[start];
+    cout << bestLen << endl;
+    vector<int> seq;
+    for (int cur = bestEnd; cur != -1; cur = parent[cur])
+        seq.push_back(id[idx[cur]]);
+    reverse(seq.begin(), seq.end());
+
+    for (int i = 0; i < seq.size(); i++) {
+        if (i) cout << " ";
+        cout << seq[i];
     }
-    cout << " ";
+    cout << endl;
 }
 https://codeforces.com/problemset/problem/5/A
 // 5A. Chat Server's Outgoing Traffic
