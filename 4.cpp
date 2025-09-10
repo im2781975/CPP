@@ -13581,6 +13581,81 @@ int main() {
 
     cout << ans << "\n";
 }
+// 400/B
+using namespace std;
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    set<int> distances;
+    for (int i = 0; i < n; i++) {
+        string row;
+        cin >> row;
+
+        int g = row.find('G');
+        int s = row.find('S');
+
+        if (s < g) {
+            cout << -1 << "\n";
+            return;
+        }
+        distances.insert(s - g);
+    }
+    cout << distances.size() << "\n";
+}
+//401/A
+using namespace std;
+int main() {
+    long long n, x;
+    cin >> n >> x;
+
+    vector<long long> arr(n);
+    for (auto &val : arr) cin >> val;
+
+    long long sum = 0;
+    for (auto val : arr) sum += val;
+    sum = abs(sum);
+
+    cout << (sum + x - 1) / x << "\n";
+}
+void Solution() {
+    ll n, x;
+    cin >> n >> x;
+    vl arr(n);
+    fo(i, n) cin >> arr[i];
+    ll sum = accumulate(all(arr), 0LL);
+    if (sum < 0) sum = -sum;
+    ll ans = sum / x;
+    if (sum % x) ans++;
+    cout << ans << ln;
+}
+//402/C
+using namespace std;
+void Solution() {
+    ll n, p;
+    cin >> n >> p;
+    vector<array<ll, 2>> edges;
+    for (ll dist = 1; dist <= n && sz(edges) < 2 * n + p; ++dist) {
+        for (ll i = 0; i < n && sz(edges) < 2 * n + p; ++i) {
+            edges.push_back({i, (dist + i) % n});
+        }
+    }
+    for (auto &[x, y] : edges) cout << x + 1 << ' ' << y + 1 << '\n';
+}
+void solve() {
+    long long n, p;
+    cin >> n >> p;
+
+    vector<pair<long long, long long>> edges;
+    for (long long d = 1; edges.size() < 2 * n + p; d++) {
+        for (long long i = 0; i < n && edges.size() < 2 * n + p; i++) {
+            edges.push_back({i + 1, (i + d) % n + 1});
+        }
+    }
+    for (auto [u, v] : edges)
+        cout << u << " " << v << "\n";
+}
+
 using namespace std;
 http://codeforces.com/contest/404/problem/A
 A. Valera and X
@@ -13640,6 +13715,115 @@ int main() {
     cout << "YES\n";
     return 0;
 }
+	// 404/C
+using namespace std;
+void solve() {
+    long long n, k;
+    cin >> n >> k;
+
+    vector<long long> dist(n), count(n, 0), degree(n, 0);
+    for (auto &x : dist) {
+        cin >> x;
+        count[x]++;
+    }
+
+    long long maxDepth = *max_element(dist.begin(), dist.end());
+
+    // Check max capacity: at depth i, ≤ k^i nodes allowed
+    long long capacity = 1;
+    for (int i = 0; i < n && i <= maxDepth; i++) {
+        if (count[i] > capacity) {
+            cout << -1 << "\n";
+            return;
+        }
+        if (capacity > 100000 / k) break; // prevent overflow
+        capacity *= k;
+    }
+
+    // Distances must be consecutive
+    vector<long long> check = dist;
+    sort(check.begin(), check.end());
+    check.erase(unique(check.begin(), check.end()), check.end());
+    for (int i = 1; i < (int)check.size(); i++) {
+        if (check[i] != check[i - 1] + 1) {
+            cout << -1 << "\n";
+            return;
+        }
+    }
+
+    // Build edges level by level
+    vector<vector<int>> nodesAtDepth(maxDepth + 1);
+    for (int i = 0; i < n; i++) {
+        nodesAtDepth[dist[i]].push_back(i);
+    }
+
+    vector<pair<int, int>> edges;
+    for (int depth = 1; depth <= maxDepth; depth++) {
+        auto &parents = nodesAtDepth[depth - 1];
+        auto &children = nodesAtDepth[depth];
+        if (parents.empty()) {
+            cout << -1 << "\n";
+            return;
+        }
+        for (int j = 0; j < (int)children.size(); j++) {
+            int u = parents[j % parents.size()];
+            int v = children[j];
+            degree[u]++;
+            degree[v]++;
+            edges.push_back({u, v});
+        }
+    }
+
+    // Validate degree constraint
+    if (*max_element(degree.begin(), degree.end()) > k || edges.empty()) {
+        cout << -1 << "\n";
+        return;
+    }
+
+    // Output
+    cout << edges.size() << "\n";
+    for (auto [u, v] : edges) {
+        cout << u + 1 << " " << v + 1 << "\n";
+    }
+}
+
+void Solution() {
+    ll n, k, p = 1;
+    cin >> n >> k;
+    vector<ll> d(n), cnt(n, 0), deg(n, 0);
+    for (ll &x : d) cin >> x, ++cnt[x];
+    ll mx = *ranges::max_element(d);
+    // 1, k, k^2, ... <- max nodes with d[0], d[1] ...
+    for (ll i = 0; i < n; ++i) {
+        if (!cnt[i] || p >= (ll)1e5) break;
+        if (cnt[i] > p) return void(cout << "-1\n");
+        p *= k;
+    }
+    // distances 0 1 2 3.. all consecutive should exist
+    vector<ll> check(d);
+    sort(all(check));
+    check.resize(unique(all(check)) - check.begin());
+    for (ll i = 1; i < sz(check); ++i)
+        if (check[i] != check[i - 1] + 1) return void(cout << "-1\n");
+    // joining all children to their parents equally.. %sz(parent)..
+    vector<vector<ll>> avail(mx + 1);
+    vector<pair<ll, ll>> edges;
+    for (ll i = 0; i < n; ++i) avail[d[i]].push_back(i);
+    for (ll i = 1; i <= mx; ++i) {
+        ll parent = i - 1, child = i;
+        if (avail[parent].empty()) break;
+        for (ll j = 0; j < sz(avail[child]); ++j) {
+            ll u = avail[parent][j % sz(avail[parent])];
+            ll v = avail[child][j];
+            ++deg[u], ++deg[v];
+            edges.push_back({u, v});
+        }
+    }
+    // rechecking at the end
+    if (*ranges::max_element(deg) > k || edges.empty()) return void(cout << "-1\n");
+    cout << sz(edges) << '\n';
+    for (auto &[x, y] : edges) cout << x + 1 << ' ' << y + 1 << '\n';
+}
 http://codeforces.com/problemset/problem/405/A
 // GravityFlip.cpp
 using namespace std;
@@ -13649,6 +13833,29 @@ int main(){
     for(int i = 0; i < n; i++)    cin >> arr[i];
     sort(arr, arr + n);
     for(int i = 0; i < n; i++)    cout << arr[i] << " ";
+}
+// 405/A
+using namespace std;
+void solve() {
+    int n;
+    cin >> n;
+
+    vector<long long> arr(n);
+    for (auto &x : arr) cin >> x;
+
+    sort(arr.begin(), arr.end());
+
+    for (auto x : arr) cout << x << " ";
+    cout << "\n";
+}
+void solve(){
+    ll n;
+    cin >> n;
+    ll arr[n];
+    fo(i, n) { cin >> arr[i]; }
+    sort(arr, arr + n);
+    fo(i, n) { cout << arr[i] << " "; }
+    return;
 }
 using namespace std;
 http://codeforces.com/contest/408/problem/A
@@ -13716,6 +13923,101 @@ int main() {
     cout << total << endl;
     return 0;
 }
+// 408/B
+using namespace std;
+void solve() {
+    string s1, s2;
+    cin >> s1 >> s2;
+
+    vector<int> cnt1(26, 0), cnt2(26, 0);
+    for (char c : s1) cnt1[c - 'a']++;
+    for (char c : s2) cnt2[c - 'a']++;
+
+    int ans = 0;
+    for (int i = 0; i < 26; i++) {
+        if (cnt2[i] > 0 && cnt1[i] == 0) {
+            cout << -1 << "\n";
+            return;
+        }
+        ans += min(cnt1[i], cnt2[i]);
+    }
+
+    cout << ans << "\n";
+}
+void Solution() {
+    str s1, s2;
+    cin >> s1 >> s2;
+    vl cnt1(26, 0), cnt2(26, 0);
+    fo(i, sz(s1))++ cnt1[s1[i] - 'a'];
+    fo(i, sz(s2))++ cnt2[s2[i] - 'a'];
+    debug(cnt1, cnt2);
+
+    ll ans = 0;
+    fo(i, 26) {
+        ans += min(cnt1[i], cnt2[i]);
+        if (cnt1[i] == 0 && cnt2[i] != 0) {
+            cout << -1 << ln;
+            return;
+        }
+    }
+    cout << ans << ln;
+}
+// 420/A
+using namespace std;
+void solve() {
+    string s;
+    cin >> s;
+    // Step 1: Check palindrome
+    int n = s.size();
+    for (int i = 0; i < n / 2; i++) {
+        if (s[i] != s[n - 1 - i]) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    // Step 2: Check allowed characters
+    string allowed = "AHIMOTUVWXY";
+    set<char> valid(allowed.begin(), allowed.end());
+
+    for (char c : s) {
+        if (!valid.count(c)) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n";
+}
+void Solution() {
+    //AHIMOTUVWXY and palindrome
+    str s, s1 = "AHIMOTUVWXY";
+    cin >> s;
+    ll n = sz(s);
+    fo(i, n / 2) {
+        if (s[i] != s[n - 1 - i]) {
+            no();
+            return;
+        }
+    }
+    sort(all(s));
+    uniq(s);
+    debug(s);
+    n = sz(s);
+    ll pos = 0;
+    if (n > 11)
+        no();
+    else {
+        fo(i, 11) {
+            if (s1[i] == s[pos]) {
+                pos++;
+            }
+        }
+        debug(pos);
+        if (pos != n)
+            no();
+        else
+            yes();
+    }
+}
 using namespace std;
 http://codeforces.com/contest/427/problem/A
 //427 A. Police Recruits.cpp
@@ -13757,6 +14059,46 @@ int main() {
         }
     }
     cout<<untcrimes<<endl;
+}
+	// 427/A
+void solve() {
+    int n;
+    cin >> n;
+
+    int police = 0, untreated = 0;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        if (x == -1) {
+            if (police > 0) police--;
+            else untreated++;
+        } else {
+            police += x;
+        }
+    }
+
+    cout << untreated << "\n";
+}
+void solve(){
+    ll n, police = 0, untreated = 0;
+    cin >> n;
+    vl arr(n);
+    fo(i, n)
+    {
+        cin >> arr[i];
+        if (arr[i] != -1)
+            police += arr[i];
+        if (arr[i] == -1)
+        {
+            if (police > 0)
+                police--;
+            else
+                untreated++;
+        }
+        // deb2(police, untreated);
+    }
+    cout << untreated;
+    return;
 }
 #include <bits/stdc++.h>
 using namespace std;
@@ -13833,6 +14175,31 @@ int main(){
 	    res += arr[z - 1];
 	}
     cout << res;
+}
+// 431/A
+using namespace std;
+void solve() {
+    vector<int> arr(4);
+    for (int i = 0; i < 4; i++) cin >> arr[i];
+
+    string s;
+    cin >> s;
+
+    int ans = 0;
+    for (char c : s) ans += arr[c - '1'];
+
+    cout << ans << "\n";
+}
+
+void solve()
+{
+    ll arr[4], ans = 0;
+    fo(i, 4) cin >> arr[i];
+    string s;
+    cin >> s;
+    fo(i, s.length()) ans += arr[s[i] - '1'];
+    cout << ans;
+    re;
 }
 http://codeforces.com/contest/431/problem/A
 // Black_Square
@@ -13938,7 +14305,41 @@ int main() {
         else calories+=a4; } 
         cout<<calories<<endl; 
 }
+// 431/C
+using namespace std;
+void solve() {
+    int n, k, d;
+    cin >> n >> k >> d;
 
+    const int MOD = 1e9 + 7;
+    vector<int> dp1(n + 1, 0), dp2(n + 1, 0);
+    dp1[0] = dp2[0] = 1;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= k && j <= i; j++)
+            dp1[i] = (dp1[i] + dp1[i - j]) % MOD;
+        for (int j = 1; j < d && j <= i; j++)
+            dp2[i] = (dp2[i] + dp2[i - j]) % MOD;
+    }
+
+    int ans = (dp1[n] - dp2[n] + MOD) % MOD;
+    cout << ans << "\n";
+}
+
+void test() {
+    ll n, k, d;
+    cin >> n >> k >> d;
+    vector<ll> dp1(n + 1, 0), dp2(n + 1, 0);
+    dp1[0] = dp2[0] = 1;
+    for (ll i = 1; i <= n; ++i) {
+        for (ll j = 1; j <= k; ++j)
+            if (j <= i) (dp1[i] += dp1[i - j]) %= MOD;
+        for (ll j = 1; j <= d - 1; ++j)
+            if (j <= i) (dp2[i] += dp2[i - j]) %= MOD;
+    }
+    // d - 1 wale saare ways hata diye
+    cout << (dp1[n] - dp2[n] + MOD) % MOD << '\n';
+}
 http://codeforces.com/problemset/problem/432/A
 // Choosing_Teams
 using namespace std;
@@ -13952,6 +14353,35 @@ int main() {
 	}
 	cout << count / 3;
 	return 0;
+}
+// 432/A
+using namespace std;
+void solve() {
+    int n, k;
+    cin >> n >> k;
+
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        if (x + k <= 5) count++;
+    }
+
+    // Maximum number of teams of 3
+    cout << count / 3 << "\n";
+}
+void solve(){
+    ll n, k, ctr = 0;
+    cin >> n >> k;
+    ll arr[n];
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+        arr[i] += k;
+        if (arr[i] <= 5)
+            ctr++;
+    }
+    cout << ctr / 3;
+    return;
 }
 using namespace std;
 int main() {
