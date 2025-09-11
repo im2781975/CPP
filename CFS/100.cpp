@@ -1001,6 +1001,73 @@ int main(){
     }
     cout << maxlen << " " << (cnt > 0 ? cnt : 1);
 }
+https://codeforces.com/problemset/problem/5/D
+// 5D. Follow Traffic Rules
+using namespace std;
+int main() {
+    double accel, vmax, totalDist, limitPos, limitSpeed;
+    cin >> accel >> vmax >> totalDist >> limitPos >> limitSpeed;
+
+    cout << fixed << setprecision(12);
+
+    // Helper: distance needed to reach a given speed from rest
+    auto distToSpeed = [&](double speed) {
+        return (speed * speed) / (2.0 * accel);
+    };
+
+    // Case 1: cannot exceed limitSpeed at all
+    if (limitSpeed >= vmax || limitPos <= distToSpeed(limitSpeed)) {
+        if (distToSpeed(vmax) >= totalDist) {
+            cout << sqrt((2.0 * totalDist) / accel) << "\n";  // never reach vmax
+        } else {
+            double t_acc = vmax / accel;  // accelerate to vmax
+            double t_const = (totalDist - distToSpeed(vmax)) / vmax;
+            cout << t_acc + t_const << "\n";
+        }
+        return 0;
+    }
+
+    // Case 2: we can accelerate to limitSpeed before limitPos
+    double distAccLimit = distToSpeed(limitSpeed);   // distance to reach limitSpeed
+    double distAccMax = distToSpeed(vmax);           // distance to reach vmax
+    double distDecMaxToLimit = (vmax * vmax - limitSpeed * limitSpeed) / (2.0 * accel);
+
+    if (limitPos - distAccLimit <= distDecMaxToLimit) {
+        // cannot reach vmax before limitPos
+        if (distDecMaxToLimit > totalDist - limitPos) {
+            // after limitPos, can't reach vmax either
+            double t1 = (sqrt(2.0 * accel * limitPos + limitSpeed * limitSpeed / 2.0) - limitSpeed) / accel;
+            double t2 = limitSpeed / accel;
+            double t3 = (sqrt(2.0 * accel * (totalDist - limitPos) + limitSpeed * limitSpeed) - limitSpeed) / accel;
+            cout << 2 * t1 + t2 + t3 << "\n";
+        } else {
+            // after limitPos, can reach vmax
+            double t1 = (sqrt(2.0 * accel * limitPos + limitSpeed * limitSpeed / 2.0) - limitSpeed) / accel;
+            double t2 = limitSpeed / accel;
+            double t3 = (vmax - limitSpeed) / accel;
+            double t4 = (totalDist - limitPos - distDecMaxToLimit) / vmax;
+            cout << 2 * t1 + t2 + t3 + t4 << "\n";
+        }
+    } else {
+        // can reach vmax before limitPos
+        if (distDecMaxToLimit > totalDist - limitPos) {
+            // after limitPos, can't reach vmax
+            double t1 = (limitPos - distAccLimit - distDecMaxToLimit) / vmax;
+            double t2 = 2 * (vmax - limitSpeed) / accel;
+            double t3 = limitSpeed / accel;
+            double t4 = (sqrt(2.0 * accel * (totalDist - limitPos) + limitSpeed * limitSpeed) - limitSpeed) / accel;
+            cout << t1 + t2 + t3 + t4 << "\n";
+        } else {
+            // after limitPos, can reach vmax
+            double t1 = (limitPos - distAccLimit - distDecMaxToLimit) / vmax;
+            double t2 = 3 * (vmax - limitSpeed) / accel;
+            double t3 = limitSpeed / accel;
+            double t4 = (totalDist - limitPos - distDecMaxToLimit) / vmax;
+            cout << t1 + t2 + t3 + t4 << "\n";
+        }
+    }
+    return 0;
+}
 https://codeforces.com/problemset/problem/5/E
 // 5E. Bindian Signalizing
 using namespace std;
