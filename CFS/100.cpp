@@ -632,6 +632,8 @@ int main(){
         else if(str[i] == ')')    flag--;
         else{
             flag--;
+            // Every '?' can either become '(' or ')', with associated costs.
+			//If replaced with '(' → cost = a,If replaced with ')' → cost = b
             int a, b; cin >> a >> b;
             val += b; str[i] = ')';
             q.push(make_pair(b - a, i));
