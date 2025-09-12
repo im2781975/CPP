@@ -798,55 +798,47 @@ int main(){
     }*/
 }
 using namespace std;
-int main() {
+int main(){
     int n, W, H; cin >> n >> W >> H;
-    vector<int> w, h, id;
-    for (int i = 0; i < n; i++) {
+    vector <int> w(n), h(n), id(n);
+    for(int i = 0; i < n; i++){
         int a, b; cin >> a >> b;
-        if (a > W && b > H) { 
+        if(a > W && b > H){
             w.push_back(a);
             h.push_back(b);
             id.push_back(i + 1);
         }
     }
     int m = w.size();
-    if (m == 0) {
-        cout << "0" << endl;
-        return 0;
-    }
-    vector<int> idx(m);
+    vector <int> idx(m);
     iota(idx.begin(), idx.end(), 0);
-    sort(idx.begin(), idx.end(), [&](int i, int j) {
-        if (w[i] == w[j]) return h[i] < h[j];
+    sort(idx.begin(), idx.end(), [&](int i, int j){
+        if(w[i] == w[j])    return h[i] < h[j];
         return w[i] < w[j];
     });
-    vector<int> dp(m, 1), parent(m, -1);
-
-    int bestLen = 0, bestEnd = -1;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < i; j++) {
-            if (w[idx[i]] > w[idx[j]] && h[idx[i]] > h[idx[j]]) {
-                if (dp[j] + 1 > dp[i]) {
+    vector <int> dp(m, 1), parent(m, -1);
+    int res = 0, best = -1;
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < i; j++){
+            if(w[idx[i]] > w[idx[j]] && h[idx[i]] > h[idx[j]]){
+                if(dp[j] + 1 > dp[i]){
                     dp[i] = dp[j] + 1;
                     parent[i] = j;
                 }
             }
         }
-        if (dp[i] > bestLen) {
-            bestLen = dp[i];
-            bestEnd = i;
+        if(dp[i] > res){
+            res = dp[i];
+            best = i;
         }
     }
-    cout << bestLen << endl;
-    vector<int> seq;
-    for (int cur = bestEnd; cur != -1; cur = parent[cur])
+    cout << res << endl;
+    vector <int> seq;
+    for(int cur = best; cur != -1; cur = parent[cur])
         seq.push_back(id[idx[cur]]);
     reverse(seq.begin(), seq.end());
-
-    for (int i = 0; i < seq.size(); i++) {
-        if (i) cout << " ";
-        cout << seq[i];
-    }
+    for(int i = 0; i < seq.size(); i++)
+        cout << seq[i] << " ";
     cout << endl;
 }
 https://codeforces.com/problemset/problem/5/A
