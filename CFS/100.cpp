@@ -2038,6 +2038,104 @@ int main(){
         res += dp[n][height];
     cout << res << endl;
 }
+https://codeforces.com/problemset/problem/9/E
+// 9E. Interesting Graph and Apples
+using namespace std;
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> adj(n + 1);
+    set<pair<int, int>> edges;
+    int selfLoops = 0, multiEdges = 0;
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+
+        if (u == v) selfLoops++;
+        if (edges.count({u, v}) || edges.count({v, u})) multiEdges++;
+        edges.insert({u, v});
+    }
+
+    // Case 1: self-loop
+    if (selfLoops) {
+        cout << ((n == 1 && selfLoops == 1) ? "YES\n0" : "NO") << "\n";
+        return;
+    }
+
+    // Case 2: multiple edges between 2 nodes
+    if (multiEdges) {
+        cout << ((n == 2 && multiEdges == 1) ? "YES\n0" : "NO") << "\n";
+        return;
+    }
+
+    set<pair<int, int>> endpoints;
+    vector<bool> visited(n + 1, false);
+
+    // DFS to check each component
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            stack<int> st;
+            st.push(i);
+            int start = -1, end = -1;
+
+            while (!st.empty()) {
+                int node = st.top();
+                st.pop();
+                visited[node] = true;
+
+                if ((int)adj[node].size() > 2) {
+                    cout << "NO\n";
+                    return;
+                }
+
+                if ((int)adj[node].size() <= 1) {
+                    if (start == -1) start = node;
+                    else if (end == -1) end = node;
+                    else {
+                        cout << "NO\n";
+                        return;
+                    }
+                }
+
+                for (int nei : adj[node]) {
+                    if (!visited[nei]) st.push(nei);
+                }
+            }
+
+            if (end == -1) end = start;
+            if (start > end) swap(start, end);
+            if (start != -1) endpoints.insert({start, end});
+        }
+    }
+
+    vector<pair<int, int>> result;
+    while (endpoints.size() > 1) {
+        auto e1 = *endpoints.begin();
+        endpoints.erase(endpoints.begin());
+        auto e2 = *endpoints.begin();
+        endpoints.erase(endpoints.begin());
+
+        result.push_back({min(e1.first, e2.first), max(e1.first, e2.first)});
+        endpoints.insert({max(e1.second, e2.second), max(e1.first, e2.first)});
+    }
+
+    if (!endpoints.empty()) {
+        auto [s, e] = *endpoints.begin();
+        result.push_back({min(s, e), max(s, e)});
+    }
+
+    cout << "YES\n";
+    cout << result.size() << "\n";
+    sort(result.begin(), result.end());
+    for (auto [u, v] : result) {
+        cout << u << " " << v << "\n";
+    }
+}
+
 https://codeforces.com/problemset/problem/15/A
 // 15A. Cottage Village
 using namespace std;
