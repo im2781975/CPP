@@ -2129,7 +2129,351 @@ int main() {
         cout << u << " " << v << "\n";
     }
 }
+https://codeforces.com/problemset/problem/10/A
+// 10A. Power Consumption Calculation
+using namespace std;
+int main(){
+    int n, p1, p2, p3, t1, t2; 
+    cin >> n >> p1 >> p2 >> p3 >> t1 >> t2;
+    vector <pair <int, int>> arr;
+    int res = 0, prv = 0;
+    for(int i = 0; i < n; i++){
+        int l, r; cin >> l >> r; 
+        arr.push_back({l, r});
+        res += (r - l) * p1;
+        
+        if(i == 0) continue; 
+        //time gap between two mode
+        int diff = arr[i].first - arr[i - 1].second;
+        // We only want to bill up to t1 minutes at the higher p1 mode
+        int left = min(t1, diff);
+        res += p1 * left;
+        diff -= left;
+        //next t2 minutes
+        left = min(t2, diff);
+        diff -= left;
+        res += (p2 * left);
+        //remaining minutes
+        res += (p3 * diff); /*
+        if(i > 0) {
+            int diff = l - prv;
+            if(gap > t1) {
+                res += t1 * p1;
+                diff -= t1;
+                if(gap > t2) {
+                    res += t2 * p2;
+                    diff -= t2;
+                    res += diff * p3;
+                }
+                else    res += diff * p2;
+            }
+            else    res += gap * p1;
+        }
+        res += (r - l) * p1;
+        prv = r; */
+    }
+    cout << res << endl;
+}
+https://codeforces.com/problemset/problem/10/B
+// 10B. Cinema Cashier
+using namespace std;
+int main(){
+    int n, k; cin >> n >> k;
+    // n, k -> number of groups (requests). number of seats per row and also number of rows.
+    int mid = (k + 1) / 2;
+    // pref[] stores the total "distance" from mid for columns 
+    vector <int> pref(k + 1, 0);
+    for(int i = 1; i <= k; i++)
+        pref[i] = pref[i - 1] + int(abs(i - mid));
+    // taken[row][col] = 1 means that seat is already occupied.
+    vector <vector <char>> taken(k + 1, vector <char> (k + 1, 0));
+    for(int req = 0; req < n; ++req){
+        // Each group wants m contiguous seats in the same row.
+        int m; cin >> m;
+        int mincost = INT_MAX;
+        // store the row and column of the best block found.
+        int bestrow = -1, beststart = -1;
+        for(int row = 1; row <= k; ++row){
+            for(int start = 1; start + m - 1 <= k; ++start){
+                // start -> leftmost column of a block.
+                // end -> last column of the block.
+                end = start + m - 1;
+                bool isfree = true;
+                for(int col = 1; col <= k; ++col){
+                    // If any seat is already taken, mark isfree = false. If not free, skip (continue) and move to next block
+                    if(taken[row][col]){
+                        isfree = false;
+                        break;
+                    }
+                }
+                if(!isfree)    continue;
+                // Every seat in that block is in the same row, so we just multiply the distance of that row from the middle by m(seats required)
+                int rowcost = m * abs(row - mid);
+                // computes the column distance cost of a contiguous block of seats in one row.
+                int colcost = pref[end] - pref[start - 1];
+                int totalcost = rowcost + colcost;
+                if(totalcost < mincost){
+                    mincost = totalcost;
+                    bestrow = row;
+                    beststart = start;
+                }
+            }
+        } /*
+    // dp[row][col] = 1; seat taken
+    vector <vector <int>> dp(k + 2, vector <int> (k + 2, 0));
+    int mid = (k + 1) / 2;
+    for(int d = 0; d < n; ++d) {
+        int m; cin >> m;
+        int mincost = INT_MAX;
+        int bestrow = -1, beststart = -1;
+        for(int row = 1; row <= k; ++row){
+            for(int start = 1; start <= k - m + 1; start++){
+                bool isfree = true;
+                int sum = 0;
+                for(int col = start; col < start + m; ++col){
+                    if(dp[row][col]){
+                        isfree = false;
+                        break;
+                    }
+                    sum += abs(row - mid) + abs(col - mid);
+                }
+                if(isfree && sum < mincost){
+                    mincost = sum;
+                    bestrow = row;
+                    beststart = start;
+                }
+            }
+        }
+    } */
+        if(int bestcost == INT_MAX)    cout << -1 << endl;
+        else {
+            for(int col = beststart; col < beststart + m; ++col)
+                taken[bestrow][col] = 1;
+                // dp[bestrow][col] = 1;
+            cout << bestrow << ' ' << beststart << ' ' << beststart + m - 1 << endl;
+        }
+    }
+}
+https://codeforces.com/problemset/problem/10/C
+// 10C. Digital Root
+using namespace std;
+const int MAXN = 1e7;
+long long countRoot[10];  // count of numbers with each digital root
+int divisors[MAXN+1];     // number of divisors for each number
+int primes[MAXN], isComposite[MAXN];
+int digitRoot(int x) {
+    int sum = 0;
+    while (x) {
+        sum += x % 10;
+        x /= 10;
+    }
+    return (sum < 10) ? sum : digitRoot(sum);
+}
+void precomputeDivisors() {
+    divisors[1] = 1;
+    int totalPrimes = 0;
 
+    for (int i = 2; i <= MAXN; i++) {
+        if (!isComposite[i]) {
+            divisors[i] = 2;     
+            primes[totalPrimes++] = i;
+        }
+        for (int j = 0; j < totalPrimes; j++) {
+            int p = primes[j];
+            if (i * p > MAXN) break;
+            isComposite[i * p] = 1;
+
+            if (i % p == 0) {
+                int temp = i;
+                while (temp % p == 0) temp /= p;
+                divisors[i * p] = (divisors[i / temp] + 1) * divisors[temp];
+                break;
+            } else {
+                divisors[i * p] = divisors[i] * divisors[p];
+            }
+        }
+    }
+}
+int main() {
+    precomputeDivisors();
+
+    int n; cin >> n;
+    long long divisorSum = 0;
+    for (int i = 1; i <= n; i++) {
+        countRoot[digitRoot(i)]++;
+        divisorSum += divisors[i];
+    }
+    long long ans = 0;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            int k = digitRoot(i * j);
+            long long pairs = countRoot[i] * countRoot[j];
+            ans += pairs * countRoot[k];
+        }
+    }
+    cout << ans - divisorSum << "\n";
+    return 0;
+}
+using namespace std;
+int root(int x){
+    while(x >= 10){
+        int tmp = 0;
+        while(x) {
+            tmp += x % 10;
+            x /= 10;
+        }
+        x = tmp;
+    }
+    return x;
+}
+int main(){
+    int n; cin >> n;
+    vector <int> freq(n);
+    for(int i = 1; i <= n; i++){
+        freq[root(i)]++;
+        // freq[i % 9]++;
+    }
+    int sum1 = 0, sum2 = 0;
+    // count by digital root freq
+    for(int i = 1; i <= 9; i++){
+        for(int j = 1; j <= 9; j++){
+            sum1 += freq[root(i * j)] * freq[i] * freq[j];
+        }
+    }
+    for(int i = 1; i <= n; i++){
+        for(int j = i; j <= n; j++){
+            if(root(j) == root(root(i) * root(j / i)))
+                sum2++;
+        }
+    }
+    cout << sum1 - sum2 << endl;
+    /* int res = 0;
+    // count valid triplets(x, y, z)
+    for(int x = 0; x < 9; x++){
+        for(int y = 0; y < 9; y++){
+            for(int z = 0; z < 9; z++){
+                if((x * y - z) % 9 == 0)
+                    res += freq[x] * freq[y] * freq[z];
+            }
+        }
+    }
+    for(int a = 1; a <= n; a++)
+        res -= n / a << " ";
+    cout << endl; */
+}
+https://codeforces.com/problemset/problem/10/D
+// 10D. LCIS
+using namespace std;
+const int ax = 510;
+int a[ax], b[ax];
+int dp[ax][ax], path[ax][ax];
+int n, m;
+void printPath(int i, int j, int prev) {
+    if (i == 0 || j == 0) return;
+    if (path[i][j] == 0) {
+        if (j != prev) cout << b[j] << " ";
+        return;
+    }
+    printPath(i - 1, path[i][j], j);
+    if (j != prev) cout << b[j] << " ";
+}
+int main(){
+    cin >> n; vector <int> a(n);
+    for(int i = 0; i < n; i++)    cin >> a[i];
+    cin >> m; vector <int> b(m);
+    for(int i = 0; i < m; i++)    cin >> b[i];
+    /*
+    memset(dp, 0, sizeof(dp));
+    memset(path, 0, sizeof(path));
+    for(int i = 1; i <= n; i++) {
+        int tmp = 0, k = 0;
+        for(int j = 1; j <= m; j++){
+            dp[i][j] = dp[i - 1][j];
+            path[i][j] = j;
+            if(a[i] > b[j] && tmp < dp[i - 1][j]) {
+                tmp = dp[i - 1][j];
+                k = j;
+            }
+            if(a[i] == b[j]) {
+                dp[i][j] = tmp + 1;
+                path[i][j] = k;
+            } 
+        }
+    }
+    // Find the max LCIS length and endpoint
+    int ans = 0, pos = 0;
+    for (int j = 1; j <= m; j++) {
+        if (dp[n][j] > ans) {
+            ans = dp[n][j];
+            pos = j;
+        }
+    }
+    cout << ans << endl;
+    if (ans > 0) {
+        printPath(n, pos, 0);
+        cout << endl;
+    } */
+    vector <vector <int>> dp(n + 1, vector <int>(m + 1, 0));
+    vector <int> parent(n + 1, 0);
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= n; j++){
+            if(a[i - 1] == b[j - 1]){
+                dp[i][j] = 1;
+                for(int k = 1; k < i; k++){
+                    if(a[k - 1] < a[i - 1] && dp[k][j] + 1 > dp[i][j]){
+                        dp[i][j] = dp[k][j] + 1;
+                        parent[i] = k;
+                    }
+                }
+            }
+            else    dp[i][j] = dp[i][j - 1];
+        }
+    }
+    // find position of LCIS
+    int pos = 0;
+    for(int i = 1; i <= n; i++){
+        if(dp[i][m] > dp[pos][m])    pos = i;
+    }
+    vector <int> LCIS;
+    while(pos) {
+        LCIS.push_back(a[pos - 1]);
+        pos = parent[pos];
+    }
+    reverse(LCIS.begin(), LCIS.end());
+    for(int i = 0; i < LCIS.end(); i++)
+        cout << LCIS[i] << " ";
+    cout << endl;
+}
+https://codeforces.com/problemset/problem/10/E
+// 10E. Greedy Change
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 1; i <= n; i++)    cin >> arr[i];
+    int res = -1;// res will store the smallest counterexample number
+    // i represents the coin you are testing (arr[i]), and j represents another coin smaller than it.
+    for(int i = 1; i <= n; i++){
+        for(int j = i + 1; j <= n; j++){
+            int rem = arr[i] - 1;
+            int tmp = 1;
+            for(int k = i + 1; k <= j; k++){
+                // counts how many coins are used (non-greedy strategy).
+                tmp += rem / arr[k];
+                rem %= arr[k];
+            }
+            int cnt = rem = arr[i] - 1 - rem + arr[j];
+            int greedy = 0;
+            for(int k = 1; k <= n; k++) {
+                // number of coins greedy uses.
+                greedy += rem / arr[k];
+                rem %= arr[k];
+            }
+            if(tmp < greedy && (res == -1 || cnt < res))    res = cnt;
+        }
+    }
+    cout << res << endl;
+}
 https://codeforces.com/problemset/problem/15/A
 // 15A. Cottage Village
 using namespace std;
