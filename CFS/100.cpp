@@ -2474,6 +2474,533 @@ int main(){
     }
     cout << res << endl;
 }
+https://codeforces.com/problemset/problem/14/A
+// 14A. Letter
+using namespace std;
+int main(){
+    int n, m; cin >> n >> m;
+    vector <string> grid(n);
+    for(int i = 0; i < n; i++)    cin >> grid[i];
+    int minrow = n, maxrow = -1;
+    int mincol = m, maxcol = -1;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(grid[i][j] == '*'){
+                minrow = min(minrow, i);
+                maxrow = max(maxrow, i);
+                mincol = min(mincol, j);
+                maxcol = max(maxcol, j);
+            }
+        }
+    }
+    // if there are '*' char do nothing
+    if(maxrow == -1)    return 0;
+    for(int i = minrow; i <= maxrow; i++){
+        for(int j = mincol; j <= mincol; j++)
+            cout << grid[i][j] << ' ';
+        cout << endl;
+    }
+}
+https://codeforces.com/problemset/problem/14/B
+// 14B. Young Photographer
+using namespace std;
+int main(){
+    int n, x; cin >> n >> x;
+    // Intersection of all intervals[L, R]
+    int l = INT_MIN, r = INT_MAX;
+    //vector <pair <int, int>> segs(n);
+    for(int i = 0; i < n; i++) {
+        int a, b; cin >> a >> b;
+        if(a > b) swap(a, b);
+        //segs.emplace_back(a, b);
+        l = max(l, a);
+        r = min(r, b);
+    }
+    if(l > r)    cout << -1 << endl;
+    if(x >= l && r <= r)    cout << 0 << endl;
+    else    cout << min(abs(x - l), abs(x - r));
+    /*
+    sort(segs.begin(), segs.end());
+    for(int i = 0; i < segs.size(); ++i) {
+        int a = segs[i].first;
+        int b = segs[i].second;
+        //Intersections become empty
+        if(b < l || a > r) {
+            cout << -1 << endl;
+            return 0;
+        }
+        l = max(l, a); r = min(r, b);
+    }
+    if(x >= l && x <= r) cout << 0 << endl;
+    else cout << min(abs(x - l), abs(x - r)) << endl; */
+}
+https://codeforces.com/problemset/problem/14/C
+// 14C. Four Segments
+using namespace std;
+int sqrdist(pair <int, int> &a, pair <int, int> &b) {
+    int dx = a.first - b.first;
+    int dy = a.second - b.second;
+    return dx * dx + dy * dy;
+}
+int main(){
+    vector <pair <int, int>>vec(4);
+    for(int i = 0; i < 4; i++){
+        // int x1, x2, y1, y2; cin >> x1 >> y1 >> x2 >> y2;
+        // vec.push_back({x1, y1});
+        // vec.push_back({x2, y2});
+        cin >> vec[i].first >> vec[i].second;
+    }
+    sort(vec.begin(), vec.end());
+    if(unique(vec.begin(), vec.end()) != vec.end()){
+        cout << "NO" << endl;
+        return 0;
+    }
+    vector <int> dists;
+    for(int i = 0; i < 4; i++){
+        for(int j = i + 1; j < 4; j++)
+            dists.push_back(sqrdist(vec[i], vec[j]));
+    }
+    sort(dists.begin(), dists.end());
+    // square condition: four equal sides, two equal diag, diag = 2 * sides
+    if(dists > 0 && dists[0] == dists[1] &&
+    dists[1] == dists[2] && dists[2] == dists[3] &&
+    dists[4] == dists[5] && dists[4] == 2 * dists[0])
+        cout << "YES" << endl;
+    else    cout << "NO" << endl;
+    /*
+    map <pair <int, int> int>freq;
+    int xcnt = 0, ycnt = 0;
+    for(int i = 0; i < 4; i++){
+        int x1, x2, y1, y2; cin >> x1 >> y1 >> x2 >> y2;
+        freq[{x1, y1}]++;
+        freq[{x2, y2}]++;
+        // segments must not be points
+        if(x1 == x2 && y1 || y2) {
+            cout << "NO" << endl;
+            return 0;
+        }
+        // check if vertical or horizontal
+        if(x1 == x2)    ycnt++;
+        else if(y1 == y2)    xcnt++;
+        else {
+            cout << "NO"; return 0;
+        }
+    }
+    //every corner must be appear exactly twice
+    for(int i = 0; i < freq.size(); i++){
+        if(freq[i].second != 2) {
+            cout << "NO" << endl;
+            return 0;
+        }
+    }
+    // must have two horizontal or two vertical segments
+    if(xcnt != 2 || ycnt != 2){
+        cout << "NO" << endl;
+        return 0;
+    }
+    cout << "YES"; */
+}
+https://codeforces.com/problemset/problem/14/D
+// 14D. Two Paths
+using namespace std;
+pair <int, int> dfs(int u, int p) {
+    // best1 = longest child path from u.
+    // best2 = second longest child path from u.
+    // diameter = best diameter found in subtrees or through u.    
+    int best1 = 0, best2 = 0, diameter = 0;
+    for (int v : adj[u]) {
+        if (v == p) continue;
+        auto [len, sub] = dfs(v, u);
+        len++;
+        if (len > best1) {
+            best2 = best1; best1 = len; 
+        }
+        else if (len > best2) best2 = len;
+        diameter = max(diameter, sub);
+    }
+    diameter = max(diameter, best1 + best2);
+    return {best1, diameter};
+}
+// BFS that avoids traversing the forbidden edge (u,v) in either direction
+pair<int,int> farthest_from(int src, const vector<vector<int>>& adj, pair<int,int> forbidden) {
+    int n = adj.size();
+    vector<int> dist(n, -1);
+    queue<int> q;
+    dist[src] = 0; q.push(src);
+    int farNode = src, farDist = 0;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        if (dist[u] > farDist) {
+            farDist = dist[u];
+            farNode = u;
+        }
+        for (int i = 0; i < (int)adj[u].size(); i++) {
+            int v = adj[u][i];
+            if ((u == forbidden.first && v == forbidden.second) ||
+                (u == forbidden.second && v == forbidden.first)) {
+                continue;
+            }
+            if (dist[v] == -1) {
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+    return {farNode, farDist};
+}
+// farthest from start -> u
+// farthest from u -> diameter
+int diameter(int start, const vector <vector <int>> &adj, pair <int, int> forbidden) {
+    pair <int, int> p = fartest(start, adj, forbidden);
+    pair <int, int> q = fartest(p.first, adj, forbidden);
+    return q.second;
+}
+int main(){
+    int n; cin >> n;
+    vector <vector <int>> adj(n + 1);
+    vector <pair <int, int>> edges(n - 1);
+    for(int i = 0; i < n - 1; i++){
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        edges.emplace_back(u, v);
+    }
+    int best = 0;
+    for(int i = 0; i < edges.size(); i++){
+        // compute component diameter that contain e.first when edge e is removed
+        pair <int, int> e = edges[i];
+        pair <int, int> forbid = e;
+        int d1 = diameter(e.first, adj, forbid);
+        int d2 = diameter(e.second, adj, forbid);
+        // diameter in component at rooted u without edge(u, v)
+        //int d1 = dfs(edges[i].first, edges[i].second).second;
+        // diameter in component at rooted v without edge(u, v)
+        //int d2 = dfs(edges[i].second, edges[i].first).second;
+        best = max(best, d1 * d2);
+    }
+    cout << best;
+}
+https://codeforces.com/problemset/problem/14/E
+// 14E. Camels
+using namespace std;
+int dp[21][4][21]; // dp[len][last][turns]
+// turn happen when change direction
+// how many ways you can walk n steps in 4 directions, making exactly 2t-1 turns.
+int main(){
+    int n, t; cin >> n >> t; // length, turn
+    for(int d = 0; d < 4; ++d)
+        dp[1][d][0] = 1;
+    // len, last -> he current sequence length we’re building up to.the direction of the last step in the current sequence
+    //prv, k -> the direction of the second-to-last step, he number of turns so far in the shorter sequence (len-1 length).
+    for(int len = 2; len <= n; ++len) {
+        for(int last = 0; last < 4; last++){
+            for(int prv = 0; prv < 4; ++prv){
+                //no turns
+                if(last = prv)    continue;
+                for(int k = 0; k < 20; ++k){
+                    // last < prev -> is this a left turn
+                    // k % 2 -> what type of turn we expect next (even = left, odd = right).
+                    int add = ((last < prv) != (k % 2));
+                    dp[len][last][k + add] += dp[len - 1][prv][k];
+                }
+            }
+        }
+    }
+    int res = 0; 
+    for(int d = 0; d < 4; ++d)
+        res += dp[n][d][2 * t - 1];
+    cout << res << endl;
+    /*int dp[25][15][5][2]; // dp[length][turn][last][state]
+    // state = 0(non turn) 1(turn)
+    for(int last = 2; last <= 4; ++last)
+        dp[2][0][last][0] = last - 1;
+    for(int len = 3; len <= n; ++len){
+        for(int turn = 0; turn <= t; ++turn){
+            for(int last = 1; last <= 4; ++last){
+                for(int prv = 1; prv <= 4; prv++){
+                    if(prv == last) continue;
+                    if(prv < last) {
+                        dp[len][turn][last][0] = dp[len - 1][turn][prv][0];
+                     dp[len][turn][last][1] = dp[len - 1][turn][prv][0];
+                    }
+                    else {
+                        if(turn > 0){
+                            dp[len][turn][last][1] += dp[len - 1][turn][prv][1];
+                     dp[len][turn][last][1] += dp[len - 1][turn - 1][prv][0];
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    int res = 0;
+    for(int last = 1; last <= 4; ++last)
+        res += dp[n][t][last][1];
+    cout << res << endl; */
+}
+https://codeforces.com/problemset/problem/15/A
+// 15A. Cottage Village
+using namespace std;
+int main(){
+    int n, t; cin >> n >> t;
+    vector <float> pos(n), width(n);
+    for(int i = 0; i < n; i++)
+        cin >> pos[i] >> width[i];
+    // at least 2 gaps: before the first house and after the last houses
+    int cnt = 2; 
+    /* vector <float> ordi(n);
+    iota(ordi.begin(), ordi.end(), 0);
+    sort(ordi.begin(), ordi.end(), [&](int i, int j){
+        return pos[i] < pos[j];
+    });
+    for (int i = 1; i < n; i++) {
+        int dist = 2 * (pos[ordi[i]] - pos[ordi[i - 1]]);
+        int sum = width[ordi[i]] + width[ordi[i - 1]];
+        if (dist > 2 * t + sum) cnt += 2;   // enough for two extra gaps
+        else if (dist == 2 * t + sum) cnt += 1; // exactly one extra gap
+    } */
+    vector <pair <float, float>> houses;
+    for(int i = 0; i < n; i++)
+        houses.push_back({pos[i], width[i]});
+    sort(houses.begin(), houses.end());
+    for(int i = 1; i < n; i++) {
+    // houses[i].second / 2.0 -> half the width = how far the house extends from its center
+        float gap = houses[i].first - houses[i - 1].first - (houses[i].second / 2.0) - (houses[i - 1].second / 2.0);
+        if (fabs(gap - t) < 1e-6) cnt += 1;   // exactly fits one house
+        // enough space for two houses
+        else if (gap > t) cnt += 2;
+    }
+    /* vector <pair <long double, long double >>houses;
+    for(int i = 0; i < n; i++){
+        long double x, y; cin >> x >> y;
+        houses.push_back({x - y / 2, x + y / 2});// store left and right edges
+    }
+    sort(houses.begin(), houses.end());
+    int cnt = 2;
+    for (int i = 0; i < n - 1; i++) {
+        long double gap = houses[i + 1].first - houses[i].second;
+        if (fabs(gap - t) < 1e-9) cnt += 1;
+        else if (gap > t) cnt+= 2;       
+    } */
+    cout << cnt << endl;
+}
+https://codeforces.com/problemset/problem/15/B
+// 15B. Laser
+using namespace std;
+int main(){
+    int n, m, x1, y1, x2, y2;
+    cin >> n >> m >> x1 >> y1 >> x2 >> y2;
+    /*
+    int dy = abs(y1 - y2); // vertical dst
+    int dx = abs(x1 - x2); // horizontal dst
+    int res = 2 * dx * dy; //covered area
+    
+    if(dy * 2 > m && dx * 2 > n)
+        res -= (2 * dy - m) * (2 * dx - n);
+    else if(dy * 2 > m && dx * 2 < n)
+        res += (2 * dy - m) * (n - 2 * dx);
+    else if(dy * 2 < m && dx * 2 > n)
+        res += (m - 2 * dy) * (2 * dx - n);
+    */
+    int res = n * m - 2 * (n - dx) * (m - dy);
+    // (n - dx) * (m - dy) = size of the unlit central area (the “hole” where the laser never goes).
+    if(2 * dx < n && 2 * dy < m)
+        res += (n - 2 * dx) * (m - 2 * dy);
+    cout << res << endl;
+}
+https://codeforces.com/problemset/problem/15/C
+// 15C. Industrial Nim
+using namespace std;
+int func(int x) {
+    switch(x % 4) {
+        case 0 : return x;
+        case 1 : return 1;
+        case 2 : return x + 1;
+        default : return 0;
+    }
+}
+int main(){
+    int n; cin >> n;
+    int nim = 0;
+    for(int i = 0; i < n; i++){
+        // intervals
+        int x, len; cin >> x >> len;
+        nim ^= func(x - 1);
+        nim ^= func(x + len - 1);
+        // nim ^= func(x + len - 1) ^ func(x - 1);
+        /*
+        // if x is odd shift to even start
+        if(x & 1) {
+            nim ^= x; --m; ++x;
+        }
+        // contribution from pair of numbers
+        if((len >> 1) & 1) nim ^= 1;
+        // contribution from last odd elements
+        if(len & 1) nim ^= (x + len - 1); */
+    }
+    cout << (nim ? "tolik" : "bolik");
+}
+https://codeforces.com/problemset/problem/15/D
+// 15D. Map
+using namespace std;
+using ll = long long;
+using Item = tuple<ll,int,int>; // (cost, r, c)
+// build 2D prefix sums (pre has size (n+1)x(m+1))
+vector<vector<ll>> build_prefix(const vector<vector<int>>& G){
+    int n = G.size(), m = G[0].size();
+    vector<vector<ll>> pre(n+1, vector<ll>(m+1,0));
+    for(int i=0;i<n;i++) for(int j=0;j<m;j++)
+        pre[i+1][j+1] = pre[i+1][j] + pre[i][j+1] - pre[i][j] + G[i][j];
+    return pre;
+}
+ll rect_sum(const vector<vector<ll>>& pre, int r, int c, int a, int b){
+    // sum of a x b block with top-left (r,c), 0-based
+    return pre[r+a][c+b] - pre[r][c+b] - pre[r+a][c] + pre[r][c];
+}
+
+// sliding minimum by rows (window width = b)
+vector<vector<int>> row_min_sliding(const vector<vector<int>>& G, int b){
+    int n = G.size(), m = G[0].size(), W = m - b + 1;
+    vector<vector<int>> H(n, vector<int>(W));
+    for(int i=0;i<n;i++){
+        deque<int> dq;
+        for(int j=0;j<m;j++){
+            while(!dq.empty() && G[i][dq.back()] >= G[i][j]) dq.pop_back();
+            dq.push_back(j);
+            if(j >= b-1){
+                if(dq.front() <= j-b) dq.pop_front();
+                H[i][j-(b-1)] = G[i][dq.front()];
+            }
+        }
+    }
+    return H;
+}
+// sliding minimum by columns on H (window height = a) -> M size (n-a+1) x (m-b+1)
+vector<vector<int>> col_min_sliding(const vector<vector<int>>& H, int a){
+    int n = H.size(), W = H[0].size(), R = n - a + 1;
+    vector<vector<int>> M(R, vector<int>(W));
+    for(int j=0;j<W;j++){
+        deque<int> dq;
+        for(int i=0;i<n;i++){
+            while(!dq.empty() && H[dq.back()][j] >= H[i][j]) dq.pop_back();
+            dq.push_back(i);
+            if(i >= a-1){
+                if(dq.front() <= i-a) dq.pop_front();
+                M[i-(a-1)][j] = H[dq.front()][j];
+            }
+        }
+    }
+    return M;
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n,m,a,b;
+    if(!(cin >> n >> m >> a >> b)) return 0;
+    vector<vector<int>> G(n, vector<int>(m));
+    for(int i=0;i<n;i++) for(int j=0;j<m;j++) cin >> G[i][j];
+
+    auto pre = build_prefix(G);
+    auto H   = row_min_sliding(G, b); // n x (m-b+1)
+    auto M   = col_min_sliding(H, a); // (n-a+1) x (m-b+1)
+
+    int R = n - a + 1, C = m - b + 1;
+    vector<Item> items; items.reserve(max(0,R*C));
+    for(int i=0;i<R;i++){
+        for(int j=0;j<C;j++){
+            ll s = rect_sum(pre, i, j, a, b);
+            ll mn = M[i][j];
+            ll cost = s - mn * 1ll * a * b;
+            items.emplace_back(cost, i, j);
+        }
+    }
+
+    sort(items.begin(), items.end()); // by cost, then r, then c
+
+    vector<vector<char>> used(R, vector<char>(C, 0));
+    vector<tuple<int,int,ll>> answer;
+    int need = (n*m) / (a*b); // optional upper bound
+
+    for(auto &it : items){
+        if((int)answer.size() >= need) break;
+        ll cost; int i,j;
+        tie(cost, i, j) = it;
+        if(used[i][j]) continue;
+
+        // region of top-lefts that would overlap this block
+        int rlo = max(0, i - a + 1), rhi = min(R-1, i + a - 1);
+        int clo = max(0, j - b + 1), chi = min(C-1, j + b - 1);
+
+        bool conflict = false;
+        for(int ii=rlo; ii<=rhi && !conflict; ++ii)
+            for(int jj=clo; jj<=chi; ++jj)
+                if(used[ii][jj]) { conflict = true; break; }
+        if(conflict) continue;
+
+        for(int ii=rlo; ii<=rhi; ++ii)
+            for(int jj=clo; jj<=chi; ++jj)
+                used[ii][jj] = 1;
+
+        answer.emplace_back(i+1, j+1, cost); // output 1-based
+    }
+
+    cout << answer.size() << '\n';
+    for(auto &t : answer){
+        int x,y; ll c; tie(x,y,c) = t;
+        cout << x << ' ' << y << ' ' << c << '\n';
+    }
+    return 0;
+}
+https://codeforces.com/problemset/problem/15/E
+// 15E. Triangles
+using namespace std;
+const int mod = 1e9 + 9;
+const int ax = 1e5;
+int add(int a, int b) {
+    a += b;
+    if(a >= mod)    a -= mod;
+    return a;
+}
+int mul(int a, int b) {
+    return (int)a * b % mod;
+}
+int power(int a, int b){
+    int res = 1;
+    while(b){
+        if(b & 1) res = mul(res, a);
+        a = mul(a, a); b >>= 1;
+    }
+    return res;
+}
+int main(){
+    int n; cin >> n;
+    int arr[n];
+    arr[0] = 1;
+    for(int i = 1; i <= n; i++)
+        arr[i] = add(arr[i - 1], arr[i - 1]);
+    int now = 4, cnt = 0;
+    for(int i = 2; i <= n / 2; i++) {
+        now = mul(now, sub(arr[i], 3));
+        cnt = add(cnt, now);
+    }
+    int res = add(mul(mul(cnt, cnt), 2), mul(cnt, 8));
+    res = add(res, 10);
+    cout << res << endl;
+    /*
+    int res = 2;
+    int curr = 1, sum = 1, prv = 1;
+    for(int i = 4; i <= n; i += 2){
+        res = (res + sum * 4 % mod) % mod;
+        prv = (prv + curr * 4 % mod) % mod;
+        curr = (curr * 2) % mod;
+        sum = (sum * prv) % mod;
+    }
+    cout << (2 * res * res + 2) % mod; */
+}
+
 https://codeforces.com/problemset/problem/15/A
 // 15A. Cottage Village
 using namespace std;
