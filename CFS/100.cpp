@@ -2474,6 +2474,1182 @@ int main(){
     }
     cout << res << endl;
 }
+https://codeforces.com/problemset/problem/11/A
+// 11A. Increasing Sequence
+using namespace std;
+int main(){
+    int n, d; cin >> n >> d;
+    int a[2001];
+    for(int i = 0; i < n; i++)    cin >> a[i];
+    int ans = 0, div = 0, sub = 0;
+    for(int i = 1; i < n; i++){
+        if(a[i-1] >= a[i]){
+            sub = a[i-1] - a[i];
+            if(sub == 0){
+                ans++;
+                a[i] += d;
+            }
+            else{
+                sub++;
+                div = sub / d;
+                if(sub % d != 0)    div++;
+                a[i] += div * d;
+                ans += div;
+            }
+        }
+    }
+    cout << ans << endl;
+}
+using namespace std;
+int main(){
+    int n, d; cin >> n >> d;
+    vector <int> vec(n);
+    for(int i = 1; i < n; i++)    cin >> vec[i];
+    int cnt = 0;
+    for(int i = 1; i < n; i++) {
+        if(vec[i] <= vec[i - 1]){
+            int need = vec[i - 1] + 1 - vec[i];
+            int steps = (need + d - 1) / d;
+            vec[i] += steps * d;
+            cnt += steps;
+        }
+    }
+    cout << cnt << endl;
+}
+https://codeforces.com/problemset/problem/11/B
+// 11B. Jumping Jack
+using namespace std;
+int main(){
+    int n; cin >> n;
+    n = abs(n);
+    int res = 0, steps = 0;
+    for(int i = 1;; i++) {
+        sum += i;
+        if(sum >= n && (sum - n) % 2 == 0) {
+            cout << i << endl;
+            break;
+        }
+    }/*
+    while(res < n || (res - n) % 2 != 0) {
+        steps++;
+        res += steps;
+    }
+    cout << steps; */
+}
+https://codeforces.com/problemset/problem/11/C
+// 11C. How Many Squares?
+using namespace std;
+int main(){
+    set <pair <int, int>> vertics;
+    set <vector <int>> edges;
+    for(int i = 0; i < 4; i++){
+        int x1, x2, y1, y2; cin >> x1 >> y1 >> x2 >> y2;
+        edges.insert({x1, y1, x2, y2});
+        edges.insert({x2, y2, x1, y1});
+        vertics.insert({x1, y1});
+        vertics.insert({x2, y2});
+    }
+    bool ok = (vertics.size() == 4);
+    int minx = INT_MAX, maxx = INT_MIN;
+    int miny = INT_MAX, maxy = INT_MIN;
+    for(auto &p : vertics) {
+        x = p.first; y = p.second;
+        minx = min(minx, x);
+        maxx = max(maxx, x);
+        miny = min(miny, y);
+        maxy = max(maxy, y);
+    }
+    vector <vector <int>> req = {
+        {minx, miny, minx, maxy}, {minx, miny, maxx, miny}, 
+        {minx, maxy, maxx, maxy}, {maxx, maxy, maxx, miny} 
+    };
+    for(auto &e : req) {
+        if(!edges.count(e))
+            ok = false;
+    }
+    cout << (ok ? "YES" : "NO");
+}
+using namespace std;
+int main(){
+    vector <pair <pair <int, int>, pair <int, int>>> seg(4);
+    for(int i = 0; i < 4; i++){
+        int x1, x2, y1, y2; cin >> x1 >> y1 >> x2 >> y2;
+        seg[i] = { {x1, y1}, {x2, y2} };
+    }
+    // collect unique points
+    set <pair <int, int>> points;
+    for(auto &s : seg) {
+        points.insert(s.first);
+        points.insert(s.second);.
+    }
+    if(points.size() != 4) {
+        cout << "NO" << endl;
+        return 0;
+    }
+    // compute bounding rectangle
+    int minx = INT_MAX, maxx = INT_MIN;
+    int miny = INT_MAX, maxy = INT_MIN;
+    for(auto &p : points) {
+        x = p.first; y = p.second;
+        minx = min(minx, x);
+        maxx = max(maxx, x);
+        miny = min(miny, y);
+        maxy = max(maxy, y);
+    }
+    // corners of the axis aligned rectangle
+    vector <pair <int, int>> corners = { 
+        {minx, miny}, {minx, maxy}, 
+        {maxx, miny}, {maxx, maxy} };
+    set <pair <int, int>> setcorner(corner.begin(), corner.end());
+    if(setcorner != points) {
+        cout << "NO" << endl;
+        return 0;
+    }
+    // expected four rectangle side
+    set <pair <pair <int, int>, pair <int, int>>> ex;
+    auto addedge = [&](pair <int, int> &a, pair <int, int> &b) {
+        if(a > b)    swap(a, b);
+        ex.insert({a, b});
+    };
+    addedge({minx, miny}, {minx, maxy});
+    addedge({minx, miny}, {maxx, miny});
+    addedge({maxx, maxy}, {minx, maxy});
+    addedge({maxx, maxy}, {maxx, miny});
+    set <pair <pair <int, int>, pair <int, int>>> given;
+    for(auto &s : seg) {
+        pair <int, int> a = s.first;
+        pair <int, int> b = s.second;
+        if(a == b) {
+            cout << "NO" << endl;
+            return 0;
+        }
+        if(a > b) swap(a, b);
+        given.insert({a, b});
+    }
+    cout << (given == ex ? "YES" : "NO");
+}
+https://codeforces.com/problemset/problem/11/D
+// 11D. A Simple Task
+using namespace std;
+const int ax = 20;
+// vector <vector <int>>grid[ax];
+vector <int> adj[ax];
+int dp[1 << ax][ax];
+int dfs(int start, int node, int parent, int mask){
+    if(dp[mask][node] != -1)
+        return dp[mask][node];
+    int cnt = 0;
+    for(int next : adj[node]){
+        if(next == parent)    continue;
+        //cycle
+        if(next == start)    cnt++;
+        //already visited
+        else if(mask & (1 << next))
+            continue;
+        else cnt += dfs(start, next, node, mask | (1 << next));
+    }
+    return dp[mask][node] = cnt;
+}
+int cntcycle(int node, int mask, int parent){
+    if(dp[node][mask] != -1)
+        return dp[node][mask];
+    int res = 0;
+    for(int child : grid[node]){
+        if(mask & (1 << child)){
+            if(child == parent && __builtin_popcount(mask) > 2)
+                res++; //completed cycle
+        }
+        else{
+            if(child > parent) //avoid double counting
+                res += cntcycle(child, mask | (1 << child), parent);
+        }
+    }
+    return dp[node][mask] = res;
+}
+int main(){
+    int n, m; cin >> n >> m;
+    for(int i = 0; i < m; i++) {
+        int u, v; cin >> u >> v; u--; v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        // grid[u].push_back(v);
+        // grid[v].push_back(u);
+    }
+    memset(dp, -1, sizeof(dp));
+    int res = 0;
+    for(int i = 0; i < n; i++){
+        res += dfs(i, i, -1, 1 << i);
+        // cntcycle(i, 1 << i, i);
+        // res += dp[i][1 << i] / 2; // each cycle counted twice
+    }
+    cout << res / 2 << endl;
+}
+using namespace std;
+using LL = long long;
+const int MAXN = 19;
+LL dp[1 << MAXN][MAXN];
+bool visited[1 << MAXN][MAXN];
+int adj[MAXN][MAXN];
+int n, m;
+// Count cycles using bitmask DP
+LL dfs(int mask, int start, int u) {
+    if (visited[mask][u]) return dp[mask][u];
+    visited[mask][u] = true;
+
+    LL &ans = dp[mask][u];
+    ans = 0;
+
+    for (int v = start; v < n; v++) {
+        if (!adj[u][v]) continue;
+
+        // If we reached start and it's not just the edge start-u
+        if (v == start && mask != ((1 << v) | (1 << u))) {
+            ans++;
+        }
+        // Visit unvisited node
+        else if (v != start && !(mask & (1 << v))) {
+            ans += dfs(mask | (1 << v), start, v);
+        }
+    }
+    return ans;
+}
+int main() {
+    cin >> n >> m;
+    memset(adj, 0, sizeof(adj));
+    memset(visited, 0, sizeof(visited));
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--; v--;
+        adj[u][v] = adj[v][u] = 1;
+    }
+    LL totalCycles = 0;
+    for (int i = 0; i < n; i++) {
+        totalCycles += dfs(1 << i, i, i);
+    }
+
+    // Each cycle counted twice (once in each direction)
+    cout << totalCycles / 2 << "\n";
+    return 0;
+}
+using namespace std;
+const int MAXN = 19;
+int n, m;
+int g[MAXN][MAXN];
+long long dp[1<<MAXN][MAXN];
+
+int main() {
+    cin >> n >> m;
+    for (int i = 0; i < m; i++) {
+        int u, v; cin >> u >> v; u--; v--; 
+        g[u][v] = g[v][u] = 1;
+    }
+    long long ans = 0;
+    for (int s = 0; s < n; s++) {
+        int maskSize = 1 << s;
+        for (int i = 0; i < maskSize; i++)
+            for (int j = 0; j <= s; j++)
+                dp[i][j] = 0;
+
+        dp[0][s] = 1;
+        for (int mask = 0; mask < maskSize; mask++) {
+            for (int last = 0; last <= s; last++) {
+                if (!dp[mask][last]) continue;
+                // count cycles back to starting node
+                if (g[last][s]) ans += dp[mask][last];
+
+                for (int next = 0; next < s; next++) {
+                    if ((mask & (1 << next)) == 0 && g[last][next]) {
+                        dp[mask | (1 << next)][next] += dp[mask][last];
+                    }
+                }
+            }
+        }
+    }
+    // Each cycle is counted twice in undirected graph
+    cout << (ans - m) / 2 << "\n";
+}
+https://codeforces.com/problemset/problem/11/E
+// 11E. Forward, march!
+using namespace std;
+int main() {
+    string s; cin >> s;
+    int n = s.size();
+    string t;
+    vector<int> insertPos; // positions where we inserted 'X'
+    int pos = 0; 
+    string need = "LR";
+
+    auto prev = [&](int i) { return i == 0 ? n - 1 : i - 1; };
+
+    for (int i = 0; i < n; i++) {
+        if (s[i] != 'X' && s[i] != need[t.size() % 2]) {
+            t += 'X';
+            if (s[i] != s[prev(i)]) insertPos.push_back(pos);
+        }
+        if (s[i] != 'X') pos++;
+        t += s[i];
+    }
+
+    if (t.size() % 2) {
+        if (s[0] != s[n - 1] || s[0] == 'R') insertPos.push_back(pos);
+        t += 'X';
+    }
+    int m = t.size();
+    int match = 0;
+
+    for (int i = 0; i < m; i++) {
+        if (t[i] != 'X' && t[i] == need[i % 2]) match++;
+    }
+
+    for (int i = 0; i + 1 < insertPos.size(); i++) {
+        if (2 * match > m && insertPos[i] == insertPos[i + 1] - 1) {
+            match--;
+            m -= 2;
+            i++;
+        }
+    }
+
+    int result = match * 100000000ll / m;
+    printf("%d.%06d", result / 1000000, result % 1000000);
+
+    return 0;
+}
+using namespace std;
+using ld = long double;
+const ld eps = 5e-10;
+
+// Check function: whether a given mid value is feasible
+bool check(const vector<char>& a, int n, ld mid) {
+    vector<ld> dpL(n + 1, 0), dpR(n + 1, 0);
+    dpL[0] = 0;
+    dpR[0] = -mid;
+
+    for (int i = 1; i <= n; i++) {
+        dpL[i] = max(dpR[i-1] - mid, 0.0L);
+        dpR[i] = max(dpL[i-1] - mid, 0.0L);
+
+        if (a[i] == 'L') dpR[i] += 1;
+        if (a[i] == 'R') dpL[i] += 1;
+    }
+
+    return dpL[n] > 0;
+}
+int main() {
+    string s; cin >> s;
+    vector<char> a;
+    int n = s.size();
+    // Insert 'X' at needed positions
+    if (s.front() == s.back() && s.front() == 'R') a.push_back('X');
+
+    for (int i = 0; i < n; i++) {
+        a.push_back(s[i]);
+        if (i + 1 < n && s[i] == s[i+1] && s[i] != 'X') a.push_back('X');
+    }
+
+    if (a.front() == a.back() && a.back() == 'L') a.push_back('X');
+    n = a.size();
+    a.insert(a.begin(), ' '); // 1-based indexing
+
+    ld l = 0, r = 1;
+    while (r - l >= eps) {
+        ld mid = (l + r) / 2;
+        if (check(a, n, mid)) l = mid;
+        else r = mid;
+    }
+    int x = (l + eps) * 1e8;
+    printf("%d.%06d\n", x / 1000000, x % 1000000);
+    return 0;
+}
+using namespace std;
+const int N = 2e6 + 5;
+const double eps = 1e-8;
+int n;
+char a[N];
+string s;
+double dp[N][2];
+
+bool check(double mid) {
+    dp[0][0] = 0;
+    dp[0][1] = -mid;
+    for (int i = 1; i <= n; i++) {
+        dp[i][0] = max(dp[i-1][1] - mid + (a[i] == 'R'), dp[i-1][0] - mid);
+        dp[i][1] = max(dp[i-1][0] - mid + (a[i] == 'L'), dp[i-1][1] - mid);
+    }
+    return dp[n][0] >= 0;
+}
+
+int main() {
+    cin >> s;
+    int len = s.size();
+    s = " " + s; // make 1-based indexing
+    n = 0;
+
+    if (s[1] == 'R' && s[len] == 'R') a[++n] = 'X';
+    a[++n] = s[1];
+    for (int i = 2; i <= len; i++) {
+        if (s[i] != 'X' && s[i] == s[i-1]) a[++n] = 'X';
+        a[++n] = s[i];
+    }
+    if (s[1] == 'L' && s[len] == 'L') a[++n] = 'X';
+
+    double l = 0, r = 100;
+    while (r - l >= eps) {
+        double mid = (l + r) / 2.0;
+        if (check(mid / 100.0)) l = mid;
+        else r = mid;
+    }
+    printf("%.6f\n", floor(r * 1e6) / 1e6);
+    return 0;
+}
+https://codeforces.com/problemset/problem/12/A
+// 12A. Super Agent
+using namespace std;
+int main(){
+    vector <vector <char>> grid(3, vector <char> (3));
+    // vector <string> grid(3);
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++)
+            cin >> grid[i][j];
+    }
+    //for(int i = 0; i < 3; i++)
+        //cin >> grid[i];
+    bool ok = true; /*
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(grid[i][j] == 'X' && grid[2 - i][2 - j] != 'X'){
+                    ok = false; break;
+            }
+        }
+        if(!ok) break;
+    } */
+    for(int i = 0; i < 3 && ok; i++){
+        for(int j = 0; j < 3 && ok; j++){
+            if(grid[i][j] == 'X' && grid[2 - i][2 - j] != 'X'){
+                ok = false;
+            }
+        }
+    } /*
+    for(int i = 0; i < 3 && ok; i++){
+        for(int j = 0; j < 3; j++){
+            if(grid[i][j] != grid[2 - i][2 - j]){
+                ok = false; break;
+            }
+        }
+    } */
+    cout << (ok ? "YES" : "NO");
+}
+https://codeforces.com/problemset/problem/12/B
+// 12B. Correct Solution?
+using namespace std;
+int main(){
+    string str, ing; cin >> str >> ing;
+    sort(str.begin(), str.end());
+    if(str[0] == '0') {
+        for(size_t i = 1; i < str.size(); i++){
+            if(str[i] != '0') {
+                swap(str[0], str[i]);
+                break;
+            }
+        }
+    }
+    int i = 0; /*
+    while(i < str.size() && str[i] == '0')
+        i++;
+    if(i < str.size())    swap(str[0], str[i]); */ /*
+    while (str.size() > 1 && str[0] == '0')
+        next_permutation(str.begin(), str.end()); */
+    cout << (str == ing ? "Ok" : "Wrong answer");
+}
+using namespace std;
+int main(){
+    int n; string str; cin >> n >> str;
+    string tmp = "";
+    while(n > 0){
+        tmp += char('0' + n % 10); n /= 10;
+    }
+    sort(tmp.begin(), tmp.end());
+    if (tmp[0] == '0') {
+        for (size_t i = 1; i < tmp.size(); ++i) {
+            if (tmp[i] != '0') {
+                swap(tmp[0], tmp[i]);
+                break;
+            }
+        }
+    }
+    cout << (tmp == str ? "OK" : "WRONG_ANSWER") << endl;
+}
+https://codeforces.com/problemset/problem/12/C
+// 12C. Fruits
+using namespace std;
+int main(){
+    int n, k; cin >> n >> k;
+    vector <int> vec(n), tor;
+    for(int i = 0; i < n; i++) cin >> vec[i];
+    map <string, int> freq;
+    for(int i = 0; i < k; i++){
+        string str; cin >> str;
+        freq[str]++;
+    }
+    for(auto &p : freq) tor.push(p.second);
+    // for(auto &[key, val] : freq) tor.push_back(val);
+    sort(vec.begin(), vec.end());
+    sort(tor.begin(), tor.end(), greater <int> ());
+    int minsum = 0, maxsum = 0;
+    int sz = tor.size();
+    for(int i = 0; i < sz; i++) {
+        minsum += tor[i] * vec[i];
+        maxsum += tor[i] * vec[n - 1 - i];
+    }
+    cout << maxsum << " " << minsum << endl;
+}
+https://codeforces.com/problemset/problem/12/D
+// 12D. Ball
+using namespace std;
+int fenwick[1e4];
+void update(int idx, int val, int n){
+    while(idx <= n){
+        fenwick[idx] = max(fenwick[idx], val);
+        idx += idx & -idx;
+    }
+}
+int query(int idx){
+    int res = 0;
+    while(idx > 0){
+        res = max(res, fencwick[idx]);
+        idx -= idx & -idx;
+    }
+    return res;
+}
+int main(){
+    int n; cin >> n;
+    vector <int> vec(n + 1), tor(n + 1), val(n + 1);
+    vector <int> comp;
+    for(int i = 1; i <= n; i++)    cin >> vec[i];
+    for(int i = 1; i <= n; i++) {
+        cin >> val[i];
+        comp.push_back(val[i]);
+    }
+    for(int i = 1; i <= n; i++)    cin >> tor[i];
+    sort(comp.begin(), comp.end());
+    comp.erase(unique(comp.begin(), comp.end()), comp.end());
+    /*
+    for(int i = 1; i <= n; i++) {
+        val[i] = n - (lower_bound(comp.begin(), comp.end(), val[i]) - comp.begin());
+    } */
+    vector <int> idx(n);
+    iota(idx.begin(), idx.end(), 1);
+    sort(idx.begin(), idx.end(), [&](int x, int y){
+        //if(vec[x] != vec[y]) return vec[x] > vec[y]; 
+        if(vec[x] != vec[y]) return vec[x] < vec[y];
+        if(val[x] != val[y]) return val[x] > val[y];
+        // return tor[x] > tor[y];
+        return tor[x] < tor[y];
+    }); /*
+    int alive = 0, i = 0;
+    while(i < n) {
+        int j = i;
+        while(j < n && vec[idx[j]] == vec[idx[i]])    j++;
+        // check alive
+        for(int k = j - 1; k >= i; k--) {
+            if(query(val[idx[k]] - 1) <= tor[idx[k]])
+                alive++;
+        }
+        for(int k = i; k < j; k++)
+            update(val[idx[k]], tor[idx[k]], n);
+        i = j;
+    }
+    cout << n - alive << endl; */
+    map<int, int> ma; // key: intelligence, value
+    ma[-1e9] = 1e9; 
+    ma[1e9] = -1e9;
+    int count = 0;
+    for (int k = n-1; k >= 0; k--) {
+        int idx_k = idx[k];
+        auto it = ma.upper_bound(val[idx_k]);
+        if (it->second > r[idx_k])
+            count++; 
+        else {
+            if (ma[val[idx_k]] < tor[idx_k])
+                ma[val[idx_k]] = tor[idx_k];
+            it = ma.lower_bound(val[idx_k]);
+            auto prev = it; prev--;
+            while (prev->second < tor[idx_k]) {
+                auto to_erase = prev;
+                if (prev == ma.begin()) break;
+                prev--;
+                ma.erase(to_erase);
+            }
+        }
+    }
+    cout << count << "\n";
+}
+using namespace std;
+const int maxn = 5e5 + 100;
+int a[maxn], b[maxn], c[maxn], id[maxn], num[maxn], vis[maxn], t[maxn], tmp_id[maxn];
+int BIT[maxn], cnt;
+map<int,int> mp;
+int lowbit(int x){ return x & -x; }
+void update(int x, int d){
+    while(x <= cnt){
+        BIT[x] += d;
+        x += lowbit(x);
+    }
+}
+int query(int x){
+    int ret = 0;
+    while(x){
+        ret += BIT[x];
+        x -= lowbit(x);
+    }
+    return ret;
+}
+
+void cdq(vector<int>& idx, int l, int r){
+    if(l == r) return;
+    int m = (l + r) / 2;
+    cdq(idx, l, m);
+    cdq(idx, m+1, r);
+
+    int i = l, j = m+1, p = 0;
+    vector<int> tmp(r-l+1);
+    while(i <= m || j <= r){
+        if(i <= m && (j > r || b[idx[i]] > b[idx[j]])){
+            update(t[idx[i]], num[idx[i]]);
+            tmp[p++] = idx[i++];
+        } else {
+            vis[idx[j]] += query(cnt) - query(t[idx[j]]);
+            tmp[p++] = idx[j++];
+        }
+    }
+    for(int k = l; k <= m; k++) update(t[idx[k]], -num[idx[k]]);
+    for(int k = 0; k < r-l+1; k++) idx[l+k] = tmp[k];
+}
+int main(){
+    int n;
+    cin >> n;
+    for(int i=1; i<=n; i++) cin >> a[i];
+    for(int i=1; i<=n; i++) cin >> b[i];
+    for(int i=1; i<=n; i++){
+        cin >> c[i];
+        id[i] = i;
+        num[i] = 1;
+    }
+    // compress c
+    vector<int> tmp_c(c+1, c+n+1);
+    sort(tmp_c.begin(), tmp_c.end());
+    tmp_c.erase(unique(tmp_c.begin(), tmp_c.end()), tmp_c.end());
+    for(int i=1; i<=n; i++)
+        t[i] = lower_bound(tmp_c.begin(), tmp_c.end(), c[i]) - tmp_c.begin() + 1;
+    cnt = tmp_c.size();
+
+    // sort by a desc, b asc, c asc
+    sort(id+1, id+n+1, [&](int x, int y){
+        if(a[x] != a[y]) return a[x] > a[y];
+        if(b[x] != b[y]) return b[x] < b[y];
+        return c[x] < c[y];
+    });
+    // merge duplicates
+    int tot = 1;
+    for(int i=2; i<=n; i++){
+        if(a[id[i]] == a[id[tot]] && b[id[i]] == b[id[tot]] && c[id[i]] == c[id[tot]]){
+            num[id[tot]]++;
+        } else {
+            tot++;
+            id[tot] = id[i];
+        }
+    }
+
+    cdq(vector<int>(id+1, id+tot+1), 0, tot-1);
+    int ans = 0;
+    for(int i=1; i<=tot; i++) if(vis[id[i]]) ans += num[id[i]];
+    cout << ans << "\n";
+}
+using namespace std;
+const int maxn = 500010;
+int n;
+int A[maxn], B[maxn], C[maxn];
+int h[maxn], idx[maxn];
+// Compare indices instead of struct
+bool cmp(int i, int j) {
+    return (A[i] == A[j] && B[i] < B[j]) || (A[i] > A[j]);
+}
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> A[i];
+    for (int i = 0; i < n; i++) {
+        cin >> B[i];
+        h[i] = B[i];
+    }
+    for (int i = 0; i < n; i++) cin >> C[i];
+
+    // Sort by A desc, then B asc, using indices
+    iota(idx, idx + n, 0);
+    sort(idx, idx + n, cmp);
+
+    // Coordinate compress B
+    sort(h, h + n);
+    for (int i = 0; i < n; i++) {
+        B[i] = n - (lower_bound(h, h + n, B[i]) - h);
+    }
+    // BIT array stored in h
+    memset(h, 0, sizeof(int) * (n + 1));
+
+    int ans = 0;
+    for (int t = 0; t < n; t++) {
+        int i = idx[t];
+        int tmp = 0;
+        for (int j = B[i] - 1; j; j -= j & -j) {
+            tmp = max(tmp, h[j]);
+        }
+        if (tmp > C[i]) ans++;
+        for (int j = B[i]; j <= n; j += j & -j) {
+            h[j] = max(h[j], C[i]);
+        }
+    }
+    cout << ans << "\n";
+    return 0;
+}
+https://codeforces.com/problemset/problem/12/E
+// 12E. Start of the season
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int m = n - 1;
+    vector <vector <int>>vec(n, vector <int> (n));
+    for(int i = 0; i < m; i++){
+        int val = i + 1;
+        for(int j = 0; j < m; j++){
+            vec[i][j] = val; val++;
+            if(val > m) val = 1;
+        }
+    }
+    for(int i = 0; i < m; i++){
+        vec[i][i] = 0;
+        vec[i][m] = vec[i][i];
+        vec[m][i] = vec[i][i];
+    }
+    vec[m][m] = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++)
+            cout << vec[i][j] << " ";
+        cout << endl;
+    }
+}
+using namespace std;
+vector <vector <int>> matching(int n){
+    assert(n % 2 == 0);
+    int m = n - 1;
+    vector <vector <pair <int, int>>>match(m);
+    for(int a = 0; a < m; ++a){
+        match[a].push_back({n - 1, a});
+        int x = a, y = a;
+        for(int i = 0; i < n / 2 - 1; ++i){
+            --x; if(x < 0)    x += m;
+            ++y; if(y >= m)    y -= m;
+            match[a].push_back({x, y});
+        }
+    }
+    //convert to adj matrix
+    vector <vector <int>> mat(n, vector <int> (n));
+    for(int k = 0; k < m; ++k){
+        for(auto [i, j] : match[k])
+            mat[i][j] = mat[j][i] = k + 1;
+    }
+    return mat;
+}
+vector <vector <int>>symmsqr(int n){
+    vector <vector <int>> mat(n, vector <int> (n));
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++)
+            mat[i][j] = (i + j) % n;
+    }
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++)
+            mat[j][i] = mat[i][j];
+    }
+    return mat;
+}
+int main(){
+    int n; cin >> n;
+    assert(n % 2 == 0) // only even complete graph
+    auto graph = matching(n);
+    //auto graph = symmsqr(n);
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++)
+            cout << graph[i][j] << " ";
+        cout << endl;
+    }
+}
+https://codeforces.com/problemset/problem/13/A
+// 13A. Numbers
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int sum = 0;
+    for(int base = 2; base < n; ++base) {
+        int x = n;
+        while(x) {
+            sum += x % base;
+            x /= base;
+        }
+    }
+    int denom = n - 2;
+    int g = gcd(sum, denom);
+    cout << sum / g << " " << denom / g << endl;
+}
+https://codeforces.com/problemset/problem/13/B
+// 13B. Letter A
+using namespace std;
+int dot(pair <int, int> &p, pair <int, int> &q) {
+    return p.first * q.first + p.second * q.second;
+}
+int cross(pair <int, int> &p, pair <int, int> &q) {
+    return p.first * q.second - p.second * q.first;
+}
+bool checkratio(pair <int, int> &p, pair <int, int> &q) {
+    int a = dot(p, q), b = dot(q, q);
+    return cross(p, q) == 0 && b <= 5 * a && 5 * a <= 4 * b;
+}
+bool func(pair <int, int> ma, pair <int, int> mb, pair <int, int> la, pair <int, int> lb, pair <int, int> ra, pair <int, int> rb) {
+    pair <int, int> lv = {
+        lb.first - la.first, lb.second - la.second };
+    pair <int, int> rv = {
+        rb.first - ra.first, rb.second - ra.second };
+    pair <int, int> mav = {
+        ma.first - la.first, ma.second - la.second };
+    pair <int, int> mbv = {
+        mb.first - ra.first, mb.second - ra.second };
+    return (la == ra && cross(lv, rv) != 0 && dot(lv, rv) >= 0 &&
+    checkratio(mav, lv) && checkratio(mbv, rv);
+}
+int main(){
+    int t; cin >> t;
+    while(t--) {
+        pair <int, int> grid[3][2];
+        for(int i = 0; i < 3; i++)
+            cin >> grid[i][0].first >> grid[i][0].second >> grid[i][1].first >> grid[i][1].second;
+        bool ok = false;
+        for(int i = 0; i < 2 && !ok; ++i) {
+            if(i)    swap(grid[0][0], grid[0][1]);
+            for(int j = 0; j < 2 && !ok; ++j) {
+                if(j)    swap(grid[1][0], grid[1][1]);
+                for(int k = 0; k < 2 && !ok; ++k) {
+                    if(k)    swap(grid[2][0], grid[2][1]);
+                    for(int l = 0; l < 3 && !ok; l++) {
+                        if(func(grid[l][0], grid[l][1], grid[(l + 1) % 3][0], grid[(l + 1) % 3][1], grid[(l + 2) % 3][0], grid[(l + 2) % 3][1]))
+                            ok = true;
+                    }
+                    if(k)    swap(grid[2][0], grid[2][1]);
+                }
+                if(j)    swap(grid[1][0], grid[1][1]);
+            }
+            if(i)    swap(grid[0][0], grid[0][1]);
+        }
+        cout << (ok ? "YES" : "NO");
+    }
+}
+https://codeforces.com/problemset/problem/13/C
+// 13C. Sequence
+using namespace std;
+int main(){
+    int n; cin >> n;
+    int arr[n];
+    for(int i = 1; i <= n; i++) cin >> arr[i];
+    int res = 0, det = 0;
+    priority_queue <int> pq;
+    /*for(int i = 1; i <= n; i++){
+        if(!pq.empty() && pq.top() > arr[i]) {
+            res += pq.top() - arr[i];
+            pq.pop();
+            pq.push(arr[i]);
+        }
+        pq.push(arr[i]);
+    } */
+    for(int i = 1; i <= n; i++){
+        int pos = arr[i] - det;
+        res += pos;
+        pq.push(pos); pq.push(pos);
+        pq.pop();
+        b[i] = pq.top() + det;
+    }
+    for(int i = n - 1; i >= 1; i--) 
+        b[i] = min(b[i], b[i + 1] - 1);
+    vector <int> tmp;
+    while(!pq.empty()) {
+        tmp.push_back(pq.top());
+        pq.pop();
+    }
+    int last = 0;
+    while(!tmp.empty()){
+        res -= (tmp.back() - last) * tmp.size();
+        last = tmp.back();
+        tmp.pop_back();
+    }
+    cout << res << endl;
+}
+https://codeforces.com/problemset/problem/13/D
+// 13D. Triangles
+using namespace std;
+int main(){
+    int n, m; cin >> n >> m;
+    vector <int> ax(n), ay(n), bx(m), by(m);
+    for(int i = 0; i < n; i++) cin >> ax[i] >> ay[i];
+    for(int i = 0; i < m; i++) cin >> bx[i] >> by[i];
+    
+    // precompute blue points between red points
+    vector <vector <vector <bool>>> dp(n, vector <vector <bool>>(n, vector <bool>(m, false)));
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            for(int k = 0; k < m; k++){
+                int tmp = (ax[j] - ax[i]) * (by[k] - ay[i]) - (bx[k] - ax[i]) * (ay[j] - ay[i]);
+                if(tmp > 0) dp[i][j][k] = true;
+                else dp[j][i][k] = true;
+            }
+        }
+    }
+    auto cross = [&](int i, int j, int k) ->int {
+            (ax[j] - ax[i]) * (ay[k] - ay[i]) - (ax[k] - ax[i]) * (ay[j] - ay[i]); };
+    int res = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            for(int k = i + 1; k < n; k++){
+                if(cross(i, j, k) > 0) {
+                    bool valid = true;
+                    for(int t = 0; t < m; ++t){
+                        if(dp[i][j][t] && dp[j][k][t] && dp[k][i][t])
+                            valid = false;
+                    }
+                    if(valid) res++;
+                }
+                else {
+                    bool valid = true;
+                    for(int t = 0; t < m; ++t){
+                        if(dp[i][k][t] && dp[k][j][t] && dp[j][i][t])
+                            valid = false;
+                        
+                    }
+                    if(valid) res++;
+                }
+            }
+        }
+    }
+    cout << res << endl;
+}
+using namespace std;
+const int MAXN = 505;
+int ax[MAXN], ay[MAXN];   // points in set A
+int bx[MAXN], by[MAXN];   // points in set B
+int f[MAXN][MAXN];
+int n, m, s;
+// cross product (u × v > 0)
+inline bool vec(int ux, int uy, int vx, int vy) {
+    return ux * vy - vx * uy > 0;
+}
+// check if c lies inside triangle (a,b,vertical strip)
+inline bool calc(int ax, int ay, int bx, int by, int cx, int cy) {
+    if (cy < ay || cy >= by) return false;
+    return vec(cx - ax, cy - ay, bx - ax, by - ay);
+}
+
+
+int main() {
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
+        cin >> ax[i] >> ay[i];
+    for (int i = 1; i <= m; i++)
+        cin >> bx[i] >> by[i];
+
+    // sort by y-coordinate
+    vector<int> idxA(n), idxB(m);
+    iota(idxA.begin(), idxA.end(), 1);
+    iota(idxB.begin(), idxB.end(), 1);
+
+    sort(idxA.begin(), idxA.end(), [&](int i, int j){ return ay[i] < ay[j]; });
+    sort(idxB.begin(), idxB.end(), [&](int i, int j){ return by[i] < by[j]; });
+    // remap arrays according to sorting
+    vector<int> tmpx(n+1), tmpy(n+1);
+    for (int i = 1; i <= n; i++) { tmpx[i] = ax[idxA[i-1]]; tmpy[i] = ay[idxA[i-1]]; }
+    for (int i = 1; i <= n; i++) { ax[i] = tmpx[i]; ay[i] = tmpy[i]; }
+
+    tmpx.resize(m+1); tmpy.resize(m+1);
+    for (int i = 1; i <= m; i++) { tmpx[i] = bx[idxB[i-1]]; tmpy[i] = by[idxB[i-1]]; }
+    for (int i = 1; i <= m; i++) { bx[i] = tmpx[i]; by[i] = tmpy[i]; }
+
+    // precompute f[i][j]
+    for (int i = 1; i <= n; i++) {
+        for (int j = i + 1; j <= n; j++) {
+            for (int k = 1; k <= m; k++) {
+                f[i][j] += calc(ax[i], ay[i], ax[j], ay[j], bx[k], by[k]);
+            }
+        }
+    }
+    // count triangles
+    for (int i = 1; i <= n; i++) {
+        for (int j = i + 1; j <= n; j++) {
+            for (int k = j + 1; k <= n; k++) {
+                s += (f[i][j] + f[j][k] == f[i][k]);
+            }
+        }
+    }
+    cout << s << endl;
+    return 0;
+}
+https://codeforces.com/problemset/problem/13/E
+// 13E. Holes
+using namespace std;
+const int ax = 1e5;
+const int tim = 447;
+int n, m, arr[ax], lst[ax], cnt[ax];
+void update(int i) {
+    if(i + arr[i] > n || (i / tim)!= (i + arr[i]) / tim){
+        lst[i] = i; cnt[i] = 0;
+    }
+}
+int main(){
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++) cin >> arr[i];
+    for(int i = n; i >= 1; i--)
+        update(i);
+    while(m--) {
+        int type, x, y; cin >> type >> x;
+        if(type == 0) {
+            cin >> y; arr[x] = y;
+            for(int i = x; i >= 1 && i / tim == x / tim; i--)
+                update(i);
+        }
+        else {
+            int last = lst[x], res = 0;
+            while(x <= n) {
+                res += cnt[x] + 1;
+                last = lst[x];
+                x = last + arr[last];
+            }
+            cout << last << " " << res;
+        }
+    }
+}
+using namespace std;
+const int MAXN = 1e6 + 123;
+int block = 320; // sqrt(n) block size
+int n, q;
+int a[MAXN], cnt[MAXN], nxt[MAXN], last[MAXN];
+// Perform jump query
+void query(int id) {
+    int ans = 0;
+    while (id <= n) {
+        ans += cnt[id];
+        if (nxt[id] > n) break;
+        id = nxt[id];
+    }
+    cout << last[id] << ' ' << ans << '\n';
+}
+// Update value at position id
+void update(int id, int val) {
+    a[id] = val;
+    // Update current block from id backward
+    for (int i = id; i >= 1 && i / block == id / block; i--) {
+        if (i + a[i] > n) {
+            nxt[i] = n + 1;
+            last[i] = i;
+            cnt[i] = 1;
+        } else if (i / block == (i + a[i]) / block) {
+            nxt[i] = nxt[i + a[i]];
+            last[i] = last[i + a[i]];
+            cnt[i] = cnt[i + a[i]] + 1;
+        } else {
+            nxt[i] = i + a[i];
+            last[i] = i;
+            cnt[i] = 1;
+        }
+    }
+}
+int main() {
+    cin >> n >> q;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    // process blocks
+    for (int i = n; i >= 1; i--) {
+        if (i + a[i] > n) {
+            nxt[i] = n + 1;
+            last[i] = i;
+            cnt[i] = 1;
+        } else if (i / block == (i + a[i]) / block) {
+            nxt[i] = nxt[i + a[i]];
+            last[i] = last[i + a[i]];
+            cnt[i] = cnt[i + a[i]] + 1;
+        } else {
+            nxt[i] = i + a[i];
+            last[i] = i;
+            cnt[i] = 1;
+        }
+    }
+    while (q--) {
+        int t, x, y; cin >> t;
+        if (t == 1) {
+            cin >> x; query(x);
+        } else {
+            cin >> x >> y;
+            update(x, y);
+        }
+    }
+}
+int main(){
+    cin >> n >> q;
+    for(int i = 1; i <= n; i++) cin >> a[i];
+}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int mum = 350;
+const int MAXN = 101000;
+
+int a[MAXN], store[MAXN], nxt[MAXN], n;
+// Preprocess one block
+void calc(int blockIdx) {
+    int start = blockIdx * mum;
+    int end = min(n, (blockIdx + 1) * mum);
+    for (int i = end - 1; i >= start; --i) {
+        int nextIdx = i + a[i];
+        if (nextIdx < end && nxt[nextIdx] < end) {
+            store[i] = store[nextIdx] + 1;
+            nxt[i] = nxt[nextIdx];
+        } else {
+            nxt[i] = nextIdx;
+            store[i] = 1;
+        }
+    }
+}
+// Perform jump query from index idx
+void get(int idx) {
+    int steps = 0;
+    while (nxt[idx] < n) {
+        steps += store[idx];
+        idx = nxt[idx];
+    }
+    steps += store[idx];
+    cout << idx + 1 << " " << steps << "\n";
+}
+int main() {
+    int m; cin >> n >> m;
+    for (int i = 0; i < n; ++i) cin >> a[i];
+    // Preprocess all blocks
+    for (int i = (n + mum - 1) / mum - 1; i >= 0; --i) {
+        calc(i);
+    }
+    while (m--) {
+        int type; cin >> type;
+        if (type == 1) {
+            int p; cin >> p;
+            get(p - 1);
+        } else {          // Update
+            int p, q; cin >> p >> q;
+            a[p - 1] = q;
+            calc((p - 1) / MAGIC);
+        }
+    }
+    return 0;
+}
 https://codeforces.com/problemset/problem/14/A
 // 14A. Letter
 using namespace std;
