@@ -1,5 +1,3 @@
-value2 != x) 
-	
 https://codeforces.com/problemset/problem/26/A
 // A. Almost Prime
 using namespace std;
