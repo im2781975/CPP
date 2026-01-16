@@ -56,3 +56,23 @@ public:
         return 0;
     }
 };
+https://leetcode.com/problems/add-to-array-form-of-integer/
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& num, int k) {
+        int i = num.size() - 1;
+    unsigned long long tmp = k;
+    while(i >= 0 || tmp > 0){
+        if(i >= 0) {
+            tmp += num[i];
+            num[i] = tmp % 10;
+            tmp /= 10; i--;
+        }
+        else {
+            num.insert(num.begin(), tmp % 10);
+            tmp /= 10;
+        }
+    }
+    return num;
+    }
+};
