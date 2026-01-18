@@ -76,3 +76,26 @@ public:
     return num;
     }
 };
+https://leetcode.com/problems/diagonal-traverse
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        int m = mat.size(); 
+        int n = mat[0].size();
+        vector <int> res;
+        for(int d = 0; d < m + n - 1; d++){
+            int r = (d < n) ? 0 : d - n + 1;
+            int c = (d < n) ? d : n - 1;
+            vector <int> tmp;
+            while(r < m && c >= 0) {
+                tmp.push_back(mat[r][c]);
+                r++; c--;
+            }
+            if(d % 2 == 0)
+                reverse(tmp.begin(), tmp.end());
+            for(int x : tmp)
+                res.push_back(x);
+        }
+        return res;
+    }
+};
